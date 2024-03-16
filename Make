@@ -24,7 +24,8 @@ repeat
     RealRunID = math.random(1, 999)
 until RealRunID ~= 666 and RealRunID ~= 14
 local RunID = " "..tostring(RealRunID)
-Alert("Activated neutron bomb!!!!"..RunID, Color3.new(0.717647, 0, 1))
+
+Alert("Tool Assisted Run Activated."..RunID, Color3.new(0.717647, 0, 1))
 local Key = -game.ReplicatedStorage.Remote.ReqPasskey:InvokeServer()
 local AnimationState = {}
 local Savestates = {}
@@ -2138,7 +2139,7 @@ local function SaveRun()
     -- ending line
     local mapName = workspace.Map.Settings:GetAttribute("MapName")
     local AllPlayerInfo = minfile(AllPlayerInfo)
-    writefile("TAS/"..mapName..".json", game:GetService("HttpService"):JSONEncode(AllPlayerInfo))
+    writefile("TAS/"..custom_map_name..".json", game:GetService("HttpService"):JSONEncode(AllPlayerInfo))
     Alert("Saved", Color3.fromRGB(0, 255, 0), 1)
 end
 
@@ -2171,7 +2172,7 @@ RecordLoop = RunService.Heartbeat:Connect(function(deltaTime)
         SetTimeGui()
         table.insert(PlayerInfo, ReturnPlayerInfo())
         if tick() - timer >= 2 then
-        	AddSavestate()
+        	-- AddSavestate()
         	timer = tick()
         end
     else
