@@ -25,6 +25,7 @@ local map_tas = {
     ["Mirage Saloon"] = "ms1",
     ["Decaying Silo"] = "ds1",
     ["Ignis Peaks"] = "igp1";
+    ["Active Volcanic Mines"] = "avm1",
 }
 
 local function WindowToTAS()
@@ -58,7 +59,7 @@ local Tabs = {
 
 do
     Tabs.Main:AddButton({
-        Title = "Install/TAS",
+        Title = "Installation/TAS",
         Description = "Install available TAS/Fe2 files.",
         Callback = function()
             Window:Dialog({
@@ -69,7 +70,6 @@ do
                         Title = "Confirm",
                         Callback = function()
                             print("Granted")
-
                         end
                     },
                     {
@@ -84,7 +84,7 @@ do
     })
 
     local FE2_AUTO = Tabs.Main:AddToggle("TAS_AP", {
-        Title = "Run/TAS", 
+        Title = "Runtime/TAS", 
         Description = "Automate transcripts of TAS/FE2 files.", 
         Default = false,
         Callback = function(v)
@@ -159,7 +159,18 @@ do
         Numeric = false, -- Only allows numbers
         Finished = false, -- Only calls callback when you press enter
         Callback = function(v)
-            map_tas["Mirage Saloon"] = v
+            map_tas["Blue Moon"] = v
+        end
+    })
+
+    local Active_Vol_Mines_TAS = Tabs.Task:AddInput("TOOL_005", {
+        Title = "Active Volcanic Mines",
+        Default = "avm1",
+        Placeholder = "FileName",
+        Numeric = false, -- Only allows numbers
+        Finished = false, -- Only calls callback when you press enter
+        Callback = function(v)
+            map_tas["Active Volcanic Mines"] = v
         end
     })
 end
