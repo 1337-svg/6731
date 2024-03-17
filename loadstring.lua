@@ -13,13 +13,6 @@ local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/
 local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/1337-svg/6731/index_client/settings/sm.lua"))()
 local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/1337-svg/6731/index_client/settings/im.lua"))()
 
-for i,v in ipairs(getnilinstances()) do
-	if v.Name == "CL_AntiExploit" then
-		print('Anti-Cheat Deleted.')
-		v:Destroy()
-	end
-end
-
 local function BeforeLaunch()
     if game:GetService("Players").LocalPlayer.PlayerGui:WaitForChild("GameGui").Loading.Visible == true then
         return true
@@ -64,6 +57,29 @@ local Tabs = {
     Settings = Window:AddTab({ Title = "Settings", Icon = "settings" }),
 }
 
+local function TAS_INST()
+	for _,json_map in pairs(map_tas) do
+		local map = HttpService:UrlEncode(v)
+		local installed = isfile(v..".json")
+		if installed == true then clmain.newAlert(v.." Updated!", Color3.fromRGB(50,100,255))
+		else
+			local s, r = pcall(function()
+                local tas = game:HttpGet("https://raw.githubusercontent.com/1337-svg/6731/index_client/files/"..json_map..".json")
+				if not string.find(tas, "CFrame") then error(v..' file not exist') end
+				writefile(v..".json", tas, true) -- minfile(tas) removed
+			end)
+
+			if s then
+				clmain.newAlert("Downloaded TAS/"..v, Color3.fromRGB(0,255,0))
+			else
+                print(r)
+				clmain.newAlert("Failed TAS/"..v, Color3.fromRGB(255,0,0))
+			end
+		end
+		wait()
+	end
+end
+
 do
     Tabs.Main:AddButton({
         Title = "Installation/TAS",
@@ -76,7 +92,7 @@ do
                     {
                         Title = "Confirm",
                         Callback = function()
-                            print("Granted")
+                            TAS_INST()
                         end
                     },
                     {
