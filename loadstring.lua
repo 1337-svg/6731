@@ -13,6 +13,13 @@ local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/
 local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/1337-svg/6731/index_client/settings/sm.lua"))()
 local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/1337-svg/6731/index_client/settings/im.lua"))()
 
+for i,v in ipairs(getnilinstances()) do
+	if v.Name == "CL_AntiExploit" then
+		print('Anti-Cheat Deleted.')
+		v:Destroy()
+	end
+end
+
 local function BeforeLaunch()
     if game:GetService("Players").LocalPlayer.PlayerGui:WaitForChild("GameGui").Loading.Visible == true then
         return true
