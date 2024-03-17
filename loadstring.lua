@@ -22,11 +22,13 @@ end
 
 local map_tas = {
     ["Blue Moon"] = "bm1",
+    ["Poisonous Chasm"] = "pc1",
     ["Mirage Saloon"] = "ms1",
     ["Decaying Silo"] = "ds1",
     ["Ignis Peaks"] = "igp1";
     ["Active Volcanic Mines"] = "avm1",
     ["Snowy Stronghold"] = "ssh1",
+    ["Sandswept Ruins"] = "ssr1",
 }
 
 local function WindowToTAS()
@@ -198,6 +200,17 @@ do
         end
     })
 
+    local Poisonous_Chasm_TAS = Tabs.Task:AddInput("TOOL_008", {
+        Title = "Poisonous Chasm",
+        Default = "pc1",
+        Placeholder = "FileName",
+        Numeric = false, -- Only allows numbers
+        Finished = false, -- Only calls callback when you press enter
+        Callback = function(v)
+            map_tas["Poisonous Chasm"] = v
+        end
+    })
+
     local Active_Vol_Mines_TAS = Tabs.Task:AddInput("TOOL_005", {
         Title = "Active Volcanic Mines",
         Default = "avm1",
@@ -209,7 +222,7 @@ do
         end
     })
 
-    local Snowy_Stronghold = Tabs.Task:AddInput("TOOL_005", {
+    local Snowy_Stronghold = Tabs.Task:AddInput("TOOL_006", {
         Title = "Snowy Stronghold",
         Default = "ssh1",
         Placeholder = "FileName",
@@ -217,6 +230,17 @@ do
         Finished = false, -- Only calls callback when you press enter
         Callback = function(v)
             map_tas["Snowy Stronghold"] = v
+        end
+    })
+
+    local Sandswept_Ruins = Tabs.Task:AddInput("TOOL_007", {
+        Title = "Sandswept Ruins",
+        Default = "ssr1",
+        Placeholder = "FileName",
+        Numeric = false, -- Only allows numbers
+        Finished = false, -- Only calls callback when you press enter
+        Callback = function(v)
+            map_tas["Sandswept Ruins"] = v
         end
     })
 end
