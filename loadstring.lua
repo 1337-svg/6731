@@ -50,7 +50,10 @@ local Window = Fluent:CreateWindow({
     MinimizeKey = Enum.KeyCode.LeftControl -- Used when theres no MinimizeKeybind
 })
 
+local save = getsenv(game:GetService("Players").LocalPlayer.PlayerScripts["CL_MAIN_GameScript"]).takeAir
 local TAS_AUTOPLAYER = false
+local godmode = false
+
 local Tabs = {
     Main = Window:AddTab({ Title = "Essentials", Icon = "box" }),
     Task = Window:AddTab({ Title = "Tasks", Icon = "compass" }),
@@ -142,6 +145,14 @@ do
         end
     })
 
+    -- UTIL SECTION
+    local FE2_INFAIR = Tabs.Util:AddToggle("TAS_INFAIR1", {
+        Title = "Infinite Air", 
+        Default = false,
+        Callback = function(v)
+            godmode = v
+        end
+    })
     -- TAS SECTION
     local Decaying_Silo_TAS = Tabs.Task:AddInput("TOOL_001", {
         Title = "Decaying Silo",
@@ -226,13 +237,27 @@ Fluent:Notify({
     Duration = 5
 })
 
+spawn(function()
+	while wait(1/12) do
+		if godmode == true then
+			getsenv(game:GetService("Players").LocalPlayer.PlayerScripts["CL_MAIN_GameScript"]).takeAir = function()
+				return 0
+			end
+		else
+			getsenv(game:GetService("Players").LocalPlayer.PlayerScripts["CL_MAIN_GameScript"]).takeAir = save
+		end
+        if Fluent.Unloaded then break end
+	end
+end)
+
 task.spawn(function()
-    while wait(1) and not Fluent.Unloaded do
+    while wait(1) do
         if TAS_AUTOPLAYER == true then
             if WindowToTAS() then 
                 getgenv().selected_file = map_tas[WindowToTAS()]
                 loadstring(game:HttpGet('https://raw.githubusercontent.com/1337-svg/6731/index_client/002'))()
             end
         end
+        if Fluent.Unloaded then break end
     end
 end)
