@@ -59,20 +59,19 @@ local Tabs = {
 
 local function TAS_INST()
 	for _,v in pairs(map_tas) do
-		local mappa = HttpService:UrlEncode(v)
+		local map = game:GetService("HttpService"):UrlEncode(v)
 		local installed = isfile(v..".json")
-		if installed == true then clmain.newAlert(v.." Updated!", Color3.fromRGB(50,100,255))
+		if installed == true then clmain.newAlert(v.." TAS file already exists!",Color3.fromRGB(50,100,255))
 		else
 			local s, r = pcall(function()
-                local tas = game:HttpGet("https://raw.githubusercontent.com/1337-svg/6731/index_client/files/"..mappa..".json")
+                local tas = game:HttpGet("https://raw.githubusercontent.com/1337-svg/6731/index_client/files/"..map..".json")
 				if not string.find(tas, "CFrame") then error(v..' file not exist') end
-				writefile(v..".json", tas, true) -- minfile(tas) removed
+				writefile(v..".json", tas,true) -- minfile(tas) removed
 			end)
 
 			if s then
 				clmain.newAlert("Downloaded TAS/"..v, Color3.fromRGB(0,255,0))
 			else
-                print(r)
 				clmain.newAlert("Failed TAS/"..v, Color3.fromRGB(255,0,0))
 			end
 		end
