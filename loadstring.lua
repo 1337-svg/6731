@@ -26,6 +26,7 @@ local map_tas = {
     ["Decaying Silo"] = "ds1",
     ["Ignis Peaks"] = "igp1";
     ["Active Volcanic Mines"] = "avm1",
+    ["Snow Stronghold"] = "ssh1",
 }
 
 local function WindowToTAS()
@@ -43,7 +44,7 @@ local Window = Fluent:CreateWindow({
     Title = "Flood Panel",
     SubTitle = tostring(game:GetService("Players").LocalPlayer).."/ani.watch",
     TabWidth = 100,
-    Size = UDim2.fromOffset(580, 340),
+    Size = UDim2.fromOffset(580, 320),
     Acrylic = true, -- The blur may be detectable, setting this to false disables blur entirely
     Theme = "Darker",
     MinimizeKey = Enum.KeyCode.LeftControl -- Used when theres no MinimizeKeybind
@@ -194,6 +195,17 @@ do
         Finished = false, -- Only calls callback when you press enter
         Callback = function(v)
             map_tas["Active Volcanic Mines"] = v
+        end
+    })
+
+    local Snowy_Stronghold = Tabs.Task:AddInput("TOOL_005", {
+        Title = "Snow Stronghold",
+        Default = "ssh1",
+        Placeholder = "FileName",
+        Numeric = false, -- Only allows numbers
+        Finished = false, -- Only calls callback when you press enter
+        Callback = function(v)
+            map_tas["Snow Stronghold"] = v
         end
     })
 end
