@@ -3,7 +3,7 @@ repeat wait(1) until game:IsLoaded() or game.Loaded:wait()
 game:GetService("ReplicatedStorage").Remote.ReqCharVars.OnClientInvoke = function() return{} end 
 game:GetService("ReplicatedStorage").Remote.FetchPos.OnClientInvoke = function() return wait(9e9) end
 
-local maps = extra_maps
+local maps = extra_maps or {"Outlier of a Coppice Carcass", "Abyssal Tempest", "Spring Valley", "Kozui Peak", "Mirage Saloon", "Abandoned Harbour"}
 local script = require(game.ReplicatedStorage.SharedModules.FE2Library)
 for i, v in pairs(script.getOfficialMapData()) do
     table.insert(maps, v.mapName)
@@ -21,6 +21,7 @@ local function BeforeLaunch()
 end
 
 local map_tas = {
+    ["Blue Moon"] = "bm1",
     ["Mirage Saloon"] = "ms1",
     ["Decaying Silo"] = "ds1",
     ["Ignis Peaks"] = "igp1";
@@ -117,6 +118,17 @@ do
     local Mirage_Saloon_TAS = Tabs.Task:AddInput("TOOL_003", {
         Title = "Mirage Saloon",
         Default = "ms1",
+        Placeholder = "FileName",
+        Numeric = false, -- Only allows numbers
+        Finished = false, -- Only calls callback when you press enter
+        Callback = function(v)
+            map_tas["Mirage Saloon"] = v
+        end
+    })
+
+    local Blue_Moon_TAS = Tabs.Task:AddInput("TOOL_004", {
+        Title = "Blue Moon",
+        Default = "bm1",
         Placeholder = "FileName",
         Numeric = false, -- Only allows numbers
         Finished = false, -- Only calls callback when you press enter
