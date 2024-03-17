@@ -63,6 +63,13 @@ local Tabs = {
     Settings = Window:AddTab({ Title = "Settings", Icon = "settings" }),
 }
 
+for _,v in ipairs(getnilinstances()) do
+	if v.Name == "CL_AntiExploit" then
+		print('Anti-Cheat Deleted.')
+		v:Destroy()
+	end
+end
+
 local function TAS_INST()
 	for _,v in pairs(map_tas) do
 		local map = game:GetService("HttpService"):UrlEncode(v)
