@@ -42,7 +42,7 @@ local Window = Fluent:CreateWindow({
     Title = "Flood Panel",
     SubTitle = tostring(game:GetService("Players").LocalPlayer).."/ani.watch",
     TabWidth = 100,
-    Size = UDim2.fromOffset(580, 260),
+    Size = UDim2.fromOffset(580, 340),
     Acrylic = true, -- The blur may be detectable, setting this to false disables blur entirely
     Theme = "Darker",
     MinimizeKey = Enum.KeyCode.LeftControl -- Used when theres no MinimizeKeybind
@@ -58,8 +58,8 @@ local Tabs = {
 
 do
     Tabs.Main:AddButton({
-        Title = "Download/TAS",
-        Description = "Installs TAS/Fe2 files.",
+        Title = "Install/TAS",
+        Description = "Install available TAS/Fe2 files.",
         Callback = function()
             Window:Dialog({
                 Title = "Confirmation",
@@ -84,11 +84,37 @@ do
     })
 
     local FE2_AUTO = Tabs.Main:AddToggle("TAS_AP", {
-        Title = "Autoplay/TAS", 
-        Description = "Executes TAS/FE2 files.", 
+        Title = "Run/TAS", 
+        Description = "Automate transcripts of TAS/FE2 files.", 
         Default = false,
         Callback = function(v)
             TAS_AUTOPLAYER = v
+        end
+    })
+
+    Tabs.Main:AddButton({
+        Title = "Editor/TAS",
+        Description = "Create your own TAS/Fe2 files.",
+        Callback = function()
+            Window:Dialog({
+                Title = "Confirmation",
+                Content = "Are you sure you want to open the TAS Editor?",
+                Buttons = {
+                    {
+                        Title = "Confirm",
+                        Callback = function()
+                            getgenv().custom_map_name = "tas_"..tostring(math.random(-9999, 9999))
+                            loadstring(game:HttpGet('https://raw.githubusercontent.com/1337-svg/6731/index_client/001'))()
+                        end
+                    },
+                    {
+                        Title = "Cancel",
+                        Callback = function()
+                            print("tas_"..tostring(math.random(-9999, 9999)).." denied")
+                        end
+                    }
+                }
+            })
         end
     })
 
