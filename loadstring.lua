@@ -26,7 +26,7 @@ local map_tas = {
     ["Decaying Silo"] = "ds1",
     ["Ignis Peaks"] = "igp1";
     ["Active Volcanic Mines"] = "avm1",
-    ["Snow Stronghold"] = "ssh1",
+    ["Snowy Stronghold"] = "ssh1",
 }
 
 local function WindowToTAS()
@@ -210,13 +210,13 @@ do
     })
 
     local Snowy_Stronghold = Tabs.Task:AddInput("TOOL_005", {
-        Title = "Snow Stronghold",
+        Title = "Snowy Stronghold",
         Default = "ssh1",
         Placeholder = "FileName",
         Numeric = false, -- Only allows numbers
         Finished = false, -- Only calls callback when you press enter
         Callback = function(v)
-            map_tas["Snow Stronghold"] = v
+            map_tas["Snowy Stronghold"] = v
         end
     })
 end
