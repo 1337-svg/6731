@@ -1704,7 +1704,7 @@ local function SetUpMap()
     function game.ReplicatedStorage.Remote.FetchPos.OnClientInvoke() return CFrame.new() end
     SetPrimaryPart()
     MapName = game.Workspace.Multiplayer.Map.Settings:GetAttribute("MapName")..".json"
-    local FileToEdit = readfile("TAS/"..file_to_edit.".json")
+    local FileToEdit = readfile("TAS/"..file_to_edit..".json")
     local function convertToSaveStates(info)
         local info = game:GetService("HttpService"):JSONDecode(info)
         local savestates = {}
