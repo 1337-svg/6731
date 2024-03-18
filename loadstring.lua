@@ -61,6 +61,9 @@ local TAS_AUTOPLAYER = false
 local godmode = false
 local dubjump = false
 
+local ws = 20
+local jp = 50
+
 local Tabs = {
     Main = Window:AddTab({ Title = "Essentials", Icon = "box" }),
     Task = Window:AddTab({ Title = "Tasks", Icon = "compass" }),
@@ -176,6 +179,28 @@ do
         Default = false,
         Callback = function(v)
             godmode = v
+        end
+    })
+
+    local FE2_WalkSpeed = Tabs.Util:AddInput("FE2_UT1", {
+        Title = "WalkSpeed",
+        Default = 20,
+        Placeholder = "20",
+        Numeric = true, -- Only allows numbers
+        Finished = true, -- Only calls callback when you press enter
+        Callback = function(v)
+            ws = v
+        end
+    })
+
+    local FE2_Jumppower = Tabs.Util:AddInput("FE2_UT2", {
+        Title = "JumpPower",
+        Default = 50,
+        Placeholder = "50",
+        Numeric = true, -- Only allows numbers
+        Finished = true, -- Only calls callback when you press enter
+        Callback = function(v)
+            jp = v
         end
     })
 
@@ -306,6 +331,13 @@ Fluent:Notify({
     Content = "discord.gg/oneclan",
     Duration = 5
 })
+
+task.spawn(function()
+    game:GetService("RunService").Heartbeat:Connect(function()
+        game:GetService("Players").LocalPlayer.Character:WaitForChild('Humanoid').WalkSpeed = ws
+        game:GetService("Players").LocalPlayer.Character:WaitForChild('Humanoid').JumpPower = jp
+    end)
+end)
 
 task.spawn(function()
     local SP = nil
