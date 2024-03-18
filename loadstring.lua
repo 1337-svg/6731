@@ -30,6 +30,7 @@ local map_tas = {
     ["Snowy Stronghold"] = "ssh1",
     ["Sandswept Ruins"] = "ssr1",
     ["Rustic Jungle"] = "rj1";
+    ["Abandoned Harbour"] = "abhb1";
 }
 
 local function WindowToTAS()
@@ -44,13 +45,13 @@ local function WindowToTAS()
 end
 
 local Window = Fluent:CreateWindow({
-    Title = "Flood Panel",
+    Title = "Hyperblox Panel",
     SubTitle = tostring(game:GetService("Players").LocalPlayer).."/ani.watch",
     TabWidth = 100,
     Size = UDim2.fromOffset(580, 320),
     Acrylic = true, -- The blur may be detectable, setting this to false disables blur entirely
     Theme = "Darker",
-    MinimizeKey = Enum.KeyCode.LeftControl -- Used when theres no MinimizeKeybind
+    MinimizeKey = Enum.KeyCode.Semicolon -- Used when theres no MinimizeKeybind
 })
 
 local save = getsenv(game:GetService("Players").LocalPlayer.PlayerScripts["CL_MAIN_GameScript"]).takeAir
