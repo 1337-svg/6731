@@ -1,8 +1,9 @@
 -- Credits to Altlexon, Aniwatch
 repeat wait(1) until game:IsLoaded() or game.Loaded:wait()
+local IsOnMobile = table.find({Enum.Platform.IOS, Enum.Platform.Android}, UserInputService:GetPlatform())
 pcall(function()
-game:GetService("ReplicatedStorage").Remote.ReqCharVars.OnClientInvoke = function() return{} end 
-game:GetService("ReplicatedStorage").Remote.FetchPos.OnClientInvoke = function() return wait(9e9) end
+    game:GetService("ReplicatedStorage").Remote.ReqCharVars.OnClientInvoke = function() return{} end 
+    game:GetService("ReplicatedStorage").Remote.FetchPos.OnClientInvoke = function() return wait(9e9) end
 end)
 
 local maps = extra_maps or {"Outlier of a Coppice Carcass", "Abyssal Tempest", "Spring Valley", "Kozui Peak", "Mirage Saloon", "Abandoned Harbour"}
@@ -169,19 +170,23 @@ do
 
     local ERS = Tabs.Main:AddButton({
         Title = "Panic/Rejoin",
-        Description = "Emergency",
+        Description = "Emergency (PRESS DELETE KEY)",
         Callback = function()
-            local ER3
+            if not IsOnMobile then
+                local ER3
 
-            ER3 = game:GetService("UserInputService").InputBegan:Connect(function(A, B)
-                if B then return end
-                if A.KeyCode == Enum.KeyCode.Delete then
-                    game:GetService('TeleportService'):TeleportToPlaceInstance(game.PlaceId, game.JobId, game:GetService("Players").LocalPlayer)
-                end
-            end)
+                ER3 = game:GetService("UserInputService").InputBegan:Connect(function(A, B)
+                    if B then return end
+                    if A.KeyCode == Enum.KeyCode.Delete then
+                        game:GetService('TeleportService'):TeleportToPlaceInstance(game.PlaceId, game.JobId, game:GetService("Players").LocalPlayer)
+                    end
+                end)
 
-            wait(5)
-            ER3:Disconnect()
+                wait(5)
+                ER3:Disconnect()
+            else
+                game:GetService('TeleportService'):TeleportToPlaceInstance(game.PlaceId, game.JobId, game:GetService("Players").LocalPlayer)
+            end
         end;
     })
 
