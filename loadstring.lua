@@ -29,6 +29,7 @@ local map_tas = {
     ["Active Volcanic Mines"] = "avm1",
     ["Snowy Stronghold"] = "ssh1",
     ["Sandswept Ruins"] = "ssr1",
+    ["Rustic Jungle"] = "rj1";
 }
 
 local function WindowToTAS()
@@ -250,6 +251,17 @@ do
         Finished = false, -- Only calls callback when you press enter
         Callback = function(v)
             map_tas["Sandswept Ruins"] = v
+        end
+    })
+
+    local Rustic_Jungle = Tabs.Task:AddInput("TOOL_009", {
+        Title = "Rustic Jungle",
+        Default = "rj1",
+        Placeholder = "FileName",
+        Numeric = false, -- Only allows numbers
+        Finished = false, -- Only calls callback when you press enter
+        Callback = function(v)
+            map_tas["Rustic Jungle"] = v
         end
     })
 end
