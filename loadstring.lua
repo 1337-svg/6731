@@ -167,8 +167,19 @@ do
         end
     })
     -- TAS SECTION
+    local Blue_Moon_TAS = Tabs.Task:AddInput("TOOL_004", {
+        Title = "Blue Moon [CRAZY]",
+        Default = "bm1",
+        Placeholder = "FileName",
+        Numeric = false, -- Only allows numbers
+        Finished = false, -- Only calls callback when you press enter
+        Callback = function(v)
+            map_tas["Blue Moon"] = v
+        end
+    })
+
     local Decaying_Silo_TAS = Tabs.Task:AddInput("TOOL_001", {
-        Title = "Decaying Silo",
+        Title = "Decaying Silo [CRAZY]",
         Default = "ds1",
         Placeholder = "FileName",
         Numeric = false, -- Only allows numbers
@@ -179,7 +190,7 @@ do
     })
 
     local Ignis_Peeks_TAS = Tabs.Task:AddInput("TOOL_002", {
-        Title = "Ignis Peaks",
+        Title = "Ignis Peaks [CRAZY]",
         Default = "igp1",
         Placeholder = "FileName",
         Numeric = false, -- Only allows numbers
@@ -190,7 +201,7 @@ do
     })
 
     local Mirage_Saloon_TAS = Tabs.Task:AddInput("TOOL_003", {
-        Title = "Mirage Saloon",
+        Title = "Mirage Saloon [CRAZY][HL]",
         Default = "ms1",
         Placeholder = "FileName",
         Numeric = false, -- Only allows numbers
@@ -200,19 +211,8 @@ do
         end
     })
 
-    local Blue_Moon_TAS = Tabs.Task:AddInput("TOOL_004", {
-        Title = "Blue Moon",
-        Default = "bm1",
-        Placeholder = "FileName",
-        Numeric = false, -- Only allows numbers
-        Finished = false, -- Only calls callback when you press enter
-        Callback = function(v)
-            map_tas["Blue Moon"] = v
-        end
-    })
-
     local Poisonous_Chasm_TAS = Tabs.Task:AddInput("TOOL_008", {
-        Title = "Poisonous Chasm",
+        Title = "Poisonous Chasm [CRAZY]",
         Default = "pc1",
         Placeholder = "FileName",
         Numeric = false, -- Only allows numbers
@@ -223,7 +223,7 @@ do
     })
 
     local Active_Vol_Mines_TAS = Tabs.Task:AddInput("TOOL_005", {
-        Title = "Active Volcanic Mines",
+        Title = "Active Volcanic Mines [CRAZY]",
         Default = "avm1",
         Placeholder = "FileName",
         Numeric = false, -- Only allows numbers
@@ -234,7 +234,7 @@ do
     })
 
     local Snowy_Stronghold = Tabs.Task:AddInput("TOOL_006", {
-        Title = "Snowy Stronghold",
+        Title = "Snowy Stronghold [CRAZY]",
         Default = "ssh1",
         Placeholder = "FileName",
         Numeric = false, -- Only allows numbers
@@ -245,7 +245,7 @@ do
     })
 
     local Sandswept_Ruins = Tabs.Task:AddInput("TOOL_007", {
-        Title = "Sandswept Ruins",
+        Title = "Sandswept Ruins [CRAZY]",
         Default = "ssr1",
         Placeholder = "FileName",
         Numeric = false, -- Only allows numbers
@@ -256,13 +256,24 @@ do
     })
 
     local Rustic_Jungle = Tabs.Task:AddInput("TOOL_009", {
-        Title = "Rustic Jungle",
+        Title = "Rustic Jungle [CRAZY+]",
         Default = "rj1",
         Placeholder = "FileName",
         Numeric = false, -- Only allows numbers
         Finished = false, -- Only calls callback when you press enter
         Callback = function(v)
             map_tas["Rustic Jungle"] = v
+        end
+    })
+
+    local Abandoned_Harbour = Tabs.Task:AddInput("TOOL_010", {
+        Title = "Abandoned Harbour [CRAZY+][HL]",
+        Default = "abhb1",
+        Placeholder = "FileName",
+        Numeric = false, -- Only allows numbers
+        Finished = false, -- Only calls callback when you press enter
+        Callback = function(v)
+            map_tas["Abandoned Harbour"] = v
         end
     })
 end
