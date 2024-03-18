@@ -57,6 +57,7 @@ local Window = Fluent:CreateWindow({
 local save = getsenv(game:GetService("Players").LocalPlayer.PlayerScripts["CL_MAIN_GameScript"]).takeAir
 local TAS_AUTOPLAYER = false
 local godmode = false
+local dubjump = false
 
 local Tabs = {
     Main = Window:AddTab({ Title = "Essentials", Icon = "box" }),
@@ -159,13 +160,33 @@ do
     })
 
     -- UTIL SECTION
+    local FE2_DUBJ = Tabs.Main:AddKeybind("TAS_FE2JUMP", {
+        Title = "KeyBind",
+        Mode = "Toggle",
+        Default = "LeftControl", 
+        Callback = function(v)
+            dubjump = v
+        end,
+    })
+
+    local FEE2_INFJ = Tabs.Util:AddToggle("TAS_INFJUMP1", {
+        Title = "Infinite Jump", 
+        Default = false,
+        Callback = function(v)
+            dubjump = v
+        end
+    })
+
     local FE2_INFAIR = Tabs.Util:AddToggle("TAS_INFAIR1", {
         Title = "Infinite Air", 
+        
         Default = false,
         Callback = function(v)
             godmode = v
         end
     })
+
+
     -- TAS SECTION
     local Blue_Moon_TAS = Tabs.Task:AddInput("TOOL_004", {
         Title = "Blue Moon [CRAZY]",
@@ -294,7 +315,26 @@ Fluent:Notify({
     Duration = 5
 })
 
-spawn(function()
+task.spawn(function()
+    local SP = nil
+    SP = game:GetService("UserInputService").InputBegan:Connect(function(A, B)
+        if B then return end
+        if dubjump == true then
+            if A.KeyCode == Enum.KeyCode.Space then
+                game:GetService("Players").LocalPlayer.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+            end
+        end
+    end)
+
+    while wait(3) do
+        if Fluent.Unloaded then
+            SP:Disconnect()
+            break
+        end
+    end
+end)
+
+task.spawn(function()
 	while wait(1/12) do
 		if godmode == true then
 			getsenv(game:GetService("Players").LocalPlayer.PlayerScripts["CL_MAIN_GameScript"]).takeAir = function()
