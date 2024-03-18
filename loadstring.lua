@@ -164,6 +164,24 @@ do
         end
     })
 
+    local ERS = Tabs.Main:AddButton({
+        Title = "Panic/Rejoin",
+        Description = "Emergency",
+        Callback = function()
+            local ER3
+
+            ER3 = game:GetService("UserInputService").InputBegan:Connect(function(A, B)
+                if B then return end
+                if A.KeyCode == Enum.KeyCode.Delete then
+                    game:GetService('TeleportService'):TeleportToPlaceInstance(game.PlaceId, game.JobId, game:GetService("Players").LocalPlayer)
+                end
+            end)
+            
+            wait(5)
+            ER3:Disconnect()
+        end;
+    })
+
     -- UTIL SECTION
     local FE2_DUBJ = Tabs.Util:AddKeybind("TAS_FE2JUMP", {
         Title = "Infinite Jump",
@@ -179,6 +197,16 @@ do
         Default = false,
         Callback = function(v)
             godmode = v
+        end
+    })
+
+    local FE2_TP2 = Tabs.Util:AddKeybind("TAS_FE2TP", {
+        Title = "Displacement",
+        Mode = "Toggle",
+        Default = "R", 
+        Callback = function(v)
+            local PlrCF = game:GetService("Players").LocalPlayer.Character:WaitForChild('HumanoidRootPart').CFrame
+            game:GetService("Players").LocalPlayer.Character:PivotTo(PlrCF * CFrame.new(0, 1.25, -4))
         end
     })
 
