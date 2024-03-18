@@ -49,11 +49,11 @@ end
 local Window = Fluent:CreateWindow({
     Title = "Hyperblox Panel",
     SubTitle = tostring(game:GetService("Players").LocalPlayer).."/ani.watch",
-    TabWidth = 100,
-    Size = UDim2.fromOffset(580, 320),
+    TabWidth = 130,
+    Size = UDim2.fromOffset(580, 300),
     Acrylic = true, -- The blur may be detectable, setting this to false disables blur entirely
     Theme = "Darker",
-    MinimizeKey = Enum.KeyCode.Semicolon -- Used when theres no MinimizeKeybind
+    MinimizeKey = Enum.KeyCode.P-- Used when theres no MinimizeKeybind
 })
 
 local save = getsenv(game:GetService("Players").LocalPlayer.PlayerScripts["CL_MAIN_GameScript"]).takeAir
@@ -163,9 +163,8 @@ do
 
     -- UTIL SECTION
     local FE2_DUBJ = Tabs.Util:AddKeybind("TAS_FE2JUMP", {
-        Title = "KeyBind",
+        Title = "Infinite Jump",
         Mode = "Toggle",
-        Description = "Allow you to jump without restrictions."
         Default = "Z", 
         Callback = function(v)
             dubjump = v
@@ -174,13 +173,11 @@ do
 
     local FE2_INFAIR = Tabs.Util:AddToggle("TAS_INFAIR1", {
         Title = "Infinite Air", 
-        Description = "Allows you to breath underwater indefinitely."
         Default = false,
         Callback = function(v)
             godmode = v
         end
     })
-
 
     -- TAS SECTION
     local Blue_Moon_TAS = Tabs.Task:AddInput("TOOL_004", {
