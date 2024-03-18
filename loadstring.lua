@@ -160,18 +160,11 @@ do
     })
 
     -- UTIL SECTION
-    local FE2_DUBJ = Tabs.Main:AddKeybind("TAS_FE2JUMP", {
+    local FE2_DUBJ = Tabs.Util:AddKeybind("TAS_FE2JUMP", {
         Title = "KeyBind",
         Mode = "Toggle",
-        Default = "LeftControl", 
-        Callback = function(v)
-            dubjump = v
-        end,
-    })
-
-    local FEE2_INFJ = Tabs.Util:AddToggle("TAS_INFJUMP1", {
-        Title = "Infinite Jump", 
-        Default = false,
+        Description = "Allow you to jump without restrictions."
+        Default = "Z", 
         Callback = function(v)
             dubjump = v
         end
@@ -179,7 +172,7 @@ do
 
     local FE2_INFAIR = Tabs.Util:AddToggle("TAS_INFAIR1", {
         Title = "Infinite Air", 
-        
+        Description = "Allows you to breath underwater indefinitely."
         Default = false,
         Callback = function(v)
             godmode = v
