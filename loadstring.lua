@@ -1,7 +1,9 @@
 -- Credits to Altlexon, Aniwatch
 repeat wait(1) until game:IsLoaded() or game.Loaded:wait()
+pcall(function()
 game:GetService("ReplicatedStorage").Remote.ReqCharVars.OnClientInvoke = function() return{} end 
 game:GetService("ReplicatedStorage").Remote.FetchPos.OnClientInvoke = function() return wait(9e9) end
+end)
 
 local maps = extra_maps or {"Outlier of a Coppice Carcass", "Abyssal Tempest", "Spring Valley", "Kozui Peak", "Mirage Saloon", "Abandoned Harbour"}
 local script = require(game.ReplicatedStorage.SharedModules.FE2Library)
