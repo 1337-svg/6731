@@ -64,6 +64,9 @@ local dubjump = false
 local ws = 20
 local jp = 50
 
+local disX = 4
+local disY = 1.25
+
 local Tabs = {
     Main = Window:AddTab({ Title = "Essentials", Icon = "box" }),
     Task = Window:AddTab({ Title = "Tasks", Icon = "compass" }),
@@ -176,7 +179,7 @@ do
                     game:GetService('TeleportService'):TeleportToPlaceInstance(game.PlaceId, game.JobId, game:GetService("Players").LocalPlayer)
                 end
             end)
-            
+
             wait(5)
             ER3:Disconnect()
         end;
@@ -200,16 +203,6 @@ do
         end
     })
 
-    local FE2_TP2 = Tabs.Util:AddKeybind("TAS_FE2TP", {
-        Title = "Displacement",
-        Mode = "Toggle",
-        Default = "R", 
-        Callback = function(v)
-            local PlrCF = game:GetService("Players").LocalPlayer.Character:WaitForChild('HumanoidRootPart').CFrame
-            game:GetService("Players").LocalPlayer.Character:PivotTo(PlrCF * CFrame.new(0, 1.25, -4))
-        end
-    })
-
     local FE2_WalkSpeed = Tabs.Util:AddInput("FE2_UT1", {
         Title = "WalkSpeed",
         Default = 20,
@@ -229,6 +222,38 @@ do
         Finished = true, -- Only calls callback when you press enter
         Callback = function(v)
             jp = v
+        end
+    })
+
+    local FE2_TP2 = Tabs.Util:AddKeybind("TAS_FE2TP", {
+        Title = "Displacement",
+        Mode = "Toggle",
+        Default = "R", 
+        Callback = function(v)
+            local PlrCF = game:GetService("Players").LocalPlayer.Character:WaitForChild('HumanoidRootPart').CFrame
+            game:GetService("Players").LocalPlayer.Character:PivotTo(PlrCF * CFrame.new(0, disY, disX))
+        end
+    })
+
+    local DIS_X = Tabs.Util:AddInput("FE2_UT33", {
+        Title = "Offset X",
+        Default = 4,
+        Placeholder = "4",
+        Numeric = true, -- Only allows numbers
+        Finished = true, -- Only calls callback when you press enter
+        Callback = function(v)
+            disX = v
+        end
+    })
+
+    local DIS_Y = Tabs.Util:AddInput("FE2_UT22", {
+        Title = "Offset Y",
+        Default = 1.25,
+        Placeholder = "1.25",
+        Numeric = true, -- Only allows numbers
+        Finished = true, -- Only calls callback when you press enter
+        Callback = function(v)
+            disY = v
         end
     })
 
