@@ -153,11 +153,7 @@ do
                         Callback = function()
 			                pcall(function()
                                 getgenv().custom_map_name = "tas_"..tostring(math.random(-9999, 9999))
-                              --  if game.PlaceId == 11951199229 then
-                                 --   loadstring(game:HttpGet('https://raw.githubusercontent.com/1337-svg/6731/index_client/001cm'))()
-                               -- else
                                     loadstring(game:HttpGet('https://raw.githubusercontent.com/1337-svg/6731/index_client/001'))()
-                              --  end
 			                end)
                         end
                     },
@@ -193,6 +189,46 @@ do
             end
         end;
     })
+
+    if game.PlaceId == 11951199229 then
+        local FE2_AUTO2 = Tabs.Main:AddToggle("TAS_AP", {
+            Title = "Runtime/TAS [CM]", 
+            Description = "Automate transcripts of Community TAS/FE2 files.", 
+            Default = false,
+            Callback = function(v)
+                TAS_AUTOPLAYER = v
+            end
+        })
+
+        Tabs.Main:AddButton({
+            Title = "Editor/TAS [CM]",
+            Description = "Create your own Community TAS/Fe2 files.",
+            Callback = function()
+                Window:Dialog({
+                    Title = "Confirmation",
+                    Content = "Are you sure you want to open the CM TAS Editor?",
+                    Buttons = {
+                        {
+                            Title = "Confirm",
+                            Callback = function()
+                                pcall(function()
+                                    getgenv().custom_map_name = "tas_"..tostring(math.random(-9999, 9999))
+                                    loadstring(game:HttpGet('https://raw.githubusercontent.com/1337-svg/6731/index_client/001'))()
+                                end)
+                            end
+                        },
+                        {
+                            Title = "Cancel",
+                            Callback = function()
+                                print("tas_"..tostring(math.random(-9999, 9999)).." denied")
+                            end
+                        }
+                    }
+                })
+            end
+        })
+
+    end
 
     -- UTIL SECTION
     local FE2_DUBJ = Tabs.Util:AddKeybind("TAS_FE2JUMP", {
@@ -438,11 +474,7 @@ task.spawn(function()
         if TAS_AUTOPLAYER == true then
             if WindowToTAS() then 
                 getgenv().selected_file = map_tas[WindowToTAS()]
-                -- if game.PlaceId == 11951199229 then
-                   -- loadstring(game:HttpGet('https://raw.githubusercontent.com/1337-svg/6731/index_client/002cm'))()
-                -- else
-                    loadstring(game:HttpGet('https://raw.githubusercontent.com/1337-svg/6731/index_client/002'))()
-              --  end
+                loadstring(game:HttpGet('https://raw.githubusercontent.com/1337-svg/6731/index_client/002'))()
             end
         end
         if Fluent.Unloaded then break end
