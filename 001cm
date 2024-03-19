@@ -2145,20 +2145,6 @@ local function ResetToNormal()
     Workspace.Multiplayer.Map:Destroy()
     print("Reset to normal"..RunID)
 end
-RecordLoop = RunService.Heartbeat:Connect(function(deltaTime)
-    if not Pause then
-        SetTimeGui()
-        table.insert(PlayerInfo, ReturnPlayerInfo())
-        if tick() - timer >= 2 then
-        	AddSavestate()
-        	timer = tick()
-        end
-    else
-        timer = tick()
-    end
-    UpdSavestatesGUI()
-    UpdFramesGUI()
-end)
 
 SaveRun()
 KeybindsConnect = UserInputService.InputBegan:Connect(function(Key, Typing)
