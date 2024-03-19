@@ -23,7 +23,7 @@ local function BeforeLaunch()
     return nil
 end
 
-local map_tas = {
+--[[local map_tas = {
     ["Blue Moon"] = "bm1",
     ["Poisonous Chasm"] = "pc1",
     ["Mirage Saloon"] = "ms1",
@@ -34,7 +34,7 @@ local map_tas = {
     ["Sandswept Ruins"] = "ssr1",
     ["Rustic Jungle"] = "rj1";
     ["Abandoned Harbour"] = "abhb1";
-}
+}]]
 
 local function WindowToTAS()
     for _,v in pairs(maps) do
@@ -191,14 +191,13 @@ do
     })
 
     if game.PlaceId == 11951199229 then
-        local FE2_AUTO2 = Tabs.Main:AddToggle("TAS_AP", {
-            Title = "Runtime/TAS [CM]", 
-            Description = "Automate transcripts of Community TAS/FE2 files.", 
-            Default = false,
-            Callback = function(v)
-                TAS_AUTOPLAYER = v
-            end
-        })
+	local ER77 = Tabs.Main:AddButton({
+		Title = "Runtime/TAS [CM]",
+	        Callback = function()
+                	getgenv().selected_file_2 = map_tas[WindowToTAS()]
+                	loadstring(game:HttpGet('https://raw.githubusercontent.com/1337-svg/6731/index_client/002cm'))()
+		end;
+	})
 
         Tabs.Main:AddButton({
             Title = "Editor/TAS [CM]",
@@ -212,8 +211,8 @@ do
                             Title = "Confirm",
                             Callback = function()
                                 pcall(function()
-                                    getgenv().custom_map_name = "tas_"..tostring(math.random(-9999, 9999))
-                                    loadstring(game:HttpGet('https://raw.githubusercontent.com/1337-svg/6731/index_client/001'))()
+                                    getgenv().custom_map_name_2 = "tas_"..tostring(math.random(-9999, 9999))
+                                    loadstring(game:HttpGet('https://raw.githubusercontent.com/1337-svg/6731/index_client/001cm'))()
                                 end)
                             end
                         },
