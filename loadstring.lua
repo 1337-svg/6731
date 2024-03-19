@@ -154,7 +154,7 @@ do
 			                pcall(function()
                                 getgenv().custom_map_name = "tas_"..tostring(math.random(-9999, 9999))
                               --  if game.PlaceId == 11951199229 then
-                                    loadstring(game:HttpGet('https://raw.githubusercontent.com/1337-svg/6731/index_client/001cm'))()
+                                 --   loadstring(game:HttpGet('https://raw.githubusercontent.com/1337-svg/6731/index_client/001cm'))()
                                -- else
                                     loadstring(game:HttpGet('https://raw.githubusercontent.com/1337-svg/6731/index_client/001'))()
                               --  end
