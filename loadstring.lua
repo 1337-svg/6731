@@ -153,11 +153,11 @@ do
                         Callback = function()
 			                pcall(function()
                                 getgenv().custom_map_name = "tas_"..tostring(math.random(-9999, 9999))
-                                if game.PlaceId == 11951199229 then
+                              --  if game.PlaceId == 11951199229 then
                                     loadstring(game:HttpGet('https://raw.githubusercontent.com/1337-svg/6731/index_client/001cm'))()
-                                else
+                               -- else
                                     loadstring(game:HttpGet('https://raw.githubusercontent.com/1337-svg/6731/index_client/001'))()
-                                end
+                              --  end
 			                end)
                         end
                     },
@@ -438,11 +438,11 @@ task.spawn(function()
         if TAS_AUTOPLAYER == true then
             if WindowToTAS() then 
                 getgenv().selected_file = map_tas[WindowToTAS()]
-                if game.PlaceId == 11951199229 then
-                    loadstring(game:HttpGet('https://raw.githubusercontent.com/1337-svg/6731/index_client/002cm'))()
-                else
+                -- if game.PlaceId == 11951199229 then
+                   -- loadstring(game:HttpGet('https://raw.githubusercontent.com/1337-svg/6731/index_client/002cm'))()
+                -- else
                     loadstring(game:HttpGet('https://raw.githubusercontent.com/1337-svg/6731/index_client/002'))()
-                end
+              --  end
             end
         end
         if Fluent.Unloaded then break end
