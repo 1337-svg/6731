@@ -7,7 +7,7 @@ pcall(function()
 end)
 
 local maps = extra_maps or {"Outlier of a Coppice Carcass", "Abyssal Tempest", "Spring Valley", "Kozui Peak", "Mirage Saloon", "Abandoned Harbour"}
-local script = require(game.ReplicatedStorage:WaitForChild("SharedModules").FE2Library)
+local script = require(game.ReplicatedStorage.SharedModules.FE2Library)
 for i, v in pairs(script.getOfficialMapData()) do
     table.insert(maps, v.mapName)
 end
