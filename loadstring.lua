@@ -1,5 +1,5 @@
 -- Credits to Altlexon, Aniwatch
-getgenv().map_tas = {
+--[[getgenv().map_tas = {
     ["Blue Moon"] = "bm1",
     ["Poisonous Chasm"] = "pc1",
     ["Mirage Saloon"] = "ms1",
@@ -11,7 +11,7 @@ getgenv().map_tas = {
     ["Rustic Jungle"] = "rj1";
     ["Abandoned Harbour"] = "abhb1";
     ["##########"] = "testcm1";
-}
+}]]
 
 repeat wait(.5) until game:IsLoaded() or game.Loaded:wait()
 local IsOnMobile = table.find({Enum.Platform.IOS, Enum.Platform.Android}, game:GetService("UserInputService"):GetPlatform())
@@ -38,19 +38,6 @@ local function BeforeLaunch()
     end
     return nil
 end
-
---[[local map_tas = {
-    ["Blue Moon"] = "bm1",
-    ["Poisonous Chasm"] = "pc1",
-    ["Mirage Saloon"] = "ms1",
-    ["Decaying Silo"] = "ds1",
-    ["Ignis Peaks"] = "igp1";
-    ["Active Volcanic Mines"] = "avm1",
-    ["Snowy Stronghold"] = "ssh1",
-    ["Sandswept Ruins"] = "ssr1",
-    ["Rustic Jungle"] = "rj1";
-    ["Abandoned Harbour"] = "abhb1";
-}]]
 
 local function WindowToTAS()
     for _,v in pairs(maps) do
