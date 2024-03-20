@@ -11,8 +11,6 @@ local Keybinds = {
     ViewTAS = "Zero"
 }
 
-
--- Fixed format to match Tas player Moz
 local Offset, SpawnPos, Ything, Xoff, Yoff,  Zoff
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local UserInputService = game:GetService("UserInputService")
