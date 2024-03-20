@@ -50,7 +50,7 @@ if not TAS then
     LP.Character.Humanoid.Health = 0
     LP.CharacterAdded:Wait()
 else
-CLMAIN.newAlert("TAS Loaded!")
+CLMAIN.newAlert("Tool Assisted Speedrun: Queue")
 repeat task.wait() until Map.Name == "Map"
 local Spawn = Map:WaitForChild('Spawn')
 
@@ -74,7 +74,7 @@ end
 
 game:GetService("ReplicatedStorage").Remote.StartClientMapTimer.OnClientEvent:Wait(0.1)
 local TimeStart = tick()
-CLMAIN.newAlert('TAS Running..', Color3.fromRGB(255, 149, 5))
+CLMAIN.newAlert('Tool Assisted Speedrun: Executed', Color3.fromRGB(255, 149, 62))
 PlayAnim = Animate.playAnimation
 Animate.playAnimation = function() end
 
@@ -181,8 +181,7 @@ Loop = RS.Heartbeat:Connect(function(DeltaTime)
             walljumpfix:Disconnect()
             walljumpfix2:Disconnect()
             Animate.playAnimation = PlayAnim
-            CLMAIN.newAlert('TAS Run Finished!', Color3.new(0, 1, 0))
-            CLMAIN.newAlert('TAS Player By Tomato & Moz', Color3.new(0, 1, 0))
+            CLMAIN.newAlert('Tool Assisted Speedrun: Completed', Color3.new(0, 1, 0))
         elseif (tick() - TimeStart) >= CurrentInfo.time then
             OldFrame = i
             local CCFrame = CurrentInfo.CCFrame
