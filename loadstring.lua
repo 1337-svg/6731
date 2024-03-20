@@ -1,5 +1,5 @@
 -- Credits to Altlexon, Aniwatch
---[[getgenv().map_tas = {
+getgenv().map_tas = {
     ["Blue Moon"] = "bm1",
     ["Poisonous Chasm"] = "pc1",
     ["Mirage Saloon"] = "ms1",
@@ -11,7 +11,7 @@
     ["Rustic Jungle"] = "rj1";
     ["Abandoned Harbour"] = "abhb1";
     -- ["##########"] = "testcm1";
-}]]
+}
 
 repeat wait(1) until game:IsLoaded() or game.Loaded:wait()
 local IsOnMobile = table.find({Enum.Platform.IOS, Enum.Platform.Android}, game:GetService("UserInputService"):GetPlatform())
@@ -500,27 +500,29 @@ task.spawn(function()
 	end
 end)
 
-task.spawn(function()
-    while wait(.33) do
-        if TAS_AUTOPLAYER2 == true then
-            if WindowToCM() then
-                if WindowToCM() == "Abandoned Harbour" then
-                    if workspace.Multiplayer:WaitForChild('NewMap')._Variants:FindFirstChild('_Vairant') then
-                        getgenv().selected_file_2 = "abhb1_r2"
-                        loadstring(game:HttpGet('https://raw.githubusercontent.com/1337-svg/6731/index_client/002cm'))()
-                    elseif workspace.Multiplayer:WaitForChild('NewMap')._Variants:FindFirstChild('_Variant') then
-                        getgenv().selected_file_2 = "abhb1_r2"
+if game.PlaceId == 11951199229 or game.PlaceId == 12074120006 then
+    task.spawn(function()
+        while wait(.33) do
+            if TAS_AUTOPLAYER2 == true then
+                if WindowToCM() then
+                    if WindowToCM() == "Abandoned Harbour" then
+                        if workspace.Multiplayer:WaitForChild('NewMap')._Variants:FindFirstChild('_Vairant') then
+                            getgenv().selected_file_2 = "abhb1_r2"
+                            loadstring(game:HttpGet('https://raw.githubusercontent.com/1337-svg/6731/index_client/002cm'))()
+                        elseif workspace.Multiplayer:WaitForChild('NewMap')._Variants:FindFirstChild('_Variant') then
+                            getgenv().selected_file_2 = "abhb1_r2"
+                            loadstring(game:HttpGet('https://raw.githubusercontent.com/1337-svg/6731/index_client/002cm'))()
+                        end
+                    else
+                        getgenv().selected_file_2 = map_tas[WindowToCM()]
                         loadstring(game:HttpGet('https://raw.githubusercontent.com/1337-svg/6731/index_client/002cm'))()
                     end
-                else
-                    getgenv().selected_file_2 = map_tas[WindowToCM()]
-                    loadstring(game:HttpGet('https://raw.githubusercontent.com/1337-svg/6731/index_client/002cm'))()
                 end
             end
+            if Fluent.Unloaded then break end
         end
-        if Fluent.Unloaded then break end
-    end
-end)
+    end)
+end
 
 task.spawn(function()
     while wait(.33) do
