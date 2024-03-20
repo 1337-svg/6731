@@ -216,7 +216,7 @@ Death = LP.Character.Humanoid.Changed:Connect(function(Change)
     if Change == "Health" and LP.Character.Humanoid.Health == 0 then
         Death:Disconnect()
         Loop:Disconnect()
-        CLMAIN.newAlert('Player Died.', Color3.new(1, 0, 0))
+        CLMAIN.newAlert('Tool Assisted Speedrun: Failed', Color3.new(1, 0, 0))
     end
 end)
 
