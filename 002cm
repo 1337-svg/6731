@@ -154,7 +154,7 @@ Death = LP.Character.Humanoid.Changed:Connect(function(Change)
     if Change == "Health" and LP.Character.Humanoid.Health == 0 then
         Death:Disconnect()
         Loop:Disconnect()
-        CLMAIN.newAlert('Player Died.', Color3.new(1, 0, 0))
+        CLMAIN.newAlert('Tool Assisted Speedrun: Failed', Color3.new(1, 0, 0))
     end
 end)
 
@@ -181,6 +181,7 @@ Loop = RS.Heartbeat:Connect(function(DeltaTime)
             walljumpfix2:Disconnect()
             Animate.playAnimation = PlayAnim
             CLMAIN.newAlert('Tool Assisted Speedrun: Completed', Color3.new(0, 1, 0))
+            CLMAIN.newAlert('discord.gg/oneclan', Color3.new(0, 1, 0))
         elseif (tick() - TimeStart) >= CurrentInfo.time then
             OldFrame = i
             local CCFrame = CurrentInfo.CCFrame
