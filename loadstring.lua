@@ -60,7 +60,7 @@ local function WindowToCM()
     end
 
     for _,v in pairs(maps) do
-        if tostring(v) == Map:WaitForChild('Settings'):GetAttribute("MapName") then
+        if tostring(v) == workspace.Multiplayer:WaitForChild('NewMap').Settings:GetAttribute("MapName") then
             if map_tas[tostring(v)] then
                 return v
             end
