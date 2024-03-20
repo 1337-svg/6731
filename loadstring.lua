@@ -498,41 +498,43 @@ task.spawn(function()
 end)
 
 task.spawn(function()
-    while wait(1) do
+    while wait(.33) do
         if TAS_AUTOPLAYER2 == true then
-		if WindowToCM() == "Abandoned Harbour" then
-			if workspace.Multiplayer:WaitForChild('NewMap')._Variants:FindFirstChild('_Vairant') then
-	                getgenv().selected_file_2 = map_tas["abhb_r2"]
-	               	loadstring(game:HttpGet('https://raw.githubusercontent.com/1337-svg/6731/index_client/002'))()
-			elseif workspace.Multiplayer:WaitForChild('NewMap')._Variants:FindFirstChild('_Variant') then
-	                getgenv().selected_file_2 = map_tas["abhb_r1"]
-	               	loadstring(game:HttpGet('https://raw.githubusercontent.com/1337-svg/6731/index_client/002'))()
-			end
-		else
-	        getgenv().selected_file_2 = map_tas[WindowToCM()]
-	        loadstring(game:HttpGet('https://raw.githubusercontent.com/1337-svg/6731/index_client/002'))()
-		end
+            if WindowToCM() then
+                if WindowToCM() == "Abandoned Harbour" then
+                    if workspace.Multiplayer:WaitForChild('NewMap')._Variants:FindFirstChild('_Vairant') then
+                        getgenv().selected_file_2 = "abhb1_r2"
+                        loadstring(game:HttpGet('https://raw.githubusercontent.com/1337-svg/6731/index_client/002cm'))()
+                    elseif workspace.Multiplayer:WaitForChild('NewMap')._Variants:FindFirstChild('_Variant') then
+                        getgenv().selected_file_2 = "abhb1_r2"
+                        loadstring(game:HttpGet('https://raw.githubusercontent.com/1337-svg/6731/index_client/002cm'))()
+                    end
+                else
+                    getgenv().selected_file_2 = map_tas[WindowToCM()]
+                    loadstring(game:HttpGet('https://raw.githubusercontent.com/1337-svg/6731/index_client/002cm'))()
+                end
+            end
         end
         if Fluent.Unloaded then break end
     end
 end)
 
 task.spawn(function()
-    while wait(1) do
+    while wait(.33) do
         if TAS_AUTOPLAYER == true then
             if WindowToTAS() then
-		if WindowToTAS() == "Abandoned Harbour" then
-			if workspace.Multiplayer:WaitForChild('NewMap')._Variants:FindFirstChild('_Vairant') then
-	                getgenv().selected_file = map_tas["abhb_r2"]
-	               	loadstring(game:HttpGet('https://raw.githubusercontent.com/1337-svg/6731/index_client/002'))()
-			elseif workspace.Multiplayer:WaitForChild('NewMap')._Variants:FindFirstChild('_Variant') then
-	                getgenv().selected_file = map_tas["abhb_r1"]
-	               	loadstring(game:HttpGet('https://raw.githubusercontent.com/1337-svg/6731/index_client/002'))()
-			end
-		else
-	        getgenv().selected_file = map_tas[WindowToTAS()]
-	        loadstring(game:HttpGet('https://raw.githubusercontent.com/1337-svg/6731/index_client/002'))()
-		end
+                if WindowToTAS() == "Abandoned Harbour" then
+                    if workspace.Multiplayer:WaitForChild('NewMap')._Variants:FindFirstChild('_Vairant') then
+                        getgenv().selected_file = "abhb1_r2"
+                        loadstring(game:HttpGet('https://raw.githubusercontent.com/1337-svg/6731/index_client/002'))()
+                    elseif workspace.Multiplayer:WaitForChild('NewMap')._Variants:FindFirstChild('_Variant') then
+                        getgenv().selected_file = "abhb1_r2"
+                        loadstring(game:HttpGet('https://raw.githubusercontent.com/1337-svg/6731/index_client/002'))()
+                    end
+                else
+                    getgenv().selected_file = map_tas[WindowToTAS()]
+                    loadstring(game:HttpGet('https://raw.githubusercontent.com/1337-svg/6731/index_client/002'))()
+                end
             end
         end
         if Fluent.Unloaded then break end
