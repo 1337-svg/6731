@@ -28,12 +28,6 @@ for i, v in pairs(script.getOfficialMapData()) do
     table.insert(maps, v.mapName)
 end
 
-for i, v in pairs(script2) do
-    if v.ClassName == "Frame" and v.Name == "Map_Container" then
-        table.insert(maps, v:WaitForChild('Map_Frame')['Info_BG'].MapName.Text)
-    end
-end
-
 local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
 local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/1337-svg/6731/index_client/settings/sm.lua"))()
 local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/1337-svg/6731/index_client/settings/im.lua"))()
@@ -70,16 +64,18 @@ local function WindowToTAS()
 end
 
 local function WindowToCM()
-    for _,v in pairs(maps) do
-        local this = game:GetService("Players").LocalPlayer.PlayerGui.GameGui.HUD.Main.GameStats:WaitForChild('Ingame')
-        local andthis = game:GetService("Players").LocalPlayer.PlayerGui.GameGui.HUD.Main.GameStats.Ingame.Info.Time.Current:WaitForChild('Count')
-        local maybethistoo = game:GetService("Players").LocalPlayer.PlayerGui.GameGui:WaitForChild('Waiting')
+    for i, v in pairs(script2) do
+        if v.ClassName == "Frame" and v.Name == "Map_Container" then
+            if not maps[tostring(v:WaitForChild('Map_Frame')['Info_BG'].MapName.Text)] then
+                table.insert(maps, v:WaitForChild('Map_Frame')['Info_BG'].MapName.Text)
+            end
+        end
+    end
 
+    for _,v in pairs(maps) do
         if tostring(v) == tostring(workspace:WaitForChild("Lobby").GameInfo.SurfaceGui.Frame.MapName.Text) then
-            if andthis.TextColor3 == Color3.fromRGB(0, 255, 0) or maybethistoo.Visible == true then
-                if map_tas[tostring(v)] then
-                    return v
-                end
+            if map_tas[tostring(v)] then
+                return v
             end
         end
     end
