@@ -12,8 +12,10 @@
     ["Abandoned Harbour"] = "abhb1";
     ["##########"] = "testcm1";
 }]]
+local waitfunc = .75
+if game.PlaceId == 11951199229 or game.PlaceId == 12074120006 then waitfunc = .1 end
 
-repeat wait(.1) until game:IsLoaded() or game.Loaded:wait()
+repeat wait(waitfunc) until game:IsLoaded() or game.Loaded:wait()
 local IsOnMobile = table.find({Enum.Platform.IOS, Enum.Platform.Android}, game:GetService("UserInputService"):GetPlatform())
 pcall(function()
     game:GetService("ReplicatedStorage").Remote.ReqCharVars.OnClientInvoke = function() return{} end 
