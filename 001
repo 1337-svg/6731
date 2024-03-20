@@ -11,8 +11,6 @@ local Keybinds = {
     ViewTAS = "Zero"
 }
 
-
--- Fixed format to match Tas player Moz
 local Offset, SpawnPos, Ything, Xoff, Yoff,  Zoff
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local UserInputService = game:GetService("UserInputService")
@@ -1809,16 +1807,18 @@ local function UpdSavestatesGUI()
     SavestatesCount.Text = "Savestates "..tostring(#Savestates)
 end
 local function SetTimeGui()
-    local TimePlayed = tick() - TimeStart - TimePaused
-    local m = math.floor(TimePlayed / 60)
-    local s = math.floor(TimePlayed % 60)
-    local ms = math.floor((TimePlayed * 1000) % 1000)
-    m = tostring(m)
-    s = tostring(s)
-    ms = tostring(ms)
-    for i=1, 2 do if #ms < 3 then ms = '0' .. ms end end
-    for i=1, 1 do if #s < 2 then s = '0' .. s end end
-    TimeText.Text = m .. ":" .. s .. ":" .. ms
+    pcall(function()
+        local TimePlayed = tick() - TimeStart - TimePaused
+        local m = math.floor(TimePlayed / 60)
+        local s = math.floor(TimePlayed % 60)
+        local ms = math.floor((TimePlayed * 1000) % 1000)
+        m = tostring(m)
+        s = tostring(s)
+        ms = tostring(ms)
+        for i=1, 2 do if #ms < 3 then ms = '0' .. ms end end
+        for i=1, 1 do if #s < 2 then s = '0' .. s end end
+        TimeText.Text = m .. ":" .. s .. ":" .. ms
+    end)
 end
 local function UserPause()
     Pause = not Pause
@@ -1839,6 +1839,7 @@ local function UserPause()
     end
 end
 local function BackSavestate()
+    pcall(function()
     local InfoState = Savestates[#Savestates][#Savestates[#Savestates]]
     if InfoState then
         PlayerInfo = {}
@@ -1857,6 +1858,7 @@ local function BackSavestate()
         end
         SetTimeGui()
     end
+    end)
 end
 local function UpdFramesGUI()
     FrameCount.Text = "Frames "..tostring(#PlayerInfo)
