@@ -13,7 +13,7 @@
     ["##########"] = "testcm1";
 }]]
 
-repeat wait(.5) until game:IsLoaded() or game.Loaded:wait()
+repeat wait(.66) until game:IsLoaded() or game.Loaded:wait()
 local IsOnMobile = table.find({Enum.Platform.IOS, Enum.Platform.Android}, game:GetService("UserInputService"):GetPlatform())
 pcall(function()
     game:GetService("ReplicatedStorage").Remote.ReqCharVars.OnClientInvoke = function() return{} end 
@@ -60,7 +60,7 @@ local function WindowToCM()
     end
 
     for _,v in pairs(maps) do
-        if tostring(v) == tostring(workspace:WaitForChild("Lobby").GameInfo.SurfaceGui.Frame.MapName.Text) then
+        if tostring(v) == Map:WaitForChild('Settings'):GetAttribute("MapName") then
             if map_tas[tostring(v)] then
                 return v
             end
@@ -235,7 +235,7 @@ do
                             Title = "Confirm",
                             Callback = function()
                                 pcall(function()
-                                    getgenv().custom_map_name_2 = "tas_"..tostring(math.random(-9999, 9999))
+                                    getgenv().custom_map_name_2 = "tascm_"..tostring(math.random(-9999, 9999))
                                     loadstring(game:HttpGet('https://raw.githubusercontent.com/1337-svg/6731/index_client/001cm'))()
                                 end)
                             end
@@ -243,7 +243,7 @@ do
                         {
                             Title = "Cancel",
                             Callback = function()
-                                print("tas_"..tostring(math.random(-9999, 9999)).." denied")
+                                print("tascm_"..tostring(math.random(-9999, 9999)).." denied")
                             end
                         }
                     }
@@ -494,6 +494,18 @@ end)
 
 task.spawn(function()
     while wait(1) do
+        if TAS_AUTOPLAYER2 == true then
+            if WindowToCM() then 
+                getgenv().selected_file_2 = map_tas[WindowToCM()]
+                loadstring(game:HttpGet('https://raw.githubusercontent.com/1337-svg/6731/index_client/002cm'))()
+            end
+        end
+        if Fluent.Unloaded then break end
+    end
+end)
+
+task.spawn(function()
+    while wait(1) do
         if TAS_AUTOPLAYER == true then
             if WindowToTAS() then 
                 getgenv().selected_file = map_tas[WindowToTAS()]
@@ -504,14 +516,3 @@ task.spawn(function()
     end
 end)
 
-task.spawn(function()
-    while wait(1) do
-        if TAS_AUTOPLAYER2 == true then
-            if WindowToCM() then 
-                getgenv().selected_file_2 = map_tas[WindowToCM()]
-                loadstring(game:HttpGet('https://raw.githubusercontent.com/1337-svg/6731/index_client/002cm'))()
-            end
-        end
-        if Fluent.Unloaded then break end
-    end
-end)
