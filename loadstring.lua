@@ -1,17 +1,19 @@
 -- Credits to Altlexon, Aniwatch
-getgenv().map_tas = {
-    ["Blue Moon"] = "bm1",
-    ["Poisonous Chasm"] = "pc1",
-    ["Mirage Saloon"] = "ms1",
-    ["Decaying Silo"] = "ds1",
-    ["Ignis Peaks"] = "igp1";
-    ["Active Volcanic Mines"] = "avm1",
-    ["Snowy Stronghold"] = "ssh1",
-    ["Sandswept Ruins"] = "ssr1",
-    ["Rustic Jungle"] = "rj1";
-    ["Abandoned Harbour"] = "abhb1";
-    -- ["##########"] = "testcm1";
-}
+if not map_tas then
+    getgenv().map_tas = {
+        ["Blue Moon"] = "bm1",
+        ["Poisonous Chasm"] = "pc1",
+        ["Mirage Saloon"] = "ms1",
+        ["Decaying Silo"] = "ds1",
+        ["Ignis Peaks"] = "igp1";
+        ["Active Volcanic Mines"] = "avm1",
+        ["Snowy Stronghold"] = "ssh1",
+        ["Sandswept Ruins"] = "ssr1",
+        ["Rustic Jungle"] = "rj1";
+        ["Abandoned Harbour"] = "abhb1";
+        -- ["##########"] = "testcm1";
+    }
+end
 
 repeat wait(1) until game:IsLoaded() or game.Loaded:wait()
 local IsOnMobile = table.find({Enum.Platform.IOS, Enum.Platform.Android}, game:GetService("UserInputService"):GetPlatform())
@@ -43,9 +45,22 @@ local function BeforeLaunch()
 end
 
 local function WindowToTAS()
-    for _,v in pairs(maps) do
+    --[[for _,v in pairs(maps) do
         if tostring(v) == tostring(workspace:WaitForChild("Lobby").GameInfo.SurfaceGui.Frame.MapName.Text) and BeforeLaunch() then
             if map_tas[tostring(v)] then
+                return v
+            end
+        end
+    end]]
+
+    for _,v in pairs(maps) do
+        local NewMap = workspace:WaitForChild('Multiplayer'):FindFirstChild('NewMap')
+        if not NewMap then return nil end
+        -- print"Map loading."
+        if tostring(v) == tostring(NewMap:WaitForChild('Settings'):GetAttribute("MapName")) then
+            -- print"Map retrieved."
+            if map_tas[tostring(v)] then
+               -- print("Map fired.", v)
                 return v
             end
         end
@@ -527,20 +542,23 @@ end
 task.spawn(function()
     while wait(.33) do
         if TAS_AUTOPLAYER == true then
-            if WindowToTAS() then
-                if WindowToTAS() == "Abandoned Harbour" then
-                    if workspace.Multiplayer:WaitForChild('NewMap')._Variants:FindFirstChild('_Vairant') then
-                        getgenv().selected_file = "abhb1_r2"
-                        loadstring(game:HttpGet('https://raw.githubusercontent.com/1337-svg/6731/index_client/002'))()
-                    elseif workspace.Multiplayer:WaitForChild('NewMap')._Variants:FindFirstChild('_Variant') then
-                        getgenv().selected_file = "abhb1_r2"
+            local s,r = pcall(function()
+                if WindowToTAS() then
+                    if WindowToTAS() == "Abandoned Harbour" then
+                        if workspace.Multiplayer:WaitForChild('NewMap')._Variants:FindFirstChild('_Vairant') then
+                            getgenv().selected_file = "abhb1_r2"
+                            loadstring(game:HttpGet('https://raw.githubusercontent.com/1337-svg/6731/index_client/002'))()
+                        elseif workspace.Multiplayer:WaitForChild('NewMap')._Variants:FindFirstChild('_Variant') then
+                            getgenv().selected_file = "abhb1_r2"
+                            loadstring(game:HttpGet('https://raw.githubusercontent.com/1337-svg/6731/index_client/002'))()
+                        end
+                    else
+                        getgenv().selected_file = map_tas[WindowToTAS()]
                         loadstring(game:HttpGet('https://raw.githubusercontent.com/1337-svg/6731/index_client/002'))()
                     end
-                else
-                    getgenv().selected_file = map_tas[WindowToTAS()]
-                    loadstring(game:HttpGet('https://raw.githubusercontent.com/1337-svg/6731/index_client/002'))()
                 end
-            end
+            end)
+            if r then warn(r) end
         end
         if Fluent.Unloaded then break end
     end
