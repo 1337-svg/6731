@@ -1,5 +1,5 @@
 -- Credits to Altlexon, Aniwatch
---[[getgenv().map_tas = {
+getgenv().map_tas = {
     ["Blue Moon"] = "bm1",
     ["Poisonous Chasm"] = "pc1",
     ["Mirage Saloon"] = "ms1",
@@ -11,11 +11,9 @@
     ["Rustic Jungle"] = "rj1";
     ["Abandoned Harbour"] = "abhb1";
     ["##########"] = "testcm1";
-}]]
-local waitfunc = .75
-if game.PlaceId == 11951199229 or game.PlaceId == 12074120006 then waitfunc = .066 end
+}
 
-repeat wait(waitfunc) until game:IsLoaded() or game.Loaded:wait()
+repeat wait(1.25) until game:IsLoaded() or game.Loaded:wait()
 local IsOnMobile = table.find({Enum.Platform.IOS, Enum.Platform.Android}, game:GetService("UserInputService"):GetPlatform())
 pcall(function()
     game:GetService("ReplicatedStorage").Remote.ReqCharVars.OnClientInvoke = function() return{} end 
@@ -62,11 +60,13 @@ local function WindowToCM()
     end]]
 
     for _,v in pairs(maps) do
-		print(workspace:WaitForChild('Multiplayer'):FindFirstChild('NewMap'):FindFirstChild('Settings'):GetAttribute("MapName"))
-        if tostring(v) == tostring(workspace:WaitForChild('Multiplayer'):FindFirstChild('NewMap'):FindFirstChild('Settings'):GetAttribute("MapName")) then
-		print'2'
+        local NewMap = workspace:WaitForChild('Multiplayer'):FindFirstChild('NewMap')
+        if not NewMap then return nil end
+        print"Map loading."
+        if tostring(v) == tostring(NewMap:WaitForChild('Settings'):GetAttribute("MapName")) then
+            print"Map retrieved."
             if map_tas[tostring(v)] then
-		print'3'
+                print"Map fired."
                 return v
             end
         end
@@ -520,4 +520,3 @@ task.spawn(function()
         if Fluent.Unloaded then break end
     end
 end)
-
