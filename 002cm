@@ -1,3 +1,4 @@
+if game:GetService("Players").LocalPlayer.PlayerGui:WaitForChild("GameGui").Loading.Visible == false then break return end
 if Legit == nil then
     Legit = false
 end
