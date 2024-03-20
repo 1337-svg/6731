@@ -13,7 +13,7 @@
     ["##########"] = "testcm1";
 }]]
 
-repeat wait(.66) until game:IsLoaded() or game.Loaded:wait()
+repeat wait(.1) until game:IsLoaded() or game.Loaded:wait()
 local IsOnMobile = table.find({Enum.Platform.IOS, Enum.Platform.Android}, game:GetService("UserInputService"):GetPlatform())
 pcall(function()
     game:GetService("ReplicatedStorage").Remote.ReqCharVars.OnClientInvoke = function() return{} end 
@@ -61,7 +61,7 @@ local function WindowToCM()
 
     for _,v in pairs(maps) do
 		print'1'
-        if tostring(v) == tostring(workspace:WaitForChild('Multiplayer').NewMap.Settings:GetAttribute("MapName")) then
+        if tostring(v) == tostring(workspace:WaitForChild('Multiplayer'):FindFirstChild('NewMap').Settings:GetAttribute("MapName")) then
 		print'2'
             if map_tas[tostring(v)] then
 		print'3'
