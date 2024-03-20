@@ -36,17 +36,16 @@ oldalert = hookfunction(CLMAIN.newAlert, function(...)
     return oldalert(...)
 end)
 if not getrenv().alreadystarted then
-    CLMAIN.newAlert("TAS Player Started.", Color3.fromRGB(255, 149, 5))
+    CLMAIN.newAlert("Tool Assisted Speedrun: Executed")
     getrenv().alreadystarted = true
 else
-    CLMAIN.newAlert("TAS Player ready for next map.", Color3.new(0,1,.5))
+    CLMAIN.newAlert("Tool Assisted Speedrun: Queue")
 end
 local Animate = getsenv(LP.Character.Animate)
 local Map = Multi:WaitForChild('NewMap')
 local mapName = Map:WaitForChild('Settings'):GetAttribute("MapName")
 local TAS = game:GetService("HttpService"):JSONDecode(readfile("CM_TAS/" .. selected_file_2 .. ".json"))
 if not TAS then
-    -- CLMAIN.newAlert("TAS file for "..mapName.." is not in CM_TAS folder!", Color3.new(1,0,0))
     LP.Character.Humanoid.Health = 0
     LP.CharacterAdded:Wait()
 else
