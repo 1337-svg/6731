@@ -1770,7 +1770,7 @@ local function SetUpMap()
                 getgenv().delayy = false
                 Hitbox.Touched:Connect(function(part)
                     if delayy == false then
-                        Alert("Button Touched!",Color3.fromRGB(255,140,0))
+                       -- Alert("",Color3.fromRGB(255,140,0))
                         delayy = true
                         wait(1)
                         delayy = false
@@ -1779,23 +1779,24 @@ local function SetUpMap()
             end
         end
     end
-    print("Finished setting up map"..RunID)
 end
 
 local function UpdSavestatesGUI()
     SavestatesCount.Text = "Savestates "..tostring(#Savestates)
 end
 local function SetTimeGui()
-    local TimePlayed = tick() - TimeStart - TimePaused
-    local m = math.floor(TimePlayed / 60)
-    local s = math.floor(TimePlayed % 60)
-    local ms = math.floor((TimePlayed * 1000) % 1000)
-    m = tostring(m)
-    s = tostring(s)
-    ms = tostring(ms)
-    for i=1, 2 do if #ms < 3 then ms = '0' .. ms end end
-    for i=1, 1 do if #s < 2 then s = '0' .. s end end
-    TimeText.Text = m .. ":" .. s .. ":" .. ms
+    pcall(function()
+        local TimePlayed = tick() - TimeStart - TimePaused
+        local m = math.floor(TimePlayed / 60)
+        local s = math.floor(TimePlayed % 60)
+        local ms = math.floor((TimePlayed * 1000) % 1000)
+        m = tostring(m)
+        s = tostring(s)
+        ms = tostring(ms)
+        for i=1, 2 do if #ms < 3 then ms = '0' .. ms end end
+        for i=1, 1 do if #s < 2 then s = '0' .. s end end
+        TimeText.Text = m .. ":" .. s .. ":" .. ms
+    end)
 end
 local function UserPause()
     Pause = not Pause
@@ -1816,6 +1817,7 @@ local function UserPause()
     end
 end
 local function BackSavestate()
+    pcall(function()
     local InfoState = Savestates[#Savestates][#Savestates[#Savestates]]
     if InfoState then
         PlayerInfo = {}
@@ -1834,6 +1836,7 @@ local function BackSavestate()
         end
         SetTimeGui()
     end
+    end)
 end
 local function UpdFramesGUI()
     FrameCount.Text = "Frames "..tostring(#PlayerInfo)
@@ -2143,7 +2146,6 @@ local function ResetToNormal()
     HUD:Destroy()
     wait(3)
     Workspace.Multiplayer.Map:Destroy()
-    print("Reset to normal"..RunID)
 end
 
 RecordLoop = RunService.Heartbeat:Connect(function(deltaTime)
