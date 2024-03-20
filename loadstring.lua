@@ -76,7 +76,7 @@ local function WindowToCM()
         local maybethistoo = game:GetService("Players").LocalPlayer.PlayerGui.GameGui:WaitForChild('Waiting')
 
         if tostring(v) == tostring(workspace:WaitForChild("Lobby").GameInfo.SurfaceGui.Frame.MapName.Text) then
-            if (this.Visible == true and andthis.TextColor3 == Color.fromRGB(0, 255, 0)) or maybethistoo.Visible == true then
+            if andthis.TextColor3 == Color3.fromRGB(0, 255, 0) or maybethistoo.Visible == true then
                 if map_tas[tostring(v)] then
                     return v
                 end
