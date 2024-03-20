@@ -1,5 +1,5 @@
 -- Credits to Altlexon, Aniwatch
-repeat wait(1) until game:IsLoaded() or game.Loaded:wait()
+repeat wait(.5) until game:IsLoaded() or game.Loaded:wait()
 local IsOnMobile = table.find({Enum.Platform.IOS, Enum.Platform.Android}, game:GetService("UserInputService"):GetPlatform())
 pcall(function()
     game:GetService("ReplicatedStorage").Remote.ReqCharVars.OnClientInvoke = function() return{} end 
@@ -38,7 +38,7 @@ end
 
 local function WindowToTAS()
     for _,v in pairs(maps) do
-        if tostring(v) == tostring(workspace.Lobby.GameInfo.SurfaceGui.Frame.MapName.Text) and BeforeLaunch() then
+        if tostring(v) == tostring(workspace:WaitForChild("Lobby").GameInfo.SurfaceGui.Frame.MapName.Text) and BeforeLaunch() then
             if map_tas[tostring(v)] then
                 return v
             end
