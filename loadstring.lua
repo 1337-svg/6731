@@ -1,4 +1,18 @@
 -- Credits to Altlexon, Aniwatch
+getgenv().map_tas = {
+    ["Blue Moon"] = "bm1",
+    ["Poisonous Chasm"] = "pc1",
+    ["Mirage Saloon"] = "ms1",
+    ["Decaying Silo"] = "ds1",
+    ["Ignis Peaks"] = "igp1";
+    ["Active Volcanic Mines"] = "avm1",
+    ["Snowy Stronghold"] = "ssh1",
+    ["Sandswept Ruins"] = "ssr1",
+    ["Rustic Jungle"] = "rj1";
+    ["Abandoned Harbour"] = "abhb1";
+    ["##########"] = "testcm1";
+}
+
 repeat wait(.5) until game:IsLoaded() or game.Loaded:wait()
 local IsOnMobile = table.find({Enum.Platform.IOS, Enum.Platform.Android}, game:GetService("UserInputService"):GetPlatform())
 pcall(function()
@@ -8,8 +22,16 @@ end)
 
 local maps = extra_maps or {"Outlier of a Coppice Carcass", "Abyssal Tempest", "Spring Valley", "Kozui Peak", "Mirage Saloon", "Abandoned Harbour"}
 local script = require(game.ReplicatedStorage.SharedModules.FE2Library)
+local script2 = game:GetService("Players").LocalPlayer.PlayerGui:WaitForChild("MenuGui").MapTest.Window.Content.Pages.MapList.Active_Frame.Container:GetChildren()
+
 for i, v in pairs(script.getOfficialMapData()) do
     table.insert(maps, v.mapName)
+end
+
+for i, v in pairs(script2) do
+    if v.ClassName == "Frame" and v.Name == "Map_Container" then
+        table.insert(maps, v:WaitForChild('Map_Frame')['Info_BG'].MapName.Text)
+    end
 end
 
 local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
@@ -47,6 +69,23 @@ local function WindowToTAS()
     return nil
 end
 
+local function WindowToCM()
+    for _,v in pairs(maps) do
+        local this = game:GetService("Players").LocalPlayer.PlayerGui.GameGui.HUD.Main.GameStats:WaitForChild('Ingame')
+        local andthis = game:GetService("Players").LocalPlayer.PlayerGui.GameGui.HUD.Main.GameStats.Ingame.Info.Time.Current:WaitForChild('Count')
+        local maybethistoo = game:GetService("Players").LocalPlayer.PlayerGui.GameGui:WaitForChild('Waiting')
+
+        if tostring(v) == tostring(workspace:WaitForChild("Lobby").GameInfo.SurfaceGui.Frame.MapName.Text) then
+            if (this.Visible == true and andthis.TextColor3 == Color.fromRGB(0, 255, 0)) or maybethistoo.Visible == true then
+                if map_tas[tostring(v)] then
+                    return v
+                end
+            end
+        end
+    end
+    return nil
+end
+
 local Window = Fluent:CreateWindow({
     Title = "Hyperblox Panel",
     SubTitle = tostring(game:GetService("Players").LocalPlayer).."/ani.watch",
@@ -59,6 +98,7 @@ local Window = Fluent:CreateWindow({
 
 local save = getsenv(game:GetService("Players").LocalPlayer.PlayerScripts["CL_MAIN_GameScript"]).takeAir
 local TAS_AUTOPLAYER = false
+local TAS_AUTOPLAYER2 = false
 local godmode = false
 local dubjump = false
 
@@ -190,14 +230,15 @@ do
         end;
     })
 
-    if game.PlaceId == 11951199229 then
-	local ER77 = Tabs.Main:AddButton({
-		Title = "Runtime/TAS [CM]",
-	        Callback = function()
-                	getgenv().selected_file_2 = map_tas[WindowToTAS()]
-                	loadstring(game:HttpGet('https://raw.githubusercontent.com/1337-svg/6731/index_client/002cm'))()
-		end;
-	})
+    if game.PlaceId == 11951199229 or game.PlaceId == 12074120006 then
+        local CM_AUTO = Tabs.Main:AddToggle("TAS_AP83", {
+            Title = "Runtime/TAS [CM]", 
+            Description = "Automate transcripts of community TAS/FE2 files.", 
+            Default = false,
+            Callback = function(v)
+                TAS_AUTOPLAYER2 = v
+            end
+        })
 
         Tabs.Main:AddButton({
             Title = "Editor/TAS [CM]",
@@ -474,6 +515,18 @@ task.spawn(function()
             if WindowToTAS() then 
                 getgenv().selected_file = map_tas[WindowToTAS()]
                 loadstring(game:HttpGet('https://raw.githubusercontent.com/1337-svg/6731/index_client/002'))()
+            end
+        end
+        if Fluent.Unloaded then break end
+    end
+end)
+
+task.spawn(function()
+    while wait(1) do
+        if TAS_AUTOPLAYER2 == true then
+            if WindowToCM() then 
+                getgenv().selected_file_2 = map_tas[WindowToCM()]
+                loadstring(game:HttpGet('https://raw.githubusercontent.com/1337-svg/6731/index_client/002cm'))()
             end
         end
         if Fluent.Unloaded then break end
