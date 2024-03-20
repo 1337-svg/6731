@@ -51,13 +51,13 @@ local function WindowToTAS()
 end
 
 local function WindowToCM()
-    --[[for i, v in pairs(script2) do
+    for i, v in pairs(script2) do
         if v.ClassName == "Frame" and v.Name == "Map_Container" then
             if not maps[tostring(v:WaitForChild('Map_Frame')['Info_BG'].MapName.Text)] then
                 table.insert(maps, v:WaitForChild('Map_Frame')['Info_BG'].MapName.Text)
             end
         end
-    end]]
+    end
 
     for _,v in pairs(maps) do
         local NewMap = workspace:WaitForChild('Multiplayer'):FindFirstChild('NewMap')
@@ -66,7 +66,7 @@ local function WindowToCM()
         if tostring(v) == tostring(NewMap:WaitForChild('Settings'):GetAttribute("MapName")) then
             print"Map retrieved."
             if map_tas[tostring(v)] then
-                print"Map fired."
+                print("Map fired.", v)
                 return v
             end
         end
