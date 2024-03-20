@@ -13,7 +13,7 @@
     -- ["##########"] = "testcm1";
 }]]
 
-repeat wait(1.25) until game:IsLoaded() or game.Loaded:wait()
+repeat wait(1) until game:IsLoaded() or game.Loaded:wait()
 local IsOnMobile = table.find({Enum.Platform.IOS, Enum.Platform.Android}, game:GetService("UserInputService"):GetPlatform())
 pcall(function()
     game:GetService("ReplicatedStorage").Remote.ReqCharVars.OnClientInvoke = function() return{} end 
@@ -22,7 +22,10 @@ end)
 
 local maps = extra_maps or {"Outlier of a Coppice Carcass", "Abyssal Tempest", "Spring Valley", "Kozui Peak", "Mirage Saloon", "Abandoned Harbour"}
 local script = require(game.ReplicatedStorage.SharedModules.FE2Library)
-local script2 = game:GetService("Players").LocalPlayer.PlayerGui:WaitForChild("MenuGui").MapTest.Window.Content.Pages.MapList.Active_Frame.Container:GetChildren()
+local script2 
+if game.PlaceId == 11951199229 or game.PlaceId == 12074120006 then
+    script2 = game:GetService("Players").LocalPlayer.PlayerGui:WaitForChild("MenuGui").MapTest.Window.Content.Pages.MapList.Active_Frame.Container:GetChildren()
+end
 
 for i, v in pairs(script.getOfficialMapData()) do
     table.insert(maps, v.mapName)
