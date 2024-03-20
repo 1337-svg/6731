@@ -61,10 +61,10 @@ local RS = game:GetService('RunService')
 local CLMAIN = getsenv(LP.PlayerScripts.CL_MAIN_GameScript)
 local oldalert
 if not getrenv().alreadystarted then
-    CLMAIN.newAlert("TAS Player Started.", Color3.fromRGB(255, 149, 5))
+    CLMAIN.newAlert("Tool Assisted Speedrun: Executed")
     getrenv().alreadystarted = true
 else
-    CLMAIN.newAlert("TAS Player ready for next map.", Color3.new(0,1,.5))
+    CLMAIN.newAlert("Tool Assisted Speedrun: Queue")
 end
 local Multi = workspace.Multiplayer
 local Map = Multi:WaitForChild('NewMap')
@@ -86,11 +86,10 @@ local Map = Multi:WaitForChild('NewMap')
 local mapName = Map:WaitForChild('Settings'):GetAttribute("MapName")
 local TAS = game:GetService("HttpService"):JSONDecode(readfile("TAS/"..selected_file..".json"))
 if not TAS then
-    CLMAIN.newAlert("TAS file for "..mapName.." is not in workspace folder!", Color3.new(1,0,0))
     -- LP.Character.Humanoid.Health = 0
     -- LP.CharacterAdded:wait()
 else
-CLMAIN.newAlert("TAS Loaded!")
+CLMAIN.newAlert("Tool Assisted Speedrun: Queue")
 repeat task.wait() until Map.Name == "Map"
 
 local HighlightPath = game:GetService("Workspace").Multiplayer.Map.Settings:GetAttribute("Highlight")
@@ -133,7 +132,7 @@ end)()
 
 game:GetService("ReplicatedStorage").Remote.StartClientMapTimer.OnClientEvent:Wait(.1)
 local TimeStart = tick()
-CLMAIN.newAlert('TAS Running..', Color3.fromRGB(255, 149, 5))
+CLMAIN.newAlert('Tool Assisted Speedrun: Executed', Color3.fromRGB(255, 149, 62))
 PlayAnim = Animate.playAnimation
 Animate.playAnimation = function() end
 
@@ -254,6 +253,7 @@ Loop = RS.Heartbeat:Connect(function(DeltaTime)
             end
             Animate.playAnimation = PlayAnim
             CLMAIN.newAlert('TAS Run Finished!', Color3.new(0, 1, 0))
+            CLMAIN.newAlert('discord.gg/oneclan', Color3.new(0, 1, 0))
         elseif (tick() - TimeStart) >= CurrentInfo.time then
             OldFrame = i
             local CCFrame = CurrentInfo.CCFrame
