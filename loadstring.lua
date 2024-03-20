@@ -1,5 +1,5 @@
 -- Credits to Altlexon, Aniwatch
-getgenv().map_tas = {
+--[[getgenv().map_tas = {
     ["Blue Moon"] = "bm1",
     ["Poisonous Chasm"] = "pc1",
     ["Mirage Saloon"] = "ms1",
@@ -10,8 +10,8 @@ getgenv().map_tas = {
     ["Sandswept Ruins"] = "ssr1",
     ["Rustic Jungle"] = "rj1";
     ["Abandoned Harbour"] = "abhb1";
-    ["##########"] = "testcm1";
-}
+    -- ["##########"] = "testcm1";
+}]]
 
 repeat wait(1.25) until game:IsLoaded() or game.Loaded:wait()
 local IsOnMobile = table.find({Enum.Platform.IOS, Enum.Platform.Android}, game:GetService("UserInputService"):GetPlatform())
@@ -485,7 +485,7 @@ task.spawn(function()
 end)
 
 task.spawn(function()
-	while wait(1/12) do
+	while wait(1) do
 		if godmode == true then
 			getsenv(game:GetService("Players").LocalPlayer.PlayerScripts["CL_MAIN_GameScript"]).takeAir = function()
 				return 0
