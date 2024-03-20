@@ -62,7 +62,7 @@ local function WindowToCM()
     end]]
 
     for _,v in pairs(maps) do
-		print'1'
+		print(workspace:WaitForChild('Multiplayer'):FindFirstChild('NewMap'):FindFirstChild('Settings'):GetAttribute("MapName"))
         if tostring(v) == tostring(workspace:WaitForChild('Multiplayer'):FindFirstChild('NewMap'):FindFirstChild('Settings'):GetAttribute("MapName")) then
 		print'2'
             if map_tas[tostring(v)] then
