@@ -60,7 +60,7 @@ local function WindowToTAS()
         if tostring(v) == tostring(NewMap:WaitForChild('Settings'):GetAttribute("MapName")) then
             -- print"Map retrieved."
             if map_tas[tostring(v)] then
-               -- print("Map fired.", v)
+                print("Map fired.", v)
                 return v
             end
         end
@@ -69,20 +69,12 @@ local function WindowToTAS()
 end
 
 local function WindowToCM()
-    for i, v in pairs(script2) do
-        if v.ClassName == "Frame" and v.Name == "Map_Container" then
-            if not maps[tostring(v:WaitForChild('Map_Frame')['Info_BG'].MapName.Text)] then
-                table.insert(maps, v:WaitForChild('Map_Frame')['Info_BG'].MapName.Text)
-            end
-        end
-    end
-
     for _,v in pairs(maps) do
         local NewMap = workspace:WaitForChild('Multiplayer'):FindFirstChild('NewMap')
         if not NewMap then return nil end
-        print"Map loading."
+       -- print"Map loading."
         if tostring(v) == tostring(NewMap:WaitForChild('Settings'):GetAttribute("MapName")) then
-            print"Map retrieved."
+           -- print"Map retrieved."
             if map_tas[tostring(v)] then
                 print("Map fired.", v)
                 return v
@@ -502,7 +494,8 @@ task.spawn(function()
     end
 end)
 
-task.spawn(function()
+task.spawn(function() 
+    local s, r = pcall(function()
 	while wait(1) do
 		if godmode == true then
 			getsenv(game:GetService("Players").LocalPlayer.PlayerScripts["CL_MAIN_GameScript"]).takeAir = function()
@@ -513,6 +506,8 @@ task.spawn(function()
 		end
         if Fluent.Unloaded then break end
 	end
+    end)
+    if r then warn(r) end
 end)
 
 if game.PlaceId == 11951199229 or game.PlaceId == 12074120006 then
