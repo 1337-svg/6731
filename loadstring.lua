@@ -606,7 +606,7 @@ local function Wallhop()
 		end
 	end
 	
-	if lowestindex then
+	if lowestindex and lowestindex.Instance.ClassName ~= "TrussPart" then
 		char.Humanoid.AutoRotate = false
 		QueueReset(.2)
 	else
