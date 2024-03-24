@@ -531,7 +531,8 @@ task.spawn(function()
 	Highlight.Name, Highlight.Adornee = tostring(math.random(-10000, 10000)), nil
 	Highlight.Enabled, Highlight.Parent = true, nil
 
-	game:GetService("RunService").Heartbeat:Connect(function()
+    local CN = nil
+	CN = game:GetService("RunService").Heartbeat:Connect(function()
 		local null = 0
 		if amp == true then
             Highlight.Parent = workspace
@@ -544,6 +545,7 @@ task.spawn(function()
 		
 		game:GetService("Players").LocalPlayer.Character:WaitForChild('Humanoid').WalkSpeed = ws + (null)
 		game:GetService("Players").LocalPlayer.Character:WaitForChild('Humanoid').JumpPower = jp + (null * 2)
+        if Fluent.Unloaded then CN:Disconnect() end
 	end)
 end)
 
