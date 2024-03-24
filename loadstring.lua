@@ -100,6 +100,7 @@ local TAS_AUTOPLAYER2 = false
 local godmode = false
 local dubjump = false
 local amp = false
+local legit = true
 local ws = 20
 local jp = 50
 
@@ -228,6 +229,15 @@ do
         end;
     })
 
+    local FE2_LEGIT = Tabs.Main:AddToggle("TAP_LEGIT", {
+        Title = "Legitimate", 
+        Description = "Tone down the evasiveness of certain options.", 
+        Default = true,
+        Callback = function(v)
+        	legit = v
+        end
+    })
+
     if game.PlaceId == 11951199229 or game.PlaceId == 12074120006 then
         local CM_AUTO = Tabs.Main:AddToggle("TAS_AP83", {
             Title = "Runtime/TAS [CM]", 
@@ -318,7 +328,7 @@ do
     })
 
     local FE2_TP2 = Tabs.Util:AddKeybind("TAS_FE2TP", {
-        Title = "Displacement",
+        Title = "Offseter (Teleport)",
         Mode = "Toggle",
         Default = "R", 
         Callback = function(v)
