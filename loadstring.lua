@@ -11,7 +11,6 @@ if not map_tas then
         ["Sandswept Ruins"] = "ssr1",
         ["Rustic Jungle"] = "rj1";
         ["Abandoned Harbour"] = "abhb1";
-        -- ["##########"] = "testcm1";
     }
 end
 
@@ -87,11 +86,11 @@ end
 local Window = Fluent:CreateWindow({
     Title = "Hyperblox Panel",
     SubTitle = tostring(game:GetService("Players").LocalPlayer).."/ani.watch",
-    TabWidth = 130,
-    Size = UDim2.fromOffset(580, 300),
+    TabWidth = 135,
+    Size = UDim2.fromOffset(600, 300),
     Acrylic = true, -- The blur may be detectable, setting this to false disables blur entirely
     Theme = "Darker",
-    MinimizeKey = Enum.KeyCode.P-- Used when theres no MinimizeKeybind
+    MinimizeKey = Enum.KeyCode.Semicolon-- Used when theres no MinimizeKeybind
 })
 
 local save = getsenv(game:GetService("Players").LocalPlayer.PlayerScripts["CL_MAIN_GameScript"]).takeAir
@@ -101,6 +100,8 @@ local godmode = false
 local dubjump = false
 local amp = false
 local legit = false
+local horzDX = 5
+local vertDX = 8
 local ws = 20
 local jp = 50
 
@@ -235,6 +236,30 @@ do
         Default = false,
         Callback = function(v)
         	legit = v
+        end
+    })
+
+    local FE2_FloorLEGIT = Tabs.Main:AddInput("LEGIT_001", {
+        Title = "Legitimate/Floor",
+        Default = "8",
+        Description = "How far you can infinite jump from a platform.",
+        Placeholder = "8",
+        Numeric = true, -- Only allows numbers
+        Finished = true, -- Only calls callback when you press enter
+        Callback = function(v)
+            vertDX = v
+        end
+    })
+
+    local FE2_HorzLEGIT = Tabs.Main:AddInput("LEGIT_001", {
+        Title = "Legitimate/Wall",
+        Default = "5",
+        Description = "How far you can 'wallhop' from a wall.",
+        Placeholder = "5",
+        Numeric = true, -- Only allows numbers
+        Finished = true, -- Only calls callback when you press enter
+        Callback = function(v)
+            horzDX = v
         end
     })
 
@@ -559,11 +584,11 @@ local function Wallhop()
 	local params = RaycastParams.new()
 	params.FilterDescendantsInstances = {char}
 	
-	local floor = workspace:Spherecast(rp.Position, .25, rp.CFrame.UpVector * -10, params)
+	local floor = workspace:Spherecast(rp.Position, .25, rp.CFrame.UpVector * -vertDX, params)
 	local champion, inc = false, 0
 	local comparsion = {}
 	for i = 1, 7 do
-		local result = workspace:Raycast(rp.CFrame.Position, (rp.CFrame.Rotation * CFrame.Angles(0, math.rad(inc), 0)).LookVector * 8, params)
+		local result = workspace:Raycast((rp.CFrame * CFrame.new(0, -1, 0)).Position, (rp.CFrame.Rotation * CFrame.Angles(0, math.rad(inc), 0)).LookVector * horzDX, params)
 		if result then
 			comparsion[i] = result
 		end
