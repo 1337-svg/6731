@@ -239,15 +239,15 @@ do
         end
     })
 
-    local FE2_FloorLEGIT2 = Tabs.Main:AddInput("LEGIT_0063", {
-        Title = "Legitimate/Restriction,
+    local FE2_RESTRC = Tabs.Main:AddInput("LEGIT_0063", {
+        Title = "Legitimate/Restriction",
         Default = "3",
         Description = "How legitimate you want to be.",
         Placeholder = "3",
         Numeric = true, -- Only allows numbers
         Finished = true, -- Only calls callback when you press enter
         Callback = function(v)
-            horzLN = math.clamp(v, .5, 10)
+            horzLN = v
         end
     })
 
