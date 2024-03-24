@@ -100,8 +100,8 @@ local godmode = false
 local dubjump = false
 local amp = false
 local legit = false
-local horzDX = 5
-local vertDX = 8
+local vertDX, vertLN = 10, 0
+local horzDX, horzLN = 5, 3
 local ws = 20
 local jp = 50
 
@@ -239,7 +239,19 @@ do
         end
     })
 
-    local FE2_FloorLEGIT = Tabs.Main:AddInput("LEGIT_001", {
+    local FE2_FloorLEGIT2 = Tabs.Main:AddInput("LEGIT_0063", {
+        Title = "Legitimate/Restriction,
+        Default = "3",
+        Description = "How legitimate you want to be.",
+        Placeholder = "3",
+        Numeric = true, -- Only allows numbers
+        Finished = true, -- Only calls callback when you press enter
+        Callback = function(v)
+            horzLN = math.clamp(v, .5, 10)
+        end
+    })
+
+    local FE2_FloorLEGIT = Tabs.Main:AddInput("LEGIT_0012", {
         Title = "Legitimate/Floor",
         Default = "8",
         Description = "How far you can infinite jump from a platform.",
@@ -584,7 +596,7 @@ local function Wallhop()
 	local params = RaycastParams.new()
 	params.FilterDescendantsInstances = {char}
 	
-	local floor = workspace:Spherecast(rp.Position, 1, rp.CFrame.UpVector * -vertDX, params)
+	local floor = workspace:Blockcast(rp.CFrame, Vector3.new(horzLN, .5, horzLN), rp.CFrame.UpVector * -vertDX, params)
 	local champion, inc = false, 0
 	local comparsion = {}
 	for i = 1, 7 do
