@@ -1,3 +1,4 @@
+-- Credits to Altlexon, Aniwatch
 if not map_tas then
     getgenv().map_tas = {
         ["Blue Moon"] = "bm1",
@@ -85,8 +86,8 @@ end
 local Window = Fluent:CreateWindow({
     Title = "Hyperblox Panel",
     SubTitle = tostring(game:GetService("Players").LocalPlayer).."/ani.watch",
-    TabWidth = 130,
-    Size = UDim2.fromOffset(620, 300),
+    TabWidth = 125,
+    Size = UDim2.fromOffset(615, 300),
     Acrylic = true, -- The blur may be detectable, setting this to false disables blur entirely
     Theme = "Darker",
     MinimizeKey = Enum.KeyCode.Semicolon-- Used when theres no MinimizeKeybind
@@ -583,7 +584,7 @@ local function Wallhop()
 	local params = RaycastParams.new()
 	params.FilterDescendantsInstances = {char}
 	
-	local floor = workspace:Spherecast(rp.Position, .25, rp.CFrame.UpVector * -vertDX, params)
+	local floor = workspace:Spherecast(rp.Position, 1, rp.CFrame.UpVector * -vertDX, params)
 	local champion, inc = false, 0
 	local comparsion = {}
 	for i = 1, 7 do
