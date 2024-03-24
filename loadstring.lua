@@ -1,4 +1,3 @@
--- Credits to Altlexon, Aniwatch
 if not map_tas then
     getgenv().map_tas = {
         ["Blue Moon"] = "bm1",
