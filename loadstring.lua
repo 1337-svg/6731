@@ -100,7 +100,7 @@ local TAS_AUTOPLAYER2 = false
 local godmode = false
 local dubjump = false
 local amp = false
-local legit = true
+local legit = false
 local ws = 20
 local jp = 50
 
@@ -232,7 +232,7 @@ do
     local FE2_LEGIT = Tabs.Main:AddToggle("TAP_LEGIT", {
         Title = "Legitimate", 
         Description = "Tone down the evasiveness of certain options.", 
-        Default = true,
+        Default = false,
         Callback = function(v)
         	legit = v
         end
@@ -510,23 +510,116 @@ task.spawn(function()
 	end)
 end)
 
-task.spawn(function()
-    local SP = nil
-    SP = game:GetService("UserInputService").InputBegan:Connect(function(A, B)
-        if B then return end
-        if dubjump == true then
-            if A.KeyCode == Enum.KeyCode.Space then
-                game:GetService("Players").LocalPlayer.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
-            end
-        end
-    end)
+local Start = tick()
+local InLine = false
+local function QueueReset(a)
+	Start = tick()
+	if InLine == false then
+		InLine = true
+		local connection
+		connection = game:GetService('RunService').Heartbeat:Connect(function()
+			local hm: Part = game:GetService('Players').LocalPlayer.Character:WaitForChild('Humanoid')
+			if (tick() - Start) > a then
+				hm.AutoRotate = true
+				InLine = false
+				print((tick() - Start))
+				connection:Disconnect()
+			end
+		end)
+	end
+end
 
-    while wait(3) do
-        if Fluent.Unloaded then
-            SP:Disconnect()
-            break
-        end
-    end
+local function RayToDotVector(ray)
+	local char = game:GetService('Players').LocalPlayer.Character or game:GetService('Players').LocalPlayer.CharacterAdded:Wait()
+	local RootPart = char:WaitForChild('HumanoidRootPart')
+	local SurfaceCorrelationOffset = Vector3.new(
+		math.clamp(ray.Instance.CFrame:PointToObjectSpace(RootPart.Position).X, -(ray.Instance.Size/2) .X, (ray.Instance.Size/2).X), 
+		math.clamp(ray.Instance.CFrame:PointToObjectSpace(RootPart.Position).Y, -(ray.Instance.Size/2).Y, (ray.Instance.Size/2).Y), 
+		math.clamp(ray.Instance.CFrame:PointToObjectSpace(RootPart.Position).Z, -(ray.Instance.Size/2).Z, (ray.Instance.Size/2).Z)
+	)
+
+	local PositionRelativeToSurface = (ray.Instance.CFrame * CFrame.new(SurfaceCorrelationOffset))
+	local DirectionRelativeToSurface = Vector3.new((PositionRelativeToSurface - RootPart.Position).X, 0, (PositionRelativeToSurface - RootPart.Position).Z).Unit
+
+	local Dot = math.pi - math.acos(RootPart.CFrame.LookVector:Dot(ray.Normal.Unit))
+	local Cross = RootPart.CFrame.LookVector:Cross(DirectionRelativeToSurface)
+
+	local Correction, Dividend = nil
+	if Cross.Y < 0 then Correction = math.abs(Dot - math.pi/2) 
+	else Correction = Dot - math.pi/2
+	end
+
+	Dividend = math.abs(Dot/math.pi)
+	return Correction
+end
+
+local function Wallhop()
+	local char = game:GetService('Players').LocalPlayer.Character or game:GetService('Players').LocalPlayer.CharacterAdded:Wait()
+	local rp: Part = char:WaitForChild('HumanoidRootPart')
+	local params = RaycastParams.new()
+	params.FilterDescendantsInstances = {char}
+	
+	local floor = workspace:Spherecast(rp.Position, .25, rp.CFrame.UpVector * -10, params)
+	local champion, inc = false, 0
+	local comparsion = {}
+	for i = 1, 7 do
+		local result = workspace:Raycast(rp.CFrame.Position, (rp.CFrame.Rotation * CFrame.Angles(0, math.rad(inc), 0)).LookVector * 8, params)
+		if result then
+			comparsion[i] = result
+		end
+		inc += 45
+	end
+	
+	local lowestvalue, lowestindex = nil
+	for i, v in pairs(comparsion) do
+		if not lowestvalue then lowestindex = i lowestvalue = v
+		else
+			if lowestvalue.Distance >= v.Distance then
+				lowestindex = i
+				lowestvalue = v
+			end
+		end
+	end
+	
+	if lowestindex then
+		char.Humanoid.AutoRotate = false
+		QueueReset(.2)
+	else
+		char.Humanoid.AutoRotate = true
+	end
+
+	return floor, lowestvalue
+end
+
+task.spawn(function()
+	local SP = nil
+	SP = game:GetService("UserInputService").InputBegan:Connect(function(A, B)
+		if B then return end
+		local char = game:GetService('Players').LocalPlayer.Character or game:GetService('Players').LocalPlayer.CharacterAdded:Wait()
+		local rp: Part = char:WaitForChild('HumanoidRootPart')
+		if dubjump == true then
+			if A.KeyCode == Enum.KeyCode.Space then
+				if legit then
+					local IsFloor, IsWall = Wallhop()
+					if IsWall then
+						game:GetService("Players").LocalPlayer.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+						rp.CFrame = (rp.CFrame * CFrame.Angles(0, RayToDotVector(IsWall), 0))
+					elseif IsFloor then
+						game:GetService("Players").LocalPlayer.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+					end
+				else
+					game:GetService("Players").LocalPlayer.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+				end
+			end
+		end
+	end)
+
+	while wait(3) do
+		if Fluent.Unloaded then
+			SP:Disconnect()
+			break
+		end
+	end
 end)
 
 task.spawn(function() 
