@@ -85,8 +85,8 @@ end
 local Window = Fluent:CreateWindow({
     Title = "Hyperblox Panel",
     SubTitle = tostring(game:GetService("Players").LocalPlayer).."/ani.watch",
-    TabWidth = 135,
-    Size = UDim2.fromOffset(600, 300),
+    TabWidth = 130,
+    Size = UDim2.fromOffset(620, 300),
     Acrylic = true, -- The blur may be detectable, setting this to false disables blur entirely
     Theme = "Darker",
     MinimizeKey = Enum.KeyCode.Semicolon-- Used when theres no MinimizeKeybind
