@@ -643,7 +643,9 @@ task.spawn(function()
 					if IsWall then
 						game:GetService("Players").LocalPlayer.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
                         if IsWall.Instance.ClassName ~= "TrussPart" then
-						    rp.CFrame = (rp.CFrame * CFrame.Angles(0, (RayToDotVector(IsWall) + math.random(-0.174533, 0.174533)), 0))
+                            if char:FindFirstChild('Humanoid'):GetState() ~= Enum.HumanoidStateType.Landed and char:FindFirstChild('Humanoid'):GetState() ~= Enum.HumanoidStateType.Running then
+						        rp.CFrame = (rp.CFrame * CFrame.Angles(0, (RayToDotVector(IsWall) + math.random(-0.174533, 0.174533)), 0))
+                            end
                         end
 					elseif IsFloor then
 						game:GetService("Players").LocalPlayer.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
