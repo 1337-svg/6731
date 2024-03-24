@@ -628,7 +628,9 @@ task.spawn(function()
 					local IsFloor, IsWall = Wallhop()
 					if IsWall then
 						game:GetService("Players").LocalPlayer.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
-						rp.CFrame = (rp.CFrame * CFrame.Angles(0, (RayToDotVector(IsWall) + math.random(-0.174533, 0.174533)), 0))
+                        if IsWall.Instance.ClassName ~= "TrussPart" then
+						    rp.CFrame = (rp.CFrame * CFrame.Angles(0, (RayToDotVector(IsWall) + math.random(-0.174533, 0.174533)), 0))
+                        end
 					elseif IsFloor then
 						game:GetService("Players").LocalPlayer.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
 					end
