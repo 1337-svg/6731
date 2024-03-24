@@ -602,7 +602,7 @@ local function Wallhop()
 	local champion, inc = false, 0
 	local comparsion = {}
 	for i = 1, 7 do
-		local result = workspace:Raycast((rp.CFrame * CFrame.new(0, -1, 0)).Position, (rp.CFrame.Rotation * CFrame.Angles(0, math.rad(inc), 0)).LookVector * horzDX, params)
+		local result = workspace:Raycast((rp.CFrame * CFrame.new(0, -2, 0)).Position, (rp.CFrame.Rotation * CFrame.Angles(0, math.rad(inc), 0)).LookVector * horzDX, params)
 		if result then
 			comparsion[i] = result
 		end
