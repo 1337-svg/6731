@@ -487,10 +487,11 @@ task.spawn(function()
 	game:GetService("RunService").Heartbeat:Connect(function()
 		local null = 0
 		if amp == true then
+            Highlight.Parent = workspace
 			Highlight.Adornee = game:GetService("Players").LocalPlayer.Character
 			null = 5
 		else
-			Highlight.Parent = workspace
+            Highlight.Parent = nil
 			Highlight.Adornee = nil
 		end
 		
