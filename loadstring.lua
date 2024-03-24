@@ -482,7 +482,7 @@ task.spawn(function()
 	Highlight.FillColor, Highlight.FillTransparency = Color3.fromRGB(255, 0, 4), .75
 	Highlight.OutlineColor, Highlight.OutlineTransparency = Color3.fromRGB(255, 102, 105), .1
 	Highlight.Name, Highlight.Adornee = tostring(math.random(-10000, 10000)), nil
-	Highlight.Enabled, Highlight.Parent = true, workspace
+	Highlight.Enabled, Highlight.Parent = true, nil
 
 	game:GetService("RunService").Heartbeat:Connect(function()
 		local null = 0
@@ -490,6 +490,7 @@ task.spawn(function()
 			Highlight.Adornee = game:GetService("Players").LocalPlayer.Character
 			null = 5
 		else
+			Highlight.Parent = workspace
 			Highlight.Adornee = nil
 		end
 		
