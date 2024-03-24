@@ -99,7 +99,7 @@ local TAS_AUTOPLAYER = false
 local TAS_AUTOPLAYER2 = false
 local godmode = false
 local dubjump = false
-
+local amp = false
 local ws = 20
 local jp = 50
 
@@ -269,12 +269,21 @@ do
     end
 
     -- UTIL SECTION
-    local FE2_DUBJ = Tabs.Util:AddKeybind("TAS_FE2JUMP", {
+    local FE2_DUBJ = Tabs.Util:AddKeybind("TAS_FE2jump", {
         Title = "Infinite Jump",
         Mode = "Toggle",
         Default = "Z", 
         Callback = function(v)
             dubjump = v
+        end
+    })
+
+    local FE2_DUBJ2 = Tabs.Util:AddKeybind("TAS_FE2amp", {
+        Title = "Speed/Jump Boost",
+        Mode = "Toggle",
+        Default = "X", 
+        Callback = function(v)
+            amp = v
         end
     })
 
@@ -469,10 +478,24 @@ Fluent:Notify({
 })
 
 task.spawn(function()
-    game:GetService("RunService").Heartbeat:Connect(function()
-        game:GetService("Players").LocalPlayer.Character:WaitForChild('Humanoid').WalkSpeed = ws
-        game:GetService("Players").LocalPlayer.Character:WaitForChild('Humanoid').JumpPower = jp
-    end)
+	local Highlight = Instance.new('Highlight')
+	Highlight.FillColor, Highlight.FillTransparency = Color3.fromRGB(255, 0, 4), .75
+	Highlight.OutlineColor, Highlight.OutlineTransparency = Color3.fromRGB(255, 102, 105), .1
+	Highlight.Name, Highlight.Adornee = tostring(math.random(-10000, 10000)), nil
+	Highlight.Enabled, Highlight.Parent = true, workspace
+
+	game:GetService("RunService").Heartbeat:Connect(function()
+		local null = 0
+		if amp == true then
+			Highlight.Adornee = game:GetService("Players").LocalPlayer.Character
+			null = 5
+		else
+			Highlight.Adornee = nil
+		end
+		
+		game:GetService("Players").LocalPlayer.Character:WaitForChild('Humanoid').WalkSpeed = ws + (null)
+		game:GetService("Players").LocalPlayer.Character:WaitForChild('Humanoid').JumpPower = jp + (null * 2)
+	end)
 end)
 
 task.spawn(function()
