@@ -211,14 +211,14 @@ do
                         {
                             Title = "Confirm",
                             Callback = function()
-                                _Notification("Granted transcript overwrition", Color3.fromRGB(171, 0, 43))
+                                _Notification("Granted transcript overwrition!", Color3.fromRGB(171, 0, 43))
                                 DownloadTAS()
                             end
                         },
                         {
                             Title = "Cancel",
                             Callback = function()
-                                _Notification("Denied transcript overwrition", Color3.fromRGB(0, 168, 17))
+                                _Notification("Denied transcript overwrition.", Color3.fromRGB(0, 168, 17))
                             end
                         }
                     }
@@ -255,7 +255,7 @@ do
                             Title = "Confirm",
                             Callback = function()
                                 pcall(function()
-                                    _Notification("Granted transcript "..pre_rec, Color3.fromRGB(99, 255, 242))
+                                    _Notification("Granted transcript "..pre_rec.."!", Color3.fromRGB(99, 255, 242))
                                     getgenv().custom_map_name_2 = pre_rec or "tascm_"..tostring(math.random(-9999, 9999))
                                     loadstring(game:HttpGet('https://raw.githubusercontent.com/1337-svg/6731/index_client/001cm'))()
                                 end)
@@ -264,7 +264,7 @@ do
                         {
                             Title = "Cancel",
                             Callback = function()
-                                _Notification("Denied transcript "..pre_rec, Color3.fromRGB(171, 0, 43))
+                                _Notification("Denied transcript "..pre_rec..".", Color3.fromRGB(171, 0, 43))
                             end
                         }
                     }
@@ -286,7 +286,7 @@ do
             Description = "Create your own TAS/FE2 files.",
             Callback = function()
                 if not pre_rec then
-                    _Notification("Identifier/TAS has not been set", Color3.fromRGB(171, 0, 43))
+                    _Notification("Identifier/TAS has not been set.", Color3.fromRGB(171, 0, 43))
                     return nil
                 end
 
@@ -298,7 +298,7 @@ do
                             Title = "Confirm",
                             Callback = function()
                                 pcall(function()
-                                    _Notification("Granted transcript "..pre_rec, Color3.fromRGB(99, 255, 242))
+                                    _Notification("Granted transcript "..pre_rec.."!", Color3.fromRGB(99, 255, 242))
                                     getgenv().custom_map_name = pre_rec or "tas_"..tostring(math.random(-9999, 9999))
                                     loadstring(game:HttpGet('https://raw.githubusercontent.com/1337-svg/6731/index_client/001'))()
                                 end)
@@ -307,7 +307,7 @@ do
                         {
                             Title = "Cancel",
                             Callback = function()
-                                _Notification("Denied transcript "..pre_rec, Color3.fromRGB(171, 0, 43))
+                                _Notification("Denied transcript "..pre_rec..".", Color3.fromRGB(171, 0, 43))
                             end
                         }
                     }
