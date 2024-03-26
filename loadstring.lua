@@ -21,7 +21,7 @@ pcall(function()
     game:GetService("ReplicatedStorage").Remote.FetchPos.OnClientInvoke = function() return wait(9e9) end
 end)
 
-local maps = extra_maps or {"Outlier of a Coppice Carcass", "Abyssal Tempest", "Spring Valley", "Kozui Peak", "Mirage Saloon", "Abandoned Harbour"}
+local maps = {}
 local script = require(game.ReplicatedStorage.SharedModules.FE2Library)
 local script2 
 if game.PlaceId == 11951199229 or game.PlaceId == 12074120006 then
@@ -100,6 +100,7 @@ local godmode = false
 local dubjump = false
 local amp = false
 local legit = false
+local pre_rec = nil
 local vertDX, vertLN = 10, 0
 local horzDX, horzLN = 5, 3
 local ws = 20
@@ -148,7 +149,7 @@ end
 do
     Tabs.Main:AddButton({
         Title = "Installation/TAS",
-        Description = "Install available TAS/Fe2 files.",
+        Description = "Install available TAS/FE2 files.",
         Callback = function()
             Window:Dialog({
                 Title = "Confirmation",
@@ -171,42 +172,111 @@ do
         end
     })
 
-    local FE2_AUTO = Tabs.Main:AddToggle("TAS_AP", {
-        Title = "Runtime/TAS", 
-        Description = "Automate transcripts of TAS/FE2 files.", 
-        Default = false,
+    Tabs.Main:AddInput("no_name_thing", {
+        Title = "Identifier/TAS",
+        Default = "nil",
+        Description = "Name for TAS/FE2 files.",
+        Placeholder = "nil",
+        Numeric = false, -- Only allows numbers
+        Finished = true, -- Only calls callback when you press enter
         Callback = function(v)
-            TAS_AUTOPLAYER = v
+            pre_rec = v
         end
     })
 
-    Tabs.Main:AddButton({
-        Title = "Editor/TAS",
-        Description = "Create your own TAS/Fe2 files.",
-        Callback = function()
-            Window:Dialog({
-                Title = "Confirmation",
-                Content = "Are you sure you want to open the TAS Editor?",
-                Buttons = {
-                    {
-                        Title = "Confirm",
-                        Callback = function()
-			                pcall(function()
-                                getgenv().custom_map_name = "tas_"..tostring(math.random(-9999, 9999))
-                                    loadstring(game:HttpGet('https://raw.githubusercontent.com/1337-svg/6731/index_client/001'))()
-			                end)
-                        end
-                    },
-                    {
-                        Title = "Cancel",
-                        Callback = function()
-                            print("tas_"..tostring(math.random(-9999, 9999)).." denied")
-                        end
+    if game.PlaceId == 11951199229 or game.PlaceId == 12074120006 then
+        local CM_AUTO = Tabs.Main:AddToggle("TAS_AP83", {
+            Title = "Runtime/TAS [CM]", 
+            Description = "Automate transcripts of community TAS/FE2 files.", 
+            Default = false,
+            Callback = function(v)
+                TAS_AUTOPLAYER2 = v
+            end
+        })
+
+        Tabs.Main:AddButton({
+            Title = "Editor/TAS [CM]",
+            Description = "Create your own Community TAS/FE2 files.",
+            Callback = function()
+                if not pre_rec then
+                    Fluent:Notify({
+                        Title = tostring(game:GetService("Players").LocalPlayer).."/ani.watch",
+                        Content = "Identifier/TAS has not been set.",
+                        Duration = 4
+                    }) return nil
+                end
+
+                Window:Dialog({
+                    Title = "Confirmation",
+                    Content = "Are you sure you want to open the CM TAS Editor?",
+                    Buttons = {
+                        {
+                            Title = "Confirm",
+                            Callback = function()
+                                pcall(function()
+                                    getgenv().custom_map_name_2 = pre_rec or "tascm_"..tostring(math.random(-9999, 9999))
+                                    loadstring(game:HttpGet('https://raw.githubusercontent.com/1337-svg/6731/index_client/001cm'))()
+                                end)
+                            end
+                        },
+                        {
+                            Title = "Cancel",
+                            Callback = function()
+                                print((pre_rec or "tascm_"..tostring(math.random(-9999, 9999)).." denied"))
+                            end
+                        }
                     }
-                }
-            })
-        end
-    })
+                })
+            end
+        })
+    else
+        local FE2_AUTO = Tabs.Main:AddToggle("TAS_AP", {
+            Title = "Runtime/TAS", 
+            Description = "Automate transcripts of TAS/FE2 files.", 
+            Default = false,
+            Callback = function(v)
+                TAS_AUTOPLAYER = v
+            end
+        })
+
+        Tabs.Main:AddButton({
+            Title = "Editor/TAS",
+            Description = "Create your own TAS/FE2 files.",
+            Callback = function()
+                if not pre_rec then
+                    Fluent:Notify({
+                        Title = tostring(game:GetService("Players").LocalPlayer).."/ani.watch",
+                        Content = "Identifier/TAS has not been set.",
+                        Duration = 4
+                    }) return nil
+                end
+
+                Window:Dialog({
+                    Title = "Confirmation",
+                    Content = "Are you sure you want to open the TAS Editor?",
+                    Buttons = {
+                        {
+                            Title = "Confirm",
+                            Callback = function()
+                                pcall(function()
+                                    getgenv().custom_map_name = pre_rec or "tascm_"..tostring(math.random(-9999, 9999))
+                                    loadstring(game:HttpGet('https://raw.githubusercontent.com/1337-svg/6731/index_client/001'))()
+                                end)
+                            end
+                        },
+                        {
+                            Title = "Cancel",
+                            Callback = function()
+                                print((pre_rec or "tas_"..tostring(math.random(-9999, 9999)).." denied"))
+                            end
+                        }
+                    }
+                })
+            end
+        })
+    end
+
+    
 
     local ERS = Tabs.Main:AddButton({
         Title = "Panic/Rejoin",
@@ -274,46 +344,6 @@ do
             horzDX = v
         end
     })
-
-    if game.PlaceId == 11951199229 or game.PlaceId == 12074120006 then
-        local CM_AUTO = Tabs.Main:AddToggle("TAS_AP83", {
-            Title = "Runtime/TAS [CM]", 
-            Description = "Automate transcripts of community TAS/FE2 files.", 
-            Default = false,
-            Callback = function(v)
-                TAS_AUTOPLAYER2 = v
-            end
-        })
-
-        Tabs.Main:AddButton({
-            Title = "Editor/TAS [CM]",
-            Description = "Create your own Community TAS/Fe2 files.",
-            Callback = function()
-                Window:Dialog({
-                    Title = "Confirmation",
-                    Content = "Are you sure you want to open the CM TAS Editor?",
-                    Buttons = {
-                        {
-                            Title = "Confirm",
-                            Callback = function()
-                                pcall(function()
-                                    getgenv().custom_map_name_2 = "tascm_"..tostring(math.random(-9999, 9999))
-                                    loadstring(game:HttpGet('https://raw.githubusercontent.com/1337-svg/6731/index_client/001cm'))()
-                                end)
-                            end
-                        },
-                        {
-                            Title = "Cancel",
-                            Callback = function()
-                                print("tascm_"..tostring(math.random(-9999, 9999)).." denied")
-                            end
-                        }
-                    }
-                })
-            end
-        })
-
-    end
 
     -- UTIL SECTION
     local FE2_DUBJ = Tabs.Util:AddKeybind("TAS_FE2jump", {
@@ -397,6 +427,19 @@ do
     })
 
     -- TAS SECTION
+    for i,v in pairs(map_tas) do
+        Tabs.Task:AddInput(tostring(math.random(-5000, 5000)), {
+            Title = tostring(i),
+            Default = tostring(v),
+            Placeholder = "FileName",
+            Numeric = false,
+            Callback = function(cb)
+                map_tas[tostring(i)] = cb
+            end
+        })
+    end
+
+    --[[
     local Blue_Moon_TAS = Tabs.Task:AddInput("TOOL_004", {
         Title = "Blue Moon [CRAZY]",
         Default = "bm1",
@@ -505,7 +548,7 @@ do
         Callback = function(v)
             map_tas["Abandoned Harbour"] = v
         end
-    })
+    })]]
 end
 
 -- Interface & Save Managers
