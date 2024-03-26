@@ -621,8 +621,7 @@ local function Wallhop()
 	end
 	
 	if lowestindex and lowestvalue.Instance.ClassName ~= "TrussPart" then
-		char.Humanoid.AutoRotate = false
-		QueueReset(.2)
+		QueueReset(.205)
 	else
 		char.Humanoid.AutoRotate = true
 	end
@@ -644,6 +643,7 @@ task.spawn(function()
 						game:GetService("Players").LocalPlayer.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
                         if IsWall.Instance.ClassName ~= "TrussPart" then
                             if char:FindFirstChild('Humanoid'):GetState() ~= Enum.HumanoidStateType.Landed and char:FindFirstChild('Humanoid'):GetState() ~= Enum.HumanoidStateType.Running then
+                                char.Humanoid.AutoRotate = false
 						        rp.CFrame = (rp.CFrame * CFrame.Angles(0, (RayToDotVector(IsWall) + math.random(-0.174533, 0.174533)), 0))
                             end
                         end
