@@ -819,7 +819,7 @@ else
 end
 getgenv().already_loaded = true
 spawn(function()
-	while wait(5) do
+	while wait(3) do
 		if Fluent.Unloaded then
 			getgenv().already_loaded = nil
 			break
