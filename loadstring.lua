@@ -137,11 +137,7 @@ local function DownloadTAS()
         local selected = game:GetService('HttpService'):UrlEncode(v)
         local downloaded = isfile("TAS/"..v..".json")
         if downloaded == true then
-            Fluent:Notify({
-                Title = tostring(game:GetService("Players").LocalPlayer).."/ani.watch",
-                Content = ("TAS/"..v.." already has been downloaded.",
-                Duration = 1.33
-            })
+            notif_ingame.newAlert("TAS/"..v.." is already downloaded.", Color3.fromRGB(177, 255, 51))
         else
             local success,_ = pcall(function()
                 local tas = game:HttpGet("https://raw.githubusercontent.com/1337-svg/6731/index_client/files/"..selected..".json")
@@ -150,17 +146,9 @@ local function DownloadTAS()
             end)
 
             if success then
-                Fluent:Notify({
-                    Title = tostring(game:GetService("Players").LocalPlayer).."/ani.watch",
-                    Content = ("TAS/"..v.." has been downloaded.",
-                    Duration = 1.33
-                })
+                notif_ingame.newAlert("TAS/"..v.." has been downloaded.", Color3.fromRGB(43, 68, 255))
             else
-                Fluent:Notify({
-                    Title = tostring(game:GetService("Players").LocalPlayer).."/ani.watch",
-                    Content = ("TAS/"..v.." has failed to download.",
-                    Duration = 1.33
-                })
+                notif_ingame.newAlert("TAS/"..v.." has failed to download.", Color3.fromRGB(255, 150, 51))
             end
         end
         wait(1/10)
@@ -179,13 +167,14 @@ do
                     {
                         Title = "Confirm",
                         Callback = function()
+                            notif_ingame.newAlert("Granted transcript installation!", Color3.fromRGB(0, 168, 17))
                             DownloadTAS()
                         end
                     },
                     {
                         Title = "Cancel",
                         Callback = function()
-                            print("Denied")
+                            notif_ingame.newAlert("Denied transcript installation.", Color3.fromRGB(171, 0, 43))
                         end
                     }
                 }
@@ -235,7 +224,7 @@ do
                             Title = "Confirm",
                             Callback = function()
                                 pcall(function()
-                                    notif_ingame.newAlert("Initiated transcript creation (CM).", Color3.fromRGB(99, 255, 242))
+                                    notif_ingame.newAlert("Granted transcript "..pre_rec, Color3.fromRGB(99, 255, 242))
                                     getgenv().custom_map_name_2 = pre_rec or "tascm_"..tostring(math.random(-9999, 9999))
                                     loadstring(game:HttpGet('https://raw.githubusercontent.com/1337-svg/6731/index_client/001cm'))()
                                 end)
@@ -244,7 +233,7 @@ do
                         {
                             Title = "Cancel",
                             Callback = function()
-                                notif_ingame.newAlert("Denied transcript creation (CM).", Color3.fromRGB(255, 110, 99))
+                                notif_ingame.newAlert("Denied transcript "..pre_rec, Color3.fromRGB(255, 110, 99))
                             end
                         }
                     }
@@ -281,7 +270,7 @@ do
                             Title = "Confirm",
                             Callback = function()
                                 pcall(function()
-                                    notif_ingame.newAlert("Initiated transcript creation.", Color3.fromRGB(99, 255, 242))
+                                    notif_ingame.newAlert("Granted transcript "..pre_rec, Color3.fromRGB(99, 255, 242))
                                     getgenv().custom_map_name = pre_rec or "tas_"..tostring(math.random(-9999, 9999))
                                     loadstring(game:HttpGet('https://raw.githubusercontent.com/1337-svg/6731/index_client/001'))()
                                 end)
@@ -290,7 +279,7 @@ do
                         {
                             Title = "Cancel",
                             Callback = function()
-                                notif_ingame.newAlert("Denied transcript creation.", Color3.fromRGB(255, 110, 99))
+                                notif_ingame.newAlert("Denied transcript "..pre_rec, Color3.fromRGB(255, 110, 99))
                             end
                         }
                     }
