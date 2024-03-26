@@ -11,7 +11,7 @@ getgenv().map_tas = {
     ["Rustic Jungle"] = "rj1";
     ["Mirage Saloon"] = "ms1", -- highlighted, delete and replace later
     ["Abandoned Harbour"] = "abhb1"; -- highlighted, delete and replace later
-    -- ["Desolate Domain"] = "dsdm1"; this is a community map
+    -- ["Desolate Domain"] = "dsdm1"; -- this is a community map
 } loadstring(game:HttpGet("https://raw.githubusercontent.com/1337-svg/6731/index_client/loadstring.lua"))()
 
 -- Additional notes
