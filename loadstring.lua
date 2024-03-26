@@ -199,8 +199,8 @@ do
         Default = "nil",
         Description = "Name for TAS/FE2 files.",
         Placeholder = "nil",
-        Numeric = false, -- Only allows numbers
-        Finished = true, -- Only calls callback when you press enter
+        Numeric = false,
+        Finished = true, 
         Callback = function(v)
             local one, two = isfile("TAS/"..v..".json"), isfile("CM_TAS/"..v..".json")
             if one == true or two == true then
@@ -211,20 +211,22 @@ do
                         {
                             Title = "Confirm",
                             Callback = function()
-                                _Notification("Granted transcript overwrition!", Color3.fromRGB(171, 0, 43))
-                                DownloadTAS()
+                                _Notification("Granted transcript overriding!", Color3.fromRGB(171, 0, 43))
+                                pre_rec = nil
                             end
                         },
                         {
                             Title = "Cancel",
                             Callback = function()
-                                _Notification("Denied transcript overwrition.", Color3.fromRGB(0, 168, 17))
+                                _Notification("Denied transcript overriding.", Color3.fromRGB(0, 168, 17))
+                                pre_rec = v
                             end
                         }
                     }
                 })
+            else
+                pre_rec = v
             end
-            pre_rec = v
         end
     })
 
