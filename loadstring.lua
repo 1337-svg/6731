@@ -38,7 +38,6 @@ local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/
 local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/1337-svg/6731/index_client/settings/sm.lua"))()
 local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/1337-svg/6731/index_client/settings/im.lua"))()
 
-local notif_ingame = getsenv(game.Players.LocalPlayer.PlayerScripts["CL_MAIN_GameScript"])
 local function BeforeLaunch()
     if game:GetService("Players").LocalPlayer.PlayerGui:WaitForChild("GameGui").Loading.Visible == true then
         return true
@@ -95,12 +94,15 @@ end
 local Window = Fluent:CreateWindow({
     Title = "Hyperblox Panel",
     SubTitle = tostring(game:GetService("Players").LocalPlayer).."/ani.watch",
-    TabWidth = 125,
+    TabWidth = 110,
     Size = UDim2.fromOffset(615, 300),
-    Acrylic = true, -- The blur may be detectable, setting this to false disables blur entirely
+    Acrylic = false, -- The blur may be detectable, setting this to false disables blur entirely
     Theme = "Darker",
-    MinimizeKey = Enum.KeyCode.Semicolon-- Used when theres no MinimizeKeybind
+    MinimizeKey = Enum.KeyCode.Semicolon -- Used when theres no MinimizeKeybind
 })
+
+local notif_ingame = getsenv(game.Players.LocalPlayer.PlayerScripts["CL_MAIN_GameScript"])
+local save = notif_ingame.newAlert
 
 local save = getsenv(game:GetService("Players").LocalPlayer.PlayerScripts["CL_MAIN_GameScript"]).takeAir
 local TAS_AUTOPLAYER = false
@@ -132,12 +134,22 @@ for _,v in ipairs(getnilinstances()) do
 	end
 end
 
+local function _Notification(scr, sat)
+    -- notif_ingame.newAlert("Granted transcript installation!", Color3.fromRGB(0, 168, 17))
+    spawn(function()
+        wait(1/30)
+        pcall(function()
+            notif_ingame.newAlert(scr, sat)
+        end)
+    end)
+end
+
 local function DownloadTAS()
     for _,v in pairs(map_tas) do
         local selected = game:GetService('HttpService'):UrlEncode(v)
         local downloaded = isfile("TAS/"..v..".json")
         if downloaded == true then
-            notif_ingame.newAlert("TAS/"..v.." is already downloaded.", Color3.fromRGB(177, 255, 51))
+            _Notification("TAS/"..v.." is already downloaded.", Color3.fromRGB(177, 255, 51))
         else
             local success,_ = pcall(function()
                 local tas = game:HttpGet("https://raw.githubusercontent.com/1337-svg/6731/index_client/files/"..selected..".json")
@@ -146,9 +158,9 @@ local function DownloadTAS()
             end)
 
             if success then
-                notif_ingame.newAlert("TAS/"..v.." has been downloaded.", Color3.fromRGB(43, 68, 255))
+                _Notification("TAS/"..v.." has been downloaded.", Color3.fromRGB(43, 68, 255))
             else
-                notif_ingame.newAlert("TAS/"..v.." has failed to download.", Color3.fromRGB(255, 150, 51))
+                _Notification("TAS/"..v.." has failed to download.", Color3.fromRGB(255, 150, 51))
             end
         end
         wait(1/10)
@@ -167,14 +179,14 @@ do
                     {
                         Title = "Confirm",
                         Callback = function()
-                            notif_ingame.newAlert("Granted transcript installation!", Color3.fromRGB(0, 168, 17))
+                            _Notification("Granted transcript installation!", Color3.fromRGB(0, 168, 17))
                             DownloadTAS()
                         end
                     },
                     {
                         Title = "Cancel",
                         Callback = function()
-                            notif_ingame.newAlert("Denied transcript installation.", Color3.fromRGB(171, 0, 43))
+                            _Notification("Denied transcript installation.", Color3.fromRGB(171, 0, 43))
                         end
                     }
                 }
@@ -209,11 +221,8 @@ do
             Description = "Create your own Community TAS/FE2 files.",
             Callback = function()
                 if not pre_rec then
-                    Fluent:Notify({
-                        Title = tostring(game:GetService("Players").LocalPlayer).."/ani.watch",
-                        Content = "Identifier/TAS has not been set.",
-                        Duration = 4
-                    }) return nil
+                    _Notification("Identifier/TAS has not been set", Color3.fromRGB(171, 0, 43))
+                    return nil
                 end
 
                 Window:Dialog({
@@ -224,7 +233,7 @@ do
                             Title = "Confirm",
                             Callback = function()
                                 pcall(function()
-                                    notif_ingame.newAlert("Granted transcript "..pre_rec, Color3.fromRGB(99, 255, 242))
+                                    _Notification("Granted transcript "..pre_rec, Color3.fromRGB(99, 255, 242))
                                     getgenv().custom_map_name_2 = pre_rec or "tascm_"..tostring(math.random(-9999, 9999))
                                     loadstring(game:HttpGet('https://raw.githubusercontent.com/1337-svg/6731/index_client/001cm'))()
                                 end)
@@ -233,7 +242,7 @@ do
                         {
                             Title = "Cancel",
                             Callback = function()
-                                notif_ingame.newAlert("Denied transcript "..pre_rec, Color3.fromRGB(255, 110, 99))
+                                _Notification("Denied transcript "..pre_rec, Color3.fromRGB(171, 0, 43))
                             end
                         }
                     }
@@ -255,11 +264,8 @@ do
             Description = "Create your own TAS/FE2 files.",
             Callback = function()
                 if not pre_rec then
-                    Fluent:Notify({
-                        Title = tostring(game:GetService("Players").LocalPlayer).."/ani.watch",
-                        Content = "Identifier/TAS has not been set.",
-                        Duration = 4
-                    }) return nil
+                    _Notification("Identifier/TAS has not been set", Color3.fromRGB(171, 0, 43))
+                    return nil
                 end
 
                 Window:Dialog({
@@ -270,7 +276,7 @@ do
                             Title = "Confirm",
                             Callback = function()
                                 pcall(function()
-                                    notif_ingame.newAlert("Granted transcript "..pre_rec, Color3.fromRGB(99, 255, 242))
+                                    _Notification("Granted transcript "..pre_rec, Color3.fromRGB(99, 255, 242))
                                     getgenv().custom_map_name = pre_rec or "tas_"..tostring(math.random(-9999, 9999))
                                     loadstring(game:HttpGet('https://raw.githubusercontent.com/1337-svg/6731/index_client/001'))()
                                 end)
@@ -279,7 +285,7 @@ do
                         {
                             Title = "Cancel",
                             Callback = function()
-                                notif_ingame.newAlert("Denied transcript "..pre_rec, Color3.fromRGB(255, 110, 99))
+                                _Notification("Denied transcript "..pre_rec, Color3.fromRGB(171, 0, 43))
                             end
                         }
                     }
