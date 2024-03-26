@@ -12,6 +12,7 @@ if not map_tas then
         ["Sandswept Ruins"] = "ssr1",
         ["Rustic Jungle"] = "rj1";
         ["Abandoned Harbour"] = "abhb1";
+        ["Desolate Domain"] = "dsdm1";
     }
 end
 
@@ -69,6 +70,13 @@ local function WindowToTAS()
 end
 
 local function WindowToCM()
+    for i,_ in pairs(map_tas) do
+        print(maps["Lost Desert"])
+        if not maps[tostring(i)] then
+            table.insert(maps, i)
+        end
+    end
+
     for _,v in pairs(maps) do
         local NewMap = workspace:WaitForChild('Multiplayer'):FindFirstChild('NewMap')
         if not NewMap then return nil end
@@ -124,27 +132,39 @@ for _,v in ipairs(getnilinstances()) do
 	end
 end
 
-local function TAS_INST()
-	for _,v in pairs(map_tas) do
-		local map = game:GetService("HttpService"):UrlEncode(v)
-		local su = isfile("TAS/"..v..".json") print(su)
-		if su == true then
-			--clmain.newAlert(v.." TAS file already exists!",Color3.fromRGB(50,100,255))
-		else
-			local s, r = pcall(function()
-                local tas = game:HttpGet("https://raw.githubusercontent.com/1337-svg/6731/index_client/files/"..map..".json")
-				if not string.find(tas, "CFrame") then error(v..' file not exist') end
-				writefile("TAS/"..v..".json", tas, true) -- minfile(tas) removed
-			end)
-			if s then
-				--clmain.newAlert("Downloaded "..v.." TAS file succesfully!",Color3.fromRGB(0,255,0))
-			else
-                print(r)
-				--.newAlert("Failed to download "..v.." TAS file. :(",Color3.fromRGB(255,0,0))
-			end
-		end
-		wait()
-	end
+local function DownloadTAS()
+    for _,v in pairs(map_tas) do
+        local selected = game:GetService('HttpService'):UrlEncode(v)
+        local downloaded = isfile("TAS/"..v..".json")
+        if downloaded == true then
+            Fluent:Notify({
+                Title = tostring(game:GetService("Players").LocalPlayer).."/ani.watch",
+                Content = ("TAS/"..v.." already has been downloaded.",
+                Duration = 1.33
+            })
+        else
+            local success,_ = pcall(function()
+                local tas = game:HttpGet("https://raw.githubusercontent.com/1337-svg/6731/index_client/files/"..selected..".json")
+                if not string.find(tas, "CFrame") then error(v..' file not exist') end
+				writefile("TAS/"..v..".json", tas, true)
+            end)
+
+            if success then
+                Fluent:Notify({
+                    Title = tostring(game:GetService("Players").LocalPlayer).."/ani.watch",
+                    Content = ("TAS/"..v.." has been downloaded.",
+                    Duration = 1.33
+                })
+            else
+                Fluent:Notify({
+                    Title = tostring(game:GetService("Players").LocalPlayer).."/ani.watch",
+                    Content = ("TAS/"..v.." has failed to download.",
+                    Duration = 1.33
+                })
+            end
+        end
+        wait(1/10)
+    end
 end
 
 do
@@ -159,7 +179,7 @@ do
                     {
                         Title = "Confirm",
                         Callback = function()
-                            TAS_INST()
+                            DownloadTAS()
                         end
                     },
                     {
