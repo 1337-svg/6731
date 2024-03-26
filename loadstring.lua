@@ -1,4 +1,5 @@
 -- Credits to Altlexon, Aniwatch
+if getgenv().already_loaded then return end
 if not map_tas then
     getgenv().map_tas = {
         ["Blue Moon"] = "bm1",
@@ -771,4 +772,14 @@ task.spawn(function()
         end
         if Fluent.Unloaded then break end
     end
+end)
+
+getgenv().already_loaded = true
+spawn(function()
+	while wait(5) do
+		if Fluent.Unloaded then
+			getgenv().already_loaded = nil
+			break
+		end
+	end
 end)
