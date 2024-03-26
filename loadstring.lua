@@ -212,14 +212,14 @@ do
                             Title = "Confirm",
                             Callback = function()
                                 _Notification("Granted transcript overriding!", Color3.fromRGB(171, 0, 43))
-                                pre_rec = nil
+                                pre_rec = v
                             end
                         },
                         {
                             Title = "Cancel",
                             Callback = function()
                                 _Notification("Denied transcript overriding.", Color3.fromRGB(0, 168, 17))
-                                pre_rec = v
+                                pre_rec = nil
                             end
                         }
                     }
