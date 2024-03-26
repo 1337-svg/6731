@@ -38,6 +38,7 @@ local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/
 local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/1337-svg/6731/index_client/settings/sm.lua"))()
 local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/1337-svg/6731/index_client/settings/im.lua"))()
 
+local notif_ingame = getsenv(game.Players.LocalPlayer.PlayerScripts["CL_MAIN_GameScript"])
 local function BeforeLaunch()
     if game:GetService("Players").LocalPlayer.PlayerGui:WaitForChild("GameGui").Loading.Visible == true then
         return true
@@ -71,7 +72,6 @@ end
 
 local function WindowToCM()
     for i,_ in pairs(map_tas) do
-        print(maps["Lost Desert"])
         if not maps[tostring(i)] then
             table.insert(maps, i)
         end
@@ -235,6 +235,7 @@ do
                             Title = "Confirm",
                             Callback = function()
                                 pcall(function()
+                                    notif_ingame.newAlert("Initiated transcript creation (CM).", Color3.fromRGB(99, 255, 242))
                                     getgenv().custom_map_name_2 = pre_rec or "tascm_"..tostring(math.random(-9999, 9999))
                                     loadstring(game:HttpGet('https://raw.githubusercontent.com/1337-svg/6731/index_client/001cm'))()
                                 end)
@@ -243,7 +244,7 @@ do
                         {
                             Title = "Cancel",
                             Callback = function()
-                                print((pre_rec or "tascm_"..tostring(math.random(-9999, 9999)).." denied"))
+                                notif_ingame.newAlert("Denied transcript creation (CM).", Color3.fromRGB(255, 110, 99))
                             end
                         }
                     }
@@ -280,7 +281,8 @@ do
                             Title = "Confirm",
                             Callback = function()
                                 pcall(function()
-                                    getgenv().custom_map_name = pre_rec or "tascm_"..tostring(math.random(-9999, 9999))
+                                    notif_ingame.newAlert("Initiated transcript creation.", Color3.fromRGB(99, 255, 242))
+                                    getgenv().custom_map_name = pre_rec or "tas_"..tostring(math.random(-9999, 9999))
                                     loadstring(game:HttpGet('https://raw.githubusercontent.com/1337-svg/6731/index_client/001'))()
                                 end)
                             end
@@ -288,7 +290,7 @@ do
                         {
                             Title = "Cancel",
                             Callback = function()
-                                print((pre_rec or "tas_"..tostring(math.random(-9999, 9999)).." denied"))
+                                notif_ingame.newAlert("Denied transcript creation.", Color3.fromRGB(255, 110, 99))
                             end
                         }
                     }
