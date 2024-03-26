@@ -202,6 +202,29 @@ do
         Numeric = false, -- Only allows numbers
         Finished = true, -- Only calls callback when you press enter
         Callback = function(v)
+            local one, two = isfile("TAS/"..v..".json"), isfile("CM_TAS/"..v..".json")
+            if one == true or two == true then
+                Window:Dialog({
+                Title = "Confirmation",
+                Content = "Are you sure you want to overwrite TAS/"..v.."?",
+                Buttons = {
+                    {
+                        Title = "Confirm",
+                        Callback = function()
+                            _Notification("Granted transcript overwrition", Color3.fromRGB(171, 0, 43))
+                            DownloadTAS()
+                        end
+                    },
+                    {
+                        Title = "Cancel",
+                        Callback = function()
+                            _Notification("Denied transcript overwrition", Color3.fromRGB(0, 168, 17))
+                        end
+                    }
+                }
+            })
+        end
+            end
             pre_rec = v
         end
     })
