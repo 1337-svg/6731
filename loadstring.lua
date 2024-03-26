@@ -750,33 +750,32 @@ if game.PlaceId == 11951199229 or game.PlaceId == 12074120006 then
             if Fluent.Unloaded then break end
         end
     end)
-end
-
-task.spawn(function()
-    while wait(.33) do
-        if TAS_AUTOPLAYER == true then
-            local s,r = pcall(function()
-                if WindowToTAS() then
-                    if WindowToTAS() == "Abandoned Harbour" then
-                        if workspace.Multiplayer:WaitForChild('NewMap')._Variants:FindFirstChild('_Vairant') then
-                            getgenv().selected_file = "abhb1_r2"
-                            loadstring(game:HttpGet('https://raw.githubusercontent.com/1337-svg/6731/index_client/002'))()
-                        elseif workspace.Multiplayer:WaitForChild('NewMap')._Variants:FindFirstChild('_Variant') then
-                            getgenv().selected_file = "abhb1_r2"
+else
+    task.spawn(function()
+        while wait(.33) do
+            if TAS_AUTOPLAYER == true then
+                local s,r = pcall(function()
+                    if WindowToTAS() then
+                        if WindowToTAS() == "Abandoned Harbour" then
+                            if workspace.Multiplayer:WaitForChild('NewMap')._Variants:FindFirstChild('_Vairant') then
+                                getgenv().selected_file = "abhb1_r2"
+                                loadstring(game:HttpGet('https://raw.githubusercontent.com/1337-svg/6731/index_client/002'))()
+                            elseif workspace.Multiplayer:WaitForChild('NewMap')._Variants:FindFirstChild('_Variant') then
+                                getgenv().selected_file = "abhb1_r2"
+                                loadstring(game:HttpGet('https://raw.githubusercontent.com/1337-svg/6731/index_client/002'))()
+                            end
+                        else
+                            getgenv().selected_file = map_tas[WindowToTAS()]
                             loadstring(game:HttpGet('https://raw.githubusercontent.com/1337-svg/6731/index_client/002'))()
                         end
-                    else
-                        getgenv().selected_file = map_tas[WindowToTAS()]
-                        loadstring(game:HttpGet('https://raw.githubusercontent.com/1337-svg/6731/index_client/002'))()
                     end
-                end
-            end)
-            if r then warn(r) end
+                end)
+                if r then warn(r) end
+            end
+            if Fluent.Unloaded then break end
         end
-        if Fluent.Unloaded then break end
-    end
-end)
-
+    end)
+end
 getgenv().already_loaded = true
 spawn(function()
 	while wait(5) do
