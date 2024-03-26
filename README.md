@@ -1,2 +1,1 @@
-Flood Escape: 2 !!Now!!
-Flood Escape: Hybrid !!Soon!!
+Only compatible with Flood Escape 2, Flood Escape: Hybrid will be added in the future.
