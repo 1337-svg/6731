@@ -605,7 +605,6 @@ local function QueueReset(a)
 			if (tick() - Start) > a then
 				hm.AutoRotate = true
 				InLine = false
-				print((tick() - Start))
 				connection:Disconnect()
 			end
 		end)
@@ -665,7 +664,7 @@ local function Wallhop()
 	end
 	
 	if lowestindex and lowestvalue.Instance.ClassName ~= "TrussPart" then
-		QueueReset(.205)
+		QueueReset(.195)
 	else
 		char.Humanoid.AutoRotate = true
 	end
