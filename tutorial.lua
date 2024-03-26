@@ -13,3 +13,7 @@ getgenv().map_tas = {
     ["Abandoned Harbour"] = "abhb1"; -- highlighted, delete and replace later
     -- ["Desolate Domain"] = "dsdm1"; this is a community map
 } loadstring(game:HttpGet("https://raw.githubusercontent.com/1337-svg/6731/index_client/loadstring.lua"))()
+
+-- Additional notes
+-- You can update & execute map_tas without any errors/issues (no need to remove loadstring)
+-- Keep track of your files, don't type in a filename identical to a pre existing one.
