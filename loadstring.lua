@@ -625,14 +625,15 @@ local function RayToDotVector(ray)
 
 	local Dot = math.pi - math.acos(RootPart.CFrame.LookVector:Dot(ray.Normal.Unit))
 	local Cross = RootPart.CFrame.LookVector:Cross(DirectionRelativeToSurface)
-
+	
+	local DIR = nil
 	local Correction, Dividend = nil
-	if Cross.Y < 0 then Correction = math.abs(Dot - math.pi/2) 
-	else Correction = Dot - math.pi/2
+	if Cross.Y < 0 then Correction = math.abs(Dot - math.pi/2) DIR = -2
+	else Correction = Dot - math.pi/2 DIR = 2
 	end
 
 	Dividend = math.abs(Dot/math.pi)
-	return Correction
+	return Correction, DIR
 end
 
 local function Wallhop()
@@ -662,9 +663,13 @@ local function Wallhop()
 			end
 		end
 	end
-	
+
 	if lowestindex and lowestvalue.Instance.ClassName ~= "TrussPart" then
-		QueueReset(.195)
+		QueueReset(.2)
+	elseif lowestvalue.Instance.ClassName == "TrussPart" then
+		task.delay(1/60, function()
+			char.Humanoid.AutoRotate = true
+		end)
 	else
 		char.Humanoid.AutoRotate = true
 	end
@@ -683,18 +688,17 @@ task.spawn(function()
 				if legit then
 					local IsFloor, IsWall = Wallhop()
 					if IsWall then
+						if game:GetService("Players").LocalPlayer.Character.Humanoid:GetState() ~= Enum.HumanoidStateType.Running then
+							char.Humanoid.AutoRotate = false
+							local perfection, randomizer = RayToDotVector(IsWall)
+							rp.CFrame = (rp.CFrame * CFrame.Angles(0, perfection + randomizer, 0))
+						end
 						game:GetService("Players").LocalPlayer.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
-                        if IsWall.Instance.ClassName ~= "TrussPart" then
-                            if char:FindFirstChild('Humanoid'):GetState() ~= Enum.HumanoidStateType.Landed and char:FindFirstChild('Humanoid'):GetState() ~= Enum.HumanoidStateType.Running then
-                                char.Humanoid.AutoRotate = false
-						        rp.CFrame = (rp.CFrame * CFrame.Angles(0, (RayToDotVector(IsWall) + math.random(-0.174533, 0.174533)), 0))
-                            end
-                        end
 					elseif IsFloor then
 						game:GetService("Players").LocalPlayer.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
 					end
 				else
-					game:GetService("Players").LocalPlayer.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+				    game:GetService("Players").LocalPlayer.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
 				end
 			end
 		end
@@ -702,8 +706,8 @@ task.spawn(function()
 
 	while wait(3) do
 		if Fluent.Unloaded then
-			SP:Disconnect()
-			break
+		    SP:Disconnect()
+		    break
 		end
 	end
 end)
