@@ -669,8 +669,8 @@ local function RayToDotVector(ray)
 	
 	local DIR = nil
 	local Correction, Dividend = nil
-	if Cross.Y < 0 then Correction = math.abs(Dot - math.pi/2) DIR = -2
-	else Correction = Dot - math.pi/2 DIR = 2
+	if Cross.Y < 0 then Correction = math.abs(Dot - math.pi/2) DIR = -.05
+	else Correction = Dot - math.pi/2 DIR = .05
 	end
 
 	Dividend = math.abs(Dot/math.pi)
