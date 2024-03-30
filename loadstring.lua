@@ -436,6 +436,12 @@ do
         Callback = function(v)
             local PlrCF = game:GetService("Players").LocalPlayer.Character:WaitForChild('HumanoidRootPart').CFrame
             game:GetService("Players").LocalPlayer.Character:PivotTo(PlrCF * CFrame.new(0, disY, disX))
+            if legit then
+                game:GetService('Players').LocalPlayer.Character.Humanoid.PlatformStand = false
+                task.delay(1, function()
+                    game:GetService('Players').LocalPlayer.Character.Humanoid.PlatformStand = true
+                end)
+            end
         end
     })
 
