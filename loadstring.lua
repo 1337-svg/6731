@@ -122,6 +122,7 @@ local disY = 1.25
 
 local Tabs = {
     Main = Window:AddTab({ Title = "Essentials", Icon = "box" }),
+    Legit = Window:AddTab({ Title = "Realistic", Icon = "shield-check"}),
     Task = Window:AddTab({ Title = "Tasks", Icon = "compass" }),
     Util = Window:AddTab({ Title = "Utilities", Icon = "info" }),
     Settings = Window:AddTab({ Title = "Settings", Icon = "settings" }),
@@ -342,19 +343,32 @@ do
         end;
     })
 
-    local FE2_LEGIT = Tabs.Main:AddToggle("TAP_LEGIT", {
-        Title = "Legitimate", 
-        Description = "Tone down the evasiveness of certain options.", 
+    -- LEGIT SECTION
+    local FE2_LEGIT = Tabs.Legit:AddToggle("TAP_LEGIT", {
+        Title = "Realistic", 
+        Description = "Turn 'legit' mode on/off.", 
         Default = false,
         Callback = function(v)
         	legit = v
         end
     })
 
-    local FE2_RESTRC = Tabs.Main:AddInput("LEGIT_0063", {
-        Title = "Legitimate/Restriction",
+    local FE2_HorzLEGIT = Tabs.Legit:AddInput("LEGIT_001", {
+        Title = "Realistic Notation",
+        Default = "5",
+        Description = "How far you can 'wallhop' from a wall.",
+        Placeholder = "5",
+        Numeric = true, -- Only allows numbers
+        Finished = true, -- Only calls callback when you press enter
+        Callback = function(v)
+            horzDX = v
+        end
+    })
+
+    local FE2_RESTRC = Tabs.Legit:AddInput("LEGIT_0063", {
+        Title = "Realistic Leniency (Horizontal)",
         Default = "3",
-        Description = "How legitimate you want to be.",
+        Description = "How far you can jump from a platform (horizontally).",
         Placeholder = "3",
         Numeric = true, -- Only allows numbers
         Finished = true, -- Only calls callback when you press enter
@@ -363,27 +377,15 @@ do
         end
     })
 
-    local FE2_FloorLEGIT = Tabs.Main:AddInput("LEGIT_0012", {
-        Title = "Legitimate/Floor",
-        Default = "8",
-        Description = "How far you can infinite jump from a platform.",
-        Placeholder = "8",
-        Numeric = true, -- Only allows numbers
-        Finished = true, -- Only calls callback when you press enter
-        Callback = function(v)
-            vertDX = v
-        end
-    })
-
-    local FE2_HorzLEGIT = Tabs.Main:AddInput("LEGIT_001", {
-        Title = "Legitimate/Wall",
+    local FE2_FloorLEGIT = Tabs.Legit:AddInput("LEGIT_0012", {
+        Title = "Realistic Leninecy (Vertical)",
         Default = "5",
-        Description = "How far you can 'wallhop' from a wall.",
+        Description = "How far you can jump from a platform (vertically).",
         Placeholder = "5",
         Numeric = true, -- Only allows numbers
         Finished = true, -- Only calls callback when you press enter
         Callback = function(v)
-            horzDX = v
+            vertDX = v
         end
     })
 
@@ -416,7 +418,7 @@ do
 
     local FE2_WalkSpeed = Tabs.Util:AddInput("FE2_UT1", {
         Title = "WalkSpeed",
-        Default = 20,
+        Default = 20.5,
         Placeholder = "20",
         Numeric = true, -- Only allows numbers
         Finished = true, -- Only calls callback when you press enter
@@ -492,105 +494,7 @@ do
             map_tas["Blue Moon"] = v
         end
     })
-
-    local Decaying_Silo_TAS = Tabs.Task:AddInput("TOOL_001", {
-        Title = "Decaying Silo [CRAZY]",
-        Default = "ds1",
-        Placeholder = "FileName",
-        Numeric = false, -- Only allows numbers
-        Finished = false, -- Only calls callback when you press enter
-        Callback = function(v)
-            map_tas["Decaying Silo"] = v
-        end
-    })
-
-    local Ignis_Peeks_TAS = Tabs.Task:AddInput("TOOL_002", {
-        Title = "Ignis Peaks [CRAZY]",
-        Default = "igp1",
-        Placeholder = "FileName",
-        Numeric = false, -- Only allows numbers
-        Finished = false, -- Only calls callback when you press enter
-        Callback = function(v)
-            map_tas["Ignis Peaks"] = v
-        end
-    })
-
-    local Mirage_Saloon_TAS = Tabs.Task:AddInput("TOOL_003", {
-        Title = "Mirage Saloon [CRAZY][HL]",
-        Default = "ms1",
-        Placeholder = "FileName",
-        Numeric = false, -- Only allows numbers
-        Finished = false, -- Only calls callback when you press enter
-        Callback = function(v)
-            map_tas["Mirage Saloon"] = v
-        end
-    })
-
-    local Poisonous_Chasm_TAS = Tabs.Task:AddInput("TOOL_008", {
-        Title = "Poisonous Chasm [CRAZY]",
-        Default = "pc1",
-        Placeholder = "FileName",
-        Numeric = false, -- Only allows numbers
-        Finished = false, -- Only calls callback when you press enter
-        Callback = function(v)
-            map_tas["Poisonous Chasm"] = v
-        end
-    })
-
-    local Active_Vol_Mines_TAS = Tabs.Task:AddInput("TOOL_005", {
-        Title = "Active Volcanic Mines [CRAZY]",
-        Default = "avm1",
-        Placeholder = "FileName",
-        Numeric = false, -- Only allows numbers
-        Finished = false, -- Only calls callback when you press enter
-        Callback = function(v)
-            map_tas["Active Volcanic Mines"] = v
-        end
-    })
-
-    local Snowy_Stronghold = Tabs.Task:AddInput("TOOL_006", {
-        Title = "Snowy Stronghold [CRAZY]",
-        Default = "ssh1",
-        Placeholder = "FileName",
-        Numeric = false, -- Only allows numbers
-        Finished = false, -- Only calls callback when you press enter
-        Callback = function(v)
-            map_tas["Snowy Stronghold"] = v
-        end
-    })
-
-    local Sandswept_Ruins = Tabs.Task:AddInput("TOOL_007", {
-        Title = "Sandswept Ruins [CRAZY]",
-        Default = "ssr1",
-        Placeholder = "FileName",
-        Numeric = false, -- Only allows numbers
-        Finished = false, -- Only calls callback when you press enter
-        Callback = function(v)
-            map_tas["Sandswept Ruins"] = v
-        end
-    })
-
-    local Rustic_Jungle = Tabs.Task:AddInput("TOOL_009", {
-        Title = "Rustic Jungle [CRAZY+]",
-        Default = "rj1",
-        Placeholder = "FileName",
-        Numeric = false, -- Only allows numbers
-        Finished = false, -- Only calls callback when you press enter
-        Callback = function(v)
-            map_tas["Rustic Jungle"] = v
-        end
-    })
-
-    local Abandoned_Harbour = Tabs.Task:AddInput("TOOL_010", {
-        Title = "Abandoned Harbour [CRAZY+][HL]",
-        Default = "abhb1",
-        Placeholder = "FileName",
-        Numeric = false, -- Only allows numbers
-        Finished = false, -- Only calls callback when you press enter
-        Callback = function(v)
-            map_tas["Abandoned Harbour"] = v
-        end
-    })]]
+    ]]
 end
 
 -- Interface & Save Managers
@@ -606,13 +510,13 @@ Window:SelectTab(1)
 Fluent:Notify({
     Title = tostring(game:GetService("Players").LocalPlayer).."/ani.watch",
     Content = "discord.gg/oneclan",
-    Duration = 5
+    Duration = 10
 })
 
 task.spawn(function()
 	local Highlight = Instance.new('Highlight')
-	Highlight.FillColor, Highlight.FillTransparency = Color3.fromRGB(255, 0, 4), .75
-	Highlight.OutlineColor, Highlight.OutlineTransparency = Color3.fromRGB(255, 102, 105), .1
+	Highlight.FillColor, Highlight.FillTransparency = Color3.fromRGB(255, 0, 4), .8
+	Highlight.OutlineColor, Highlight.OutlineTransparency = Color3.fromRGB(255, 102, 105), .2
 	Highlight.Name, Highlight.Adornee = tostring(math.random(-10000, 10000)), nil
 	Highlight.Enabled, Highlight.Parent = true, nil
 
@@ -663,16 +567,16 @@ local function RayToDotVector(ray)
 
 	local PositionRelativeToSurface = (ray.Instance.CFrame * CFrame.new(SurfaceCorrelationOffset))
 	local DirectionRelativeToSurface = Vector3.new((PositionRelativeToSurface - RootPart.Position).X, 0, (PositionRelativeToSurface - RootPart.Position).Z).Unit
-
+	
 	local Dot = math.pi - math.acos(RootPart.CFrame.LookVector:Dot(ray.Normal.Unit))
 	local Cross = RootPart.CFrame.LookVector:Cross(DirectionRelativeToSurface)
 	
 	local DIR = nil
 	local Correction, Dividend = nil
-	if Cross.Y < 0 then Correction = math.abs(Dot - math.pi/2) DIR = -.05
-	else Correction = Dot - math.pi/2 DIR = .05
+	if Cross.Y < 0 then Correction = math.abs(Dot - math.pi/2) DIR = -.15
+	else Correction = Dot - math.pi/2 DIR = .15
 	end
-
+	
 	Dividend = math.abs(Dot/math.pi)
 	return Correction, DIR
 end
@@ -683,11 +587,11 @@ local function Wallhop()
 	local params = RaycastParams.new()
 	params.FilterDescendantsInstances = {char}
 	
-	local floor = workspace:Blockcast(rp.CFrame, Vector3.new(horzLN, .5, horzLN), rp.CFrame.UpVector * -vertDX, params)
+	local floor = workspace:Blockcast(rp.CFrame, Vector3.new(horzLN, .1, horzLN), rp.CFrame.UpVector * -vertDX, params)
 	local champion, inc = false, 0
 	local comparsion = {}
 	for i = 1, 7 do
-		local result = workspace:Raycast((rp.CFrame * CFrame.new(0, -2, 0)).Position, (rp.CFrame.Rotation * CFrame.Angles(0, math.rad(inc), 0)).LookVector * horzDX, params)
+		local result = workspace:Raycast((rp.CFrame * CFrame.new(0, -1, 0)).Position, (rp.CFrame.Rotation * CFrame.Angles(0, math.rad(inc), 0)).LookVector * horzDX, params)
 		if result then
 			comparsion[i] = result
 		end
@@ -704,13 +608,9 @@ local function Wallhop()
 			end
 		end
 	end
-
+	
 	if lowestindex and lowestvalue.Instance.ClassName ~= "TrussPart" then
 		QueueReset(.2)
-	elseif lowestvalue.Instance.ClassName == "TrussPart" then
-		task.delay(1/60, function()
-			char.Humanoid.AutoRotate = true
-		end)
 	else
 		char.Humanoid.AutoRotate = true
 	end
@@ -730,9 +630,11 @@ task.spawn(function()
 					local IsFloor, IsWall = Wallhop()
 					if IsWall then
 						if game:GetService("Players").LocalPlayer.Character.Humanoid:GetState() ~= Enum.HumanoidStateType.Running then
-							char.Humanoid.AutoRotate = false
-							local perfection, randomizer = RayToDotVector(IsWall)
-							rp.CFrame = (rp.CFrame * CFrame.Angles(0, perfection + randomizer, 0))
+							if IsWall.Instance.ClassName ~= "TrussPart" then
+								local perfection, randomizer = RayToDotVector(IsWall)
+								char.Humanoid.AutoRotate = false
+								rp.CFrame = (rp.CFrame * CFrame.Angles(0, perfection + randomizer, 0))
+							end
 						end
 						game:GetService("Players").LocalPlayer.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
 					elseif IsFloor then
