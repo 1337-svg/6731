@@ -1,7 +1,6 @@
 local httpService = game:GetService("HttpService")
-
 local SaveManager = {} do
-	SaveManager.Folder = "FluentSettings"
+	SaveManager.Folder = "Smart$AV3"
 	SaveManager.Ignore = {}
 	SaveManager.Parser = {
 		Toggle = {
