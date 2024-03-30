@@ -317,8 +317,6 @@ do
         })
     end
 
-    
-
     local ERS = Tabs.Main:AddButton({
         Title = "Panic/Rejoin",
         Description = "Emergency (PRESS DELETE KEY)",
@@ -353,7 +351,6 @@ do
 
     local FE2_HorzLEGIT = Tabs.Legit:AddInput("LEGIT_MOD1", {
         Title = "Realistic Notation",
-        Default = "5",
         Description = "How far you can 'wallhop' from a wall.",
         Placeholder = "5",
         Numeric = true, -- Only allows numbers
@@ -365,7 +362,6 @@ do
 
     local FE2_RESTRC = Tabs.Legit:AddInput("LEGIT_MOD2", {
         Title = "Realistic Leniency (Horizontal)",
-        Default = "3",
         Description = "How far you can jump from a platform (horizontally).",
         Placeholder = "3",
         Numeric = true, -- Only allows numbers
@@ -377,7 +373,6 @@ do
 
     local FE2_FloorLEGIT = Tabs.Legit:AddInput("LEGIT_MOD3", {
         Title = "Realistic Leninecy (Vertical)",
-        Default = "5",
         Description = "How far you can jump from a platform (vertically).",
         Placeholder = "5",
         Numeric = true, -- Only allows numbers
@@ -416,7 +411,6 @@ do
 
     local FE2_WalkSpeed = Tabs.Util:AddInput("FE2_UT1", {
         Title = "WalkSpeed",
-        Default = 20.5,
         Placeholder = "20",
         Numeric = true, -- Only allows numbers
         Finished = true, -- Only calls callback when you press enter
@@ -427,7 +421,6 @@ do
 
     local FE2_Jumppower = Tabs.Util:AddInput("FE2_UT2", {
         Title = "JumpPower",
-        Default = 50,
         Placeholder = "50",
         Numeric = true, -- Only allows numbers
         Finished = true, -- Only calls callback when you press enter
@@ -448,7 +441,6 @@ do
 
     local DIS_X = Tabs.Util:AddInput("FE2_UT33", {
         Title = "Offset X",
-        Default = 4,
         Placeholder = "4",
         Numeric = true, -- Only allows numbers
         Finished = true, -- Only calls callback when you press enter
@@ -459,7 +451,6 @@ do
 
     local DIS_Y = Tabs.Util:AddInput("FE2_UT22", {
         Title = "Offset Y",
-        Default = 1.25,
         Placeholder = "1.25",
         Numeric = true, -- Only allows numbers
         Finished = true, -- Only calls callback when you press enter
@@ -554,7 +545,7 @@ local function QueueReset(a)
 	end
 end
 
-local function RayToDotVector(ray)
+function RayToDotVector(ray)
 	local char = game:GetService('Players').LocalPlayer.Character or game:GetService('Players').LocalPlayer.CharacterAdded:Wait()
 	local RootPart = char:WaitForChild('HumanoidRootPart')
 	local SurfaceCorrelationOffset = Vector3.new(
@@ -569,14 +560,21 @@ local function RayToDotVector(ray)
 	local Dot = math.pi - math.acos(RootPart.CFrame.LookVector:Dot(ray.Normal.Unit))
 	local Cross = RootPart.CFrame.LookVector:Cross(DirectionRelativeToSurface)
 	
-	local DIR = nil
-	local Correction, Dividend = nil
-	if Cross.Y < 0 then Correction = math.abs(Dot - math.pi/2) DIR = -.15
-	else Correction = Dot - math.pi/2 DIR = .15
+	local WallDirection, WallRandomizer = nil, nil
+	local Correction, CorrectionOffset = nil, nil; -- local Dividend = nil Dividend = math.abs(Dot/math.pi)
+
+	if Cross.Y < 0 then -- left
+		Correction = math.abs(Dot - math.pi/2) 
+		WallRandomizer = math.random(4, 8)/25
+		WallDirection = -.15 + WallRandomizer
+	else -- right
+		Correction = Dot - math.pi/2 
+		WallRandomizer = math.random(-8, -4)/25
+		WallDirection = .15 + WallRandomizer
 	end
 	
-	Dividend = math.abs(Dot/math.pi)
-	return Correction, DIR
+	print(math.clamp(Correction, -.5, .5))
+	return math.clamp(Correction, -.5, .5), WallDirection
 end
 
 local function Wallhop()
@@ -585,15 +583,15 @@ local function Wallhop()
 	local params = RaycastParams.new()
 	params.FilterDescendantsInstances = {char}
 	
-	local floor = workspace:Blockcast(rp.CFrame, Vector3.new(horzLN, .1, horzLN), rp.CFrame.UpVector * -vertDX, params)
-	local champion, inc = false, 0
+	local floor = workspace:Blockcast(rp.CFrame, Vector3.new(2, 0, 1) * horzLN, -rp.CFrame.UpVector * vertDX, params)
+	local champion, inc = false, -25/2
 	local comparsion = {}
-	for i = 1, 7 do
+	for i = 1, 5 do
 		local result = workspace:Raycast((rp.CFrame * CFrame.new(0, -1, 0)).Position, (rp.CFrame.Rotation * CFrame.Angles(0, math.rad(inc), 0)).LookVector * horzDX, params)
 		if result then
 			comparsion[i] = result
 		end
-		inc += 45
+		inc += 12.5/2
 	end
 	
 	local lowestvalue, lowestindex = nil
@@ -608,7 +606,7 @@ local function Wallhop()
 	end
 	
 	if lowestindex and lowestvalue.Instance.ClassName ~= "TrussPart" then
-		QueueReset(.2)
+		QueueReset(math.random(175, 300)/1000)
 	else
 		char.Humanoid.AutoRotate = true
 	end
@@ -626,6 +624,7 @@ task.spawn(function()
 			if A.KeyCode == Enum.KeyCode.Space then
 				if legit then
 					local IsFloor, IsWall = Wallhop()
+					print(IsFloor, IsWall)
 					if IsWall then
 						if game:GetService("Players").LocalPlayer.Character.Humanoid:GetState() ~= Enum.HumanoidStateType.Running then
 							if IsWall.Instance.ClassName ~= "TrussPart" then
@@ -717,7 +716,8 @@ else
         end
     end)
 end
-getgenv().already_loaded = true
+
+SaveManager:LoadAutoloadConfig() getgenv().already_loaded = true
 spawn(function()
 	while wait(3) do
 		if Fluent.Unloaded then
