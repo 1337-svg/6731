@@ -584,14 +584,14 @@ local function Wallhop()
 	params.FilterDescendantsInstances = {char}
 	
 	local floor = workspace:Blockcast(rp.CFrame, Vector3.new(2, 0, 1) * horzLN, -rp.CFrame.UpVector * vertDX, params)
-	local champion, inc = false, -25/2
+	local champion, inc = false, -25/1.2
 	local comparsion = {}
 	for i = 1, 5 do
 		local result = workspace:Raycast((rp.CFrame * CFrame.new(0, -1, 0)).Position, (rp.CFrame.Rotation * CFrame.Angles(0, math.rad(inc), 0)).LookVector * horzDX, params)
 		if result then
 			comparsion[i] = result
 		end
-		inc += 12.5/2
+		inc += 12.5/1.2
 	end
 	
 	local lowestvalue, lowestindex = nil
