@@ -565,11 +565,11 @@ function RayToDotVector(ray)
 
 	if Cross.Y < 0 then -- left
 		Correction = math.abs(Dot - math.pi/2) 
-		WallRandomizer = math.random(4, 8)/25
+		WallRandomizer = math.random(7, 10)/25
 		WallDirection = -.15 + WallRandomizer
 	else -- right
 		Correction = Dot - math.pi/2 
-		WallRandomizer = math.random(-8, -4)/25
+		WallRandomizer = math.random(-10, -7)/25
 		WallDirection = .15 + WallRandomizer
 	end
 	
