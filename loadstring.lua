@@ -34,6 +34,20 @@ for i, v in pairs(script.getOfficialMapData()) do
     table.insert(maps, v.mapName)
 end
 
+local TAS_AUTOPLAYER = false
+local TAS_AUTOPLAYER2 = false
+local godmode = false
+local dubjump = false
+local amp = false
+local legit = false
+local pre_rec = nil
+local vertDX, vertLN = 10, 0
+local horzDX, horzLN = 5, 3
+local ws = 20
+local jp = 50
+local disX = 4
+local disY = 1.25
+
 local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
 local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/1337-svg/6731/index_client/settings/sm.lua"))()
 local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/1337-svg/6731/index_client/settings/im.lua"))()
@@ -102,23 +116,7 @@ local Window = Fluent:CreateWindow({
 })
 
 local notif_ingame = getsenv(game.Players.LocalPlayer.PlayerScripts["CL_MAIN_GameScript"])
-local save = notif_ingame.newAlert
-
 local save = getsenv(game:GetService("Players").LocalPlayer.PlayerScripts["CL_MAIN_GameScript"]).takeAir
-local TAS_AUTOPLAYER = false
-local TAS_AUTOPLAYER2 = false
-local godmode = false
-local dubjump = false
-local amp = false
-local legit = false
-local pre_rec = nil
-local vertDX, vertLN = 10, 0
-local horzDX, horzLN = 5, 3
-local ws = 20
-local jp = 50
-
-local disX = 4
-local disY = 1.25
 
 local Tabs = {
     Main = Window:AddTab({ Title = "Essentials", Icon = "box" }),
@@ -195,7 +193,7 @@ do
         end
     })
 
-    Tabs.Main:AddInput("no_name_thing", {
+    Tabs.Main:AddInput('selector', {
         Title = "Identifier/TAS",
         Default = "nil",
         Description = "Name for TAS/FE2 files.",
@@ -232,7 +230,7 @@ do
     })
 
     if game.PlaceId == 11951199229 or game.PlaceId == 12074120006 then
-        local CM_AUTO = Tabs.Main:AddToggle("TAS_AP83", {
+        local CM_AUTO = Tabs.Main:AddToggle('runtime_alternate', {
             Title = "Runtime/TAS [CM]", 
             Description = "Automate transcripts of community TAS/FE2 files.", 
             Default = false,
@@ -275,7 +273,7 @@ do
             end
         })
     else
-        local FE2_AUTO = Tabs.Main:AddToggle("TAS_AP", {
+        local FE2_AUTO = Tabs.Main:AddToggle('runtime_normal', {
             Title = "Runtime/TAS", 
             Description = "Automate transcripts of TAS/FE2 files.", 
             Default = false,
@@ -344,7 +342,7 @@ do
     })
 
     -- LEGIT SECTION
-    local FE2_LEGIT = Tabs.Legit:AddToggle("TAP_LEGIT", {
+    local FE2_LEGIT = Tabs.Legit:AddToggle("LEGIT_MODE", {
         Title = "Realistic", 
         Description = "Turn 'legit' mode on/off.", 
         Default = false,
@@ -353,7 +351,7 @@ do
         end
     })
 
-    local FE2_HorzLEGIT = Tabs.Legit:AddInput("LEGIT_001", {
+    local FE2_HorzLEGIT = Tabs.Legit:AddInput("LEGIT_MOD1", {
         Title = "Realistic Notation",
         Default = "5",
         Description = "How far you can 'wallhop' from a wall.",
@@ -365,7 +363,7 @@ do
         end
     })
 
-    local FE2_RESTRC = Tabs.Legit:AddInput("LEGIT_0063", {
+    local FE2_RESTRC = Tabs.Legit:AddInput("LEGIT_MOD2", {
         Title = "Realistic Leniency (Horizontal)",
         Default = "3",
         Description = "How far you can jump from a platform (horizontally).",
@@ -377,7 +375,7 @@ do
         end
     })
 
-    local FE2_FloorLEGIT = Tabs.Legit:AddInput("LEGIT_0012", {
+    local FE2_FloorLEGIT = Tabs.Legit:AddInput("LEGIT_MOD3", {
         Title = "Realistic Leninecy (Vertical)",
         Default = "5",
         Description = "How far you can jump from a platform (vertically).",
@@ -390,7 +388,7 @@ do
     })
 
     -- UTIL SECTION
-    local FE2_DUBJ = Tabs.Util:AddKeybind("TAS_FE2jump", {
+    local FE2_DUBJ = Tabs.Util:AddKeybind('infjump', {
         Title = "Infinite Jump",
         Mode = "Toggle",
         Default = "Z", 
@@ -399,7 +397,7 @@ do
         end
     })
 
-    local FE2_DUBJ2 = Tabs.Util:AddKeybind("TAS_FE2amp", {
+    local FE2_DUBJ2 = Tabs.Util:AddKeybind('speedboost', {
         Title = "Speed/Jump Boost",
         Mode = "Toggle",
         Default = "X", 
@@ -408,7 +406,7 @@ do
         end
     })
 
-    local FE2_INFAIR = Tabs.Util:AddToggle("TAS_INFAIR1", {
+    local FE2_INFAIR = Tabs.Util:AddToggle('infair', {
         Title = "Infinite Air", 
         Default = false,
         Callback = function(v)
