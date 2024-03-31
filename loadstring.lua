@@ -438,10 +438,12 @@ do
             game:GetService("Players").LocalPlayer.Character:PivotTo(PlrCF * CFrame.new(0, disY, disX))
 
             if legit then
+                local done = false
                 game:GetService('UserInputService').InputBegan:Connect(function(A, B)
                     if B then return end
                     if A.KeyCode == Enum.KeyCode.Space then
                         if game:GetService('Players').LocalPlayer.Character.Humanoid.PlatformStand == true then
+                            done = true
                             game:GetService('Players').LocalPlayer.Character.Humanoid.PlatformStand = false
                         end
                     end
@@ -449,7 +451,7 @@ do
 
                 game:GetService('Players').LocalPlayer.Character.Humanoid.PlatformStand = true
                 task.delay(2, function()
-                    if game:GetService('Players').LocalPlayer.Character.Humanoid.PlatformStand == true then
+                    if game:GetService('Players').LocalPlayer.Character.Humanoid.PlatformStand == true and done == false then
                         game:GetService('Players').LocalPlayer.Character.Humanoid.PlatformStand = false
                     end
                 end)
