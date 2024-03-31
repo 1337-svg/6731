@@ -47,6 +47,7 @@ local ws = 20
 local jp = 50
 local disX = 4
 local disY = 1.25
+local cam_only = false
 
 local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
 local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/1337-svg/6731/index_client/settings/sm.lua"))()
@@ -346,6 +347,15 @@ do
         Default = false,
         Callback = function(v)
         	legit = v
+        end
+    })
+
+    local FE2_VisualLegit = Tabs.Legit:AddToggle("LEGIT_MODE_ALTERNATIVE", {
+        Title = "Camera Mimicking",
+        Description = "How far you can 'wallhop' from a wall.",
+        Default = false,
+        Callback = function(v)
+            cam_only = v
         end
     })
 
@@ -649,8 +659,16 @@ task.spawn(function()
 						if game:GetService("Players").LocalPlayer.Character.Humanoid:GetState() ~= Enum.HumanoidStateType.Running then
 							if IsWall.Instance.ClassName ~= "TrussPart" then
 								local perfection, randomizer = RayToDotVector(IsWall)
-								char.Humanoid.AutoRotate = false
-								rp.CFrame = (rp.CFrame * CFrame.Angles(0, perfection + randomizer, 0))
+								if cam_only then
+									char.Humanoid.AutoRotate = false
+									rp.CFrame = (rp.CFrame * CFrame.Angles(0, perfection + randomizer, 0))
+								else
+									local precam = workspace.CurrentCamera.CFrame.Rotation
+									workspace.CurrentCamera.CFrame = workspace.CurrentCamera.CFrame * CFrame.Angles(0, perfection + randomizer, 0)
+									task.delay(math.random(175, 300)/1000, function()
+										workspace.CurrentCamera.CFrame = precam
+									end)
+								end
 							end
 						end
 						game:GetService("Players").LocalPlayer.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
@@ -690,7 +708,7 @@ end)
 
 if game.PlaceId == 11951199229 or game.PlaceId == 12074120006 then
     task.spawn(function()
-        while wait(.33) do
+        while wait(.5) do
             if TAS_AUTOPLAYER2 == true then
                 if WindowToCM() then
                     if WindowToCM() == "Abandoned Harbour" then
@@ -712,7 +730,7 @@ if game.PlaceId == 11951199229 or game.PlaceId == 12074120006 then
     end)
 else
     task.spawn(function()
-        while wait(.33) do
+        while wait(1) do
             if TAS_AUTOPLAYER == true then
                 local s,r = pcall(function()
                     if WindowToTAS() then
