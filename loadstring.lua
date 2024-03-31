@@ -437,9 +437,11 @@ do
             local PlrCF = game:GetService("Players").LocalPlayer.Character:WaitForChild('HumanoidRootPart').CFrame
             game:GetService("Players").LocalPlayer.Character:PivotTo(PlrCF * CFrame.new(0, disY, disX))
             if legit then
-                game:GetService('Players').LocalPlayer.Character.Humanoid.PlatformStand = false
-                task.delay(1, function()
+                task.delay(2, function()
                     game:GetService('Players').LocalPlayer.Character.Humanoid.PlatformStand = true
+                    if game:GetService('Players').LocalPlayer.Character.Humanoid.PlatformStand == true then
+                        game:GetService('Players').LocalPlayer.Character.Humanoid.PlatformStand = false
+                    end
                 end)
             end
         end
@@ -698,7 +700,7 @@ if game.PlaceId == 11951199229 or game.PlaceId == 12074120006 then
     end)
 else
     task.spawn(function()
-        while wait(.33) do
+        while wait(.5) do
             if TAS_AUTOPLAYER == true then
                 local s,r = pcall(function()
                     if WindowToTAS() then
