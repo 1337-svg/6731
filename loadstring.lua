@@ -107,10 +107,10 @@ local function WindowToCM()
 end
 
 local Window = Fluent:CreateWindow({
-    Title = "Hyperblox Panel",
+    Title = "Oneclan Panel",
     SubTitle = tostring(game:GetService("Players").LocalPlayer).."/ani.watch",
-    TabWidth = 110,
-    Size = UDim2.fromOffset(615, 300),
+    TabWidth = 100,
+    Size = UDim2.fromOffset(600, 310),
     Acrylic = false, -- The blur may be detectable, setting this to false disables blur entirely
     Theme = "Darker",
     MinimizeKey = Enum.KeyCode.Semicolon -- Used when theres no MinimizeKeybind
@@ -352,7 +352,7 @@ do
 
     local FE2_VisualLegit = Tabs.Legit:AddToggle("LEGIT_MODE_ALTERNATIVE", {
         Title = "Camera Mimicking",
-        Description = "How far you can 'wallhop' from a wall.",
+        Description = "Simulate the camera motion needed to wallhop.",
         Default = false,
         Callback = function(v)
             cam_only = v
