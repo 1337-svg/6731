@@ -125,14 +125,7 @@ local Tabs = {
     Task = Window:AddTab({ Title = "Tasks", Icon = "compass" }),
     Util = Window:AddTab({ Title = "Utilities", Icon = "info" }),
     Settings = Window:AddTab({ Title = "Settings", Icon = "settings" }),
-}
-
-for _,v in ipairs(getnilinstances()) do
-	if v.Name == "CL_AntiExploit" then
-		print('Anti-Cheat Deleted.')
-		v:Destroy()
-	end
-end
+} for _,v in ipairs(getnilinstances()) do if v.Name == "CL_AntiExploit" then v:Destroy() end end
 
 local function _Notification(scr, sat)
     -- notif_ingame.newAlert("Granted transcript installation!", Color3.fromRGB(0, 168, 17))
@@ -603,7 +596,7 @@ function RayToDotVector(ray)
 		WallDirection = .15 + WallRandomizer
 	end
 	
-	print(math.clamp(Correction, -.5, .5))
+	-- print(math.clamp(Correction, -.5, .5))
 	return math.clamp(Correction, -.5, .5), WallDirection
 end
 
@@ -654,12 +647,12 @@ task.spawn(function()
 			if A.KeyCode == Enum.KeyCode.Space then
 				if legit then
 					local IsFloor, IsWall = Wallhop()
-					print(IsFloor, IsWall)
+					-- print(IsFloor, IsWall)
 					if IsWall then
 						if game:GetService("Players").LocalPlayer.Character.Humanoid:GetState() ~= Enum.HumanoidStateType.Running then
 							if IsWall.Instance.ClassName ~= "TrussPart" then
 								local perfection, randomizer = RayToDotVector(IsWall)
-								if cam_only then
+								if cam_only == false then
 									char.Humanoid.AutoRotate = false
 									rp.CFrame = (rp.CFrame * CFrame.Angles(0, perfection + randomizer, 0))
 								else
