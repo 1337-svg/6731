@@ -690,7 +690,7 @@ local tap_central: RBXScriptConnection; tap_central = game:GetService("UserInput
 					if game:GetService("Players").LocalPlayer.Character.Humanoid:GetState() ~= Enum.HumanoidStateType.Running then
 						if IsWall.Instance.ClassName ~= "TrussPart" then
 							local perfection, randomizer = RotationDifference(IsWall)
-							if cam_only == true then
+							if cam_only == false then
 								char.Humanoid.AutoRotate = false
 								rp.CFrame = (rp.CFrame * CFrame.Angles(0, perfection + randomizer, 0))
 							else
