@@ -44,7 +44,7 @@ local pre_rec = nil
 local slide_glide = true
 local slide_glide_active = false
 local slide_glide_delay = 0.33
-local wallhop_offset = 3 -- (Y only)
+local wallhop_offset = 2 -- (Y only)
 local vertDX, vertLN = 10, 0
 local horzDX, horzLN = 5, 3
 local ws = 20
@@ -378,6 +378,17 @@ do
         end
     })
 
+    local FE2_RESTRC3 = Tabs.Legit:AddInput("LEGIT_MOD6", {
+        Title = "Realistic Leniency (Horizontal)",
+        Description = "How far you can jump from a platform (horizontally).",
+        Placeholder = "2",
+        Numeric = true, -- Only allows numbers
+        Finished = true, -- Only calls callback when you press enter
+        Callback = function(v)
+            wallhop_offset = v
+        end
+    })
+
     local FE2_FloorLEGIT = Tabs.Legit:AddInput("LEGIT_MOD3", {
         Title = "Realistic Leninecy (Vertical)",
         Description = "How far you can jump from a platform (vertically).",
@@ -401,7 +412,7 @@ do
     local FE2_SLIDELEGIT2 = Tabs.Legit:AddInput("LEGIT_MOD4", {
         Title = "Slide Glide Latency",
         Description = "The time window you need to perform a 'Slide Glide'.",
-        Placeholder = "0.33",
+        Placeholder = "0.4",
         Numeric = true, -- Only allows numbers
         Finished = true, -- Only calls callback when you press enter
         Callback = function(v)
