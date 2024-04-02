@@ -41,6 +41,10 @@ local dubjump = false
 local amp = false
 local legit = false
 local pre_rec = nil
+local slide_glide = true
+local slide_glide_active = false
+local slide_glide_delay = 0.33
+local wallhop_offset = 3 -- (Y only)
 local vertDX, vertLN = 10, 0
 local horzDX, horzLN = 5, 3
 local ws = 20
@@ -385,6 +389,26 @@ do
         end
     })
 
+    local FE2_SLIDELEGIT = Tabs.Legit:AddToggle("LEGIT_MODE2", {
+        Title = "Slide Glide", 
+        Description = "Simulate the 'Slide Gliding' tech (on/off).", 
+        Default = false,
+        Callback = function(v)
+        	slide_glide = v
+        end
+    })
+
+    local FE2_SLIDELEGIT2 = Tabs.Legit:AddInput("LEGIT_MOD4", {
+        Title = "Slide Glide Latency",
+        Description = "The time window you need to perform a 'Slide Glide'.",
+        Placeholder = "0.33",
+        Numeric = true, -- Only allows numbers
+        Finished = true, -- Only calls callback when you press enter
+        Callback = function(v)
+            slide_glide_delay = tonumber(v)
+        end
+    })
+
     -- UTIL SECTION
     local FE2_DUBJ = Tabs.Util:AddKeybind('infjump', {
         Title = "Infinite Jump",
@@ -568,7 +592,7 @@ local function QueueReset(a)
 	end
 end
 
-function RayToDotVector(ray)
+function RotationDifference(ray)
 	local char = game:GetService('Players').LocalPlayer.Character or game:GetService('Players').LocalPlayer.CharacterAdded:Wait()
 	local RootPart = char:WaitForChild('HumanoidRootPart')
 	local SurfaceCorrelationOffset = Vector3.new(
@@ -588,11 +612,11 @@ function RayToDotVector(ray)
 
 	if Cross.Y < 0 then -- left
 		Correction = math.abs(Dot - math.pi/2) 
-		WallRandomizer = math.random(7, 10)/25
+		WallRandomizer = math.random(4, 8)/25
 		WallDirection = -.15 + WallRandomizer
 	else -- right
 		Correction = Dot - math.pi/2 
-		WallRandomizer = math.random(-10, -7)/25
+		WallRandomizer = math.random(-8, -4)/25
 		WallDirection = .15 + WallRandomizer
 	end
 	
@@ -600,7 +624,23 @@ function RayToDotVector(ray)
 	return math.clamp(Correction, -.5, .5), WallDirection
 end
 
-local function Wallhop()
+local function JumpLiability()
+	local function queue(a)
+		Start = tick()
+		if InLine == false then
+			InLine = true
+			local connection
+			connection = game:GetService('RunService').Heartbeat:Connect(function()
+				local hm: Part = game:GetService('Players').LocalPlayer.Character:WaitForChild('Humanoid')
+				if (tick() - Start) > a then
+					hm.AutoRotate = true
+					InLine = false
+					connection:Disconnect()
+				end
+			end)
+		end
+	end
+	
 	local char = game:GetService('Players').LocalPlayer.Character or game:GetService('Players').LocalPlayer.CharacterAdded:Wait()
 	local rp: Part = char:WaitForChild('HumanoidRootPart')
 	local params = RaycastParams.new()
@@ -610,7 +650,7 @@ local function Wallhop()
 	local champion, inc = false, -25/1.2
 	local comparsion = {}
 	for i = 1, 5 do
-		local result = workspace:Raycast((rp.CFrame * CFrame.new(0, -1, 0)).Position, (rp.CFrame.Rotation * CFrame.Angles(0, math.rad(inc), 0)).LookVector * horzDX, params)
+		local result = workspace:Raycast((rp.CFrame * CFrame.new(0, -wallhop_offset, 0)).Position, (rp.CFrame.Rotation * CFrame.Angles(0, math.rad(inc), 0)).LookVector * horzDX, params)
 		if result then
 			comparsion[i] = result
 		end
@@ -628,8 +668,8 @@ local function Wallhop()
 		end
 	end
 	
-	if lowestindex and lowestvalue.Instance.ClassName ~= "TrussPart" then
-		QueueReset(math.random(175, 300)/1000)
+	if lowestindex and lowestvalue.Instance.ClassName ~= "TrussPart" and slide_glide_active ~= true then
+		queue(math.random(175, 300)/1000)
 	else
 		char.Humanoid.AutoRotate = true
 	end
@@ -637,51 +677,83 @@ local function Wallhop()
 	return floor, lowestvalue
 end
 
-task.spawn(function()
-	local SP = nil
-	SP = game:GetService("UserInputService").InputBegan:Connect(function(A, B)
-		if B then return end
-		local char = game:GetService('Players').LocalPlayer.Character or game:GetService('Players').LocalPlayer.CharacterAdded:Wait()
-		local rp: Part = char:WaitForChild('HumanoidRootPart')
-		if dubjump == true then
-			if A.KeyCode == Enum.KeyCode.Space then
-				if legit then
-					local IsFloor, IsWall = Wallhop()
-					-- print(IsFloor, IsWall)
-					if IsWall then
-						if game:GetService("Players").LocalPlayer.Character.Humanoid:GetState() ~= Enum.HumanoidStateType.Running then
-							if IsWall.Instance.ClassName ~= "TrussPart" then
-								local perfection, randomizer = RayToDotVector(IsWall)
-								if cam_only == false then
-									char.Humanoid.AutoRotate = false
-									rp.CFrame = (rp.CFrame * CFrame.Angles(0, perfection + randomizer, 0))
-								else
-									local precam = workspace.CurrentCamera.CFrame.Rotation
-									workspace.CurrentCamera.CFrame = workspace.CurrentCamera.CFrame * CFrame.Angles(0, perfection + randomizer, 0)
-									task.delay(math.random(175, 300)/1000, function()
-										workspace.CurrentCamera.CFrame = precam
-									end)
-								end
+local tap_central: RBXScriptConnection; tap_central = game:GetService("UserInputService").InputBegan:Connect(function(A, B)
+	if B then return end
+	local char = game:GetService('Players').LocalPlayer.Character or game:GetService('Players').LocalPlayer.CharacterAdded:Wait()
+	local rp: Part = char:WaitForChild('HumanoidRootPart')
+	if dubjump == true then
+		if A.KeyCode == Enum.KeyCode.Space then
+			if legit then
+				local IsFloor, IsWall = JumpLiability()
+				--print(IsFloor, IsWall)
+				if IsWall then
+					if game:GetService("Players").LocalPlayer.Character.Humanoid:GetState() ~= Enum.HumanoidStateType.Running then
+						if IsWall.Instance.ClassName ~= "TrussPart" then
+							local perfection, randomizer = RotationDifference(IsWall)
+							if cam_only == true then
+								char.Humanoid.AutoRotate = false
+								rp.CFrame = (rp.CFrame * CFrame.Angles(0, perfection + randomizer, 0))
+							else
+								local precam = workspace.CurrentCamera.CFrame.Rotation
+								workspace.CurrentCamera.CFrame = workspace.CurrentCamera.CFrame * CFrame.Angles(0, perfection + randomizer, 0)
+								task.delay(math.random(175, 300)/1000, function()
+									workspace.CurrentCamera.CFrame = precam
+								end)
 							end
 						end
-						game:GetService("Players").LocalPlayer.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
-					elseif IsFloor then
+					end
+					game:GetService("Players").LocalPlayer.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+				elseif IsFloor then
+					if slide_glide == true then
+						if slide_glide_active == true then
+							game:GetService("Players").LocalPlayer.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+						end
+					else
 						game:GetService("Players").LocalPlayer.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
 					end
-				else
-				    game:GetService("Players").LocalPlayer.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
 				end
+			else
+				game:GetService("Players").LocalPlayer.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
 			end
-		end
-	end)
-
-	while wait(3) do
-		if Fluent.Unloaded then
-		    SP:Disconnect()
-		    break
 		end
 	end
 end)
+
+local slide_glide_connection: RBXScriptConnection = spawn(function()
+	local st2 = tick()
+	local iL = false
+	local function queue(a)
+		st2 = tick()
+		if iL == false then iL = true
+			local dc: RBXScriptConnection; dc = game:GetService('RunService').Heartbeat:Connect(function()
+                local nonstrong = tonumber(tick() - st2)
+				if nonstrong > a then
+					iL = false
+					slide_glide_active = false
+					dc:Disconnect()
+				end
+			end)
+		end
+	end
+	
+	game:GetService('UserInputService').InputBegan:Connect(function(A, B)
+		if slide_glide == false or B then return end
+		if A.KeyCode == Enum.KeyCode.E then
+			if slide_glide_active == false then slide_glide_active = true end
+			game:GetService('UserInputService').InputEnded:Once(function(A)
+				queue(slide_glide_delay)
+			end)
+		end
+	end)
+end)
+
+spawn(function() while wait(3) do
+	if Fluent.Unloaded then
+		slide_glide_connection:Disconnect()
+		tap_central:Disconnect()
+		break
+	end
+end end)
 
 task.spawn(function() 
     local s, r = pcall(function()
