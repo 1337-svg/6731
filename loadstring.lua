@@ -1,5 +1,5 @@
--- Credits to Altlexon, Aniwatch
-if getgenv().already_loaded then return end
+if getgenv().already_loaded then print'error cannot load twice' return 
+else print'success please wait one moment' end
 if not map_tas then
     getgenv().map_tas = {
         ["Blue Moon"] = "bm1",
@@ -34,6 +34,7 @@ for i, v in pairs(script.getOfficialMapData()) do
     table.insert(maps, v.mapName)
 end
 
+-- DA WALL 0F VARIABLES!111
 local TAS_AUTOPLAYER = false
 local TAS_AUTOPLAYER2 = false
 local godmode = false
@@ -45,8 +46,10 @@ local slide_glide = true
 local slide_glide_active = false
 local slide_glide_delay = 0.33
 local wallhop_offset = 2 -- (Y only)
+local hrp_forgive = Vector3.new(2, 2, 1) -- Vector3.new(2, 2, 1)
 local vertDX, vertLN = 10, 0
 local horzDX, horzLN = 5, 3
+local speedboost_lineart = Color3.fromRGB(255, 102, 105)
 local ws = 20
 local jp = 50
 local disX = 4
@@ -123,20 +126,23 @@ local Window = Fluent:CreateWindow({
 local notif_ingame = getsenv(game.Players.LocalPlayer.PlayerScripts["CL_MAIN_GameScript"])
 local save = getsenv(game:GetService("Players").LocalPlayer.PlayerScripts["CL_MAIN_GameScript"]).takeAir
 
+-- https://lucide.dev/icons/
 local Tabs = {
-    Main = Window:AddTab({ Title = "Essentials", Icon = "box" }),
+    Main = Window:AddTab({ Title = "Essentials", Icon = "folder-search-2" }),
     Legit = Window:AddTab({ Title = "Realistic", Icon = "shield-check"}),
-    Task = Window:AddTab({ Title = "Tasks", Icon = "compass" }),
-    Util = Window:AddTab({ Title = "Utilities", Icon = "info" }),
+    Adva = Window:AddTab({ Title = "Advantages", Icon = "shield-alert"}),
+    Blat = Window:AddTab({ Title = "Blatant", Icon = "shield-alert" }),
+    Vis = Window:AddTab({ Title = "Visuals", Icon = "scan-eye" }),
+    Task = Window:AddTab({ Title = "Tasks", Icon = "folder-search-2" }),
     Settings = Window:AddTab({ Title = "Settings", Icon = "settings" }),
+
 } for _,v in ipairs(getnilinstances()) do if v.Name == "CL_AntiExploit" then v:Destroy() end end
 
-local function _Notification(scr, sat)
-    -- notif_ingame.newAlert("Granted transcript installation!", Color3.fromRGB(0, 168, 17))
+local function _Notification(str, clr)
     spawn(function()
         wait(1/30)
         pcall(function()
-            notif_ingame.newAlert(scr, sat)
+            notif_ingame.newAlert(str, clr)
         end)
     end)
 end
@@ -160,7 +166,7 @@ local function DownloadTAS()
                 _Notification("TAS/"..v.." has failed to download.", Color3.fromRGB(255, 150, 51))
             end
         end
-        wait(1/10)
+        wait(1/6)
     end
 end
 
@@ -338,6 +344,11 @@ do
     })
 
     -- LEGIT SECTION
+    Tabs.Legit:AddParagraph({
+        Title = "Disclaimer",
+        Content = "In order to use these functions, Infinite Jump needs to be enabled. Infinite Jump can be found in the 'blatant' tab; \nMake sure to adjust your settings accordingly to how subtle you want to be."
+    })
+
     local FE2_LEGIT = Tabs.Legit:AddToggle("LEGIT_MODE", {
         Title = "Realistic", 
         Description = "Turn 'legit' mode on/off.", 
@@ -356,45 +367,49 @@ do
         end
     })
 
-    local FE2_HorzLEGIT = Tabs.Legit:AddInput("LEGIT_MOD1", {
+    local FE2_HorzLEGITFR = Tabs.Legit:AddInput("LEGIT_MOD669", {
         Title = "Realistic Notation",
         Description = "How far you can 'wallhop' from a wall.",
         Placeholder = "5",
-        Numeric = true, -- Only allows numbers
-        Finished = true, -- Only calls callback when you press enter
+        Numeric = true,
+        Finished = true, 
         Callback = function(v)
-            horzDX = v
+            if v ~= nil then
+                horzDX = tonumber(v)
+            end
+        end
+    })
+
+    local FE2_HorzLEGITlol = Tabs.Legit:AddInput("LEGIT_MOD7", {
+        Title = "Realistic Offset",
+        Description = "How high/low your wallhop point is. \n0 is equvialent to the center of your torso!",
+        Placeholder = "2",
+        Numeric = true, 
+        Finished = true, 
+        Callback = function(v)
+            if v ~= nil then
+                wallhop_offset = math.abs(v)
+            end
         end
     })
 
     local FE2_RESTRC = Tabs.Legit:AddInput("LEGIT_MOD2", {
         Title = "Realistic Leniency (Horizontal)",
-        Description = "How far you can jump from a platform (horizontally).",
+        Description = "How far you can (air) jump from a platform \n(horizontally).",
         Placeholder = "3",
-        Numeric = true, -- Only allows numbers
-        Finished = true, -- Only calls callback when you press enter
+        Numeric = true,
+        Finished = true, 
         Callback = function(v)
             horzLN = v
         end
     })
 
-    local FE2_RESTRC3 = Tabs.Legit:AddInput("LEGIT_MOD6", {
-        Title = "Realistic Leniency (Horizontal)",
-        Description = "How far you can jump from a platform (horizontally).",
-        Placeholder = "2",
-        Numeric = true, -- Only allows numbers
-        Finished = true, -- Only calls callback when you press enter
-        Callback = function(v)
-            wallhop_offset = v
-        end
-    })
-
     local FE2_FloorLEGIT = Tabs.Legit:AddInput("LEGIT_MOD3", {
         Title = "Realistic Leninecy (Vertical)",
-        Description = "How far you can jump from a platform (vertically).",
+        Description = "How far you can (air) jump from a platform \n(vertically).",
         Placeholder = "5",
-        Numeric = true, -- Only allows numbers
-        Finished = true, -- Only calls callback when you press enter
+        Numeric = true, 
+        Finished = true,
         Callback = function(v)
             vertDX = v
         end
@@ -413,15 +428,43 @@ do
         Title = "Slide Glide Latency",
         Description = "The time window you need to perform a 'Slide Glide'.",
         Placeholder = "0.4",
-        Numeric = true, -- Only allows numbers
-        Finished = true, -- Only calls callback when you press enter
+        Numeric = true,
+        Finished = true,
         Callback = function(v)
             slide_glide_delay = tonumber(v)
         end
     })
 
+    -- ADVANTAGES SECTION
+    local FE2_ADVA1 = Tabs.Adva:AddInput("ADVA_MOD1", {
+        Title = "Ledge Lenity",
+        Description = "How far you can jump from a platform. \n(It is recommended to keep values below 7).",
+        Placeholder = "2, 1; (x, z)",
+        Numeric = false, 
+        Finished = true,
+        Callback = function(sent)   
+            local list = {}
+            for v in sent:gmatch("[^,]+") do table.insert(list, v) end
+            hrp_forgive = Vector3.new(list[1], 2, list[2])
+        end
+    })
+
+    -- VISUAL SECTION
+    local SPEDBOOST = Tabs.Vis:AddInput("VISUAL_MOD1", {
+        Title = "SD/JP RGB",
+        Description = "Change the RGB of the 'Speed/Jump Boost' indicator.",
+        Placeholder = "255, 102, 105",
+        Numeric = false,
+        Finished = true,
+        Callback = function(rgb)
+            local list = {}
+            for v in rgb:gmatch("[^,]+") do table.insert(list, v) end
+            speedboost_lineart = Color3.fromRGB(list[1], list[2], list[3])
+        end
+    })
+
     -- UTIL SECTION
-    local FE2_DUBJ = Tabs.Util:AddKeybind('infjump', {
+    local FE2_DUBJ = Tabs.Blat:AddKeybind('infjump', {
         Title = "Infinite Jump",
         Mode = "Toggle",
         Default = "Z", 
@@ -430,7 +473,7 @@ do
         end
     })
 
-    local FE2_DUBJ2 = Tabs.Util:AddKeybind('speedboost', {
+    local FE2_DUBJ2 = Tabs.Blat:AddKeybind('speedboost', {
         Title = "Speed/Jump Boost",
         Mode = "Toggle",
         Default = "X", 
@@ -439,7 +482,7 @@ do
         end
     })
 
-    local FE2_INFAIR = Tabs.Util:AddToggle('infair', {
+    local FE2_INFAIR = Tabs.Blat:AddToggle('infair', {
         Title = "Infinite Air", 
         Default = false,
         Callback = function(v)
@@ -447,27 +490,27 @@ do
         end
     })
 
-    local FE2_WalkSpeed = Tabs.Util:AddInput("FE2_UT1", {
+    local FE2_WalkSpeed = Tabs.Blat:AddInput("FE2_UT1", {
         Title = "WalkSpeed",
         Placeholder = "20",
-        Numeric = true, -- Only allows numbers
-        Finished = true, -- Only calls callback when you press enter
+        Numeric = true, 
+        Finished = true, 
         Callback = function(v)
             ws = v
         end
     })
 
-    local FE2_Jumppower = Tabs.Util:AddInput("FE2_UT2", {
+    local FE2_Jumppower = Tabs.Blat:AddInput("FE2_UT2", {
         Title = "JumpPower",
         Placeholder = "50",
-        Numeric = true, -- Only allows numbers
-        Finished = true, -- Only calls callback when you press enter
+        Numeric = true, 
+        Finished = true, 
         Callback = function(v)
             jp = v
         end
     })
 
-    local FE2_TP2 = Tabs.Util:AddKeybind("TAS_FE2TP", {
+    local FE2_TP2 = Tabs.Blat:AddKeybind("TAS_FE2TP", {
         Title = "Offseter (Teleport)",
         Mode = "Toggle",
         Default = "R", 
@@ -497,38 +540,68 @@ do
         end
     })
 
-    local DIS_X = Tabs.Util:AddInput("FE2_UT33", {
+    local DIS_X = Tabs.Blat:AddInput("FE2_UT33", {
         Title = "Offset X",
         Placeholder = "4",
-        Numeric = true, -- Only allows numbers
-        Finished = true, -- Only calls callback when you press enter
+        Numeric = true, 
+        Finished = true, 
         Callback = function(v)
             disX = v
         end
     })
 
-    local DIS_Y = Tabs.Util:AddInput("FE2_UT22", {
+    local DIS_Y = Tabs.Blat:AddInput("FE2_UT22", {
         Title = "Offset Y",
         Placeholder = "1.25",
-        Numeric = true, -- Only allows numbers
-        Finished = true, -- Only calls callback when you press enter
+        Numeric = true, 
+        Finished = true,
         Callback = function(v)
             disY = v
         end
     })
 
     -- TAS SECTION
-    for i,v in pairs(map_tas) do
-        Tabs.Task:AddInput(tostring(math.random(-5000, 5000)), {
-            Title = tostring(i),
-            Default = tostring(v),
-            Placeholder = "FileName",
-            Numeric = false,
-            Callback = function(cb)
-                map_tas[tostring(i)] = cb
+    local old_tas = nil
+    local function AddTAS(i, v)
+        if not old_tas then
+            Tabs.Task:AddInput(tostring(i), {
+                Title = tostring(i),
+                Default = tostring(v),
+                Placeholder = "FileName",
+                Numeric = false,
+                Callback = function(cb)
+                    map_tas[tostring(i)] = cb
+                end
+            })
+        else
+            if not old_tas[i] then
+                old_tas[i] = v
+                Tabs.Task:AddInput(tostring(i), {
+                    Title = tostring(i),
+                    Default = tostring(v),
+                    Placeholder = "FileName",
+                    Numeric = false,
+                    Callback = function(cb)
+                        map_tas[tostring(i)] = cb
+                    end
+                })
             end
-        })
+        end
     end
+
+    Tabs.Task:AddButton({
+        Title = "Refresh",
+        Description = "Refreshes your map_tas list.",
+        Callback = function() warn('refreshing files')
+            for i,v in pairs(map_tas) do
+                AddTAS(i, v)
+            end
+        end
+    })
+
+    for i,v in pairs(map_tas) do
+        AddTAS(i, v)
+    end old_tas = map_tas
 
     --[[
     local Blue_Moon_TAS = Tabs.Task:AddInput("TOOL_004", {
@@ -562,8 +635,8 @@ Fluent:Notify({
 
 task.spawn(function()
 	local Highlight = Instance.new('Highlight')
-	Highlight.FillColor, Highlight.FillTransparency = Color3.fromRGB(255, 0, 4), .8
-	Highlight.OutlineColor, Highlight.OutlineTransparency = Color3.fromRGB(255, 102, 105), .2
+	Highlight.FillColor, Highlight.FillTransparency = speedboost_lineart, .8
+	Highlight.OutlineColor, Highlight.OutlineTransparency = speedboost_lineart, .2
 	Highlight.Name, Highlight.Adornee = tostring(math.random(-10000, 10000)), nil
 	Highlight.Enabled, Highlight.Parent = true, nil
 
@@ -571,6 +644,7 @@ task.spawn(function()
 	CN = game:GetService("RunService").Heartbeat:Connect(function()
 		local null = 0
 		if amp == true then
+            Highlight.FillColor, Highlight.OutlineColor = speedboost_lineart, speedboost_lineart
             Highlight.Parent = workspace
 			Highlight.Adornee = game:GetService("Players").LocalPlayer.Character
 			null = 5
@@ -660,13 +734,23 @@ local function JumpLiability()
 	local floor = workspace:Blockcast(rp.CFrame, Vector3.new(2, 0, 1) * horzLN, -rp.CFrame.UpVector * vertDX, params)
 	local champion, inc = false, -25/1.2
 	local comparsion = {}
-	for i = 1, 5 do
-		local result = workspace:Raycast((rp.CFrame * CFrame.new(0, -wallhop_offset, 0)).Position, (rp.CFrame.Rotation * CFrame.Angles(0, math.rad(inc), 0)).LookVector * horzDX, params)
-		if result then
-			comparsion[i] = result
-		end
-		inc += 12.5/1.2
-	end
+    local _,error3 = pcall(function() 
+        for i = 1, 5 do
+            local result = workspace:Raycast((rp.CFrame * CFrame.new(0, -2, 0)).Position, (rp.CFrame.Rotation * CFrame.Angles(0, math.rad(inc), 0)).LookVector * 1, params)
+            if result then
+                comparsion[i] = result
+            end
+            inc += 12.5/1.2
+        end
+    end)
+    if error3 then
+        Fluent:Notify({
+            Title = tostring(game:GetService("Players").LocalPlayer).."/ani.watch",
+            Content = tostring(error3),
+            Duration = 5
+        })
+        
+    end
 	
 	local lowestvalue, lowestindex = nil
 	for i, v in pairs(comparsion) do
@@ -696,7 +780,7 @@ local tap_central: RBXScriptConnection; tap_central = game:GetService("UserInput
 		if A.KeyCode == Enum.KeyCode.Space then
 			if legit then
 				local IsFloor, IsWall = JumpLiability()
-				--print(IsFloor, IsWall)
+				print(IsFloor, IsWall)
 				if IsWall then
 					if game:GetService("Players").LocalPlayer.Character.Humanoid:GetState() ~= Enum.HumanoidStateType.Running then
 						if IsWall.Instance.ClassName ~= "TrussPart" then
@@ -758,10 +842,35 @@ local slide_glide_connection: RBXScriptConnection = spawn(function()
 	end)
 end)
 
-spawn(function() while wait(3) do
+local rootchange_ondeath: RBXScriptConnection; rootchange_ondeath = spawn(function() game:GetService('RunService').Heartbeat:Connect(function()
+    local decision = game:GetService("Players").LocalPlayer.PlayerScripts.CL_MAIN_GameScript.isSwimming:Invoke()
+    local description = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Size
+
+    if decision == true then
+        if description ~= Vector3.new(2, 2, 1) then
+            game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Size = Vector3.new(2, 2, 1)
+        end
+    else
+        game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Size = hrp_forgive
+    end 
+end) end)
+
+-- CANCEL ALL RAHH-- CANCEL ALL RAHH
+-- CANCEL ALL RAHH
+-- CANCEL ALL RAHH
+-- CANCEL ALL RAHH
+-- CANCEL ALL RAHH-- CANCEL ALL RAHH
+-- CANCEL ALL RAHH
+-- CANCEL ALL RAHH
+-- CANCEL ALL RAHH
+-- CANCEL ALL RAHH-- CANCEL ALL RAHH
+task.spawn(function() while wait(3) do
 	if Fluent.Unloaded then
+        -- change anything back if set by a spawn loop pls
+        -- game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Size = Vector3.new(2, 2, 1)
 		slide_glide_connection:Disconnect()
 		tap_central:Disconnect()
+        rootchange_ondeath:Disconnect()
 		break
 	end
 end end)
