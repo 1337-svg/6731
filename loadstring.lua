@@ -838,10 +838,15 @@ end)
 local rootchange_ondeath: RBXScriptConnection; rootchange_ondeath = spawn(function() game:GetService('RunService').Heartbeat:Connect(function()
     local decision = game:GetService("Players").LocalPlayer.PlayerScripts.CL_MAIN_GameScript.isSwimming:Invoke()
     local description = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Size
+    local model = game:GetService('Players').LocalPlayer.Character or game:GetService('Players').LocalPlayer.CharacterAdded:Wait()
 
     if decision == true then
         if description ~= Vector3.new(2, 2, 1) then
             game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Size = Vector3.new(2, 2, 1)
+        end
+    elseif model:FindFirstChild('BoundingBox').Size == Vector3.new(2, 1, 1) then
+        if description ~= Vector3.new(2, 1, 1) then
+            game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Size = Vector3.new(2, 1, 1)
         end
     else
         game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Size = hrp_forgive
