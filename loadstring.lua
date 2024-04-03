@@ -736,21 +736,14 @@ local function JumpLiability()
 	local comparsion = {}
     local _,error3 = pcall(function() 
         for i = 1, 5 do
-            local result = workspace:Raycast((rp.CFrame * CFrame.new(0, -2, 0)).Position, (rp.CFrame.Rotation * CFrame.Angles(0, math.rad(inc), 0)).LookVector * 1, params)
+            local result = workspace:Raycast((rp.CFrame * CFrame.new(0, -2, 0)).Position, (rp.CFrame.Rotation * CFrame.Angles(0, math.rad(inc), 0)).LookVector * horzDX, params)
             if result then
                 comparsion[i] = result
             end
             inc += 12.5/1.2
         end
     end)
-    if error3 then
-        Fluent:Notify({
-            Title = tostring(game:GetService("Players").LocalPlayer).."/ani.watch",
-            Content = tostring(error3),
-            Duration = 5
-        })
-        
-    end
+    if error3 then warn("Slide not working..? (oc panel) "..error3) end
 	
 	local lowestvalue, lowestindex = nil
 	for i, v in pairs(comparsion) do
