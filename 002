@@ -95,17 +95,14 @@ repeat task.wait() until Map.Name == "Map"
 local HighlightPath = game:GetService("Workspace").Multiplayer.Map.Settings:GetAttribute("Highlight")
 
 if HighlightPath then
-    CLMAIN.newAlert("Map cannot be mirrored.", Color3.fromRGB(255, 100, 0))
     Mirrored = false
 else
-    if SkipMirroredMaps[mapName] then
-        CLMAIN.newAlert('Map cannot be mirrored.', Color3.fromRGB(255, 100, 0))
-    else
+    if not SkipMirroredMaps[mapName] then
         if Map:WaitForChild('Settings'):FindFirstChild("_MirrorMap") then
-            CLMAIN.newAlert('Map is not mirrored.', Color3.fromRGB(255, 149, 5))
+            --CLMAIN.newAlert('Map is not mirrored.', Color3.fromRGB(255, 149, 5))
             Mirrored = false
         else
-            CLMAIN.newAlert('Map is mirrored, TAS will be played mirrored!', Color3.fromRGB(255, 149, 5))
+            --CLMAIN.newAlert('Map is mirrored, TAS will be played mirrored!', Color3.fromRGB(255, 149, 5))
             Mirrored = true
         end
     end
